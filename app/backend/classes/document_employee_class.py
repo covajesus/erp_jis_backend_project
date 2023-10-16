@@ -154,7 +154,6 @@ class DocumentEmployeeClass:
             return f"Error: {error_message}"
         
     def update(self, id, document_employee_inputs):
-        print(document_employee_inputs['status_id'])
         document_employee =  self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).one_or_none()
         
         if 'status_id' in document_employee_inputs and document_employee_inputs['status_id'] is not None:

@@ -61,7 +61,9 @@ def delete(id:int, dropbox_path:str, db: Session = Depends(get_db)):
 
 @documents_employees.patch("/update/{id}")
 def update(id: int, document_employee: UpdateDocumentEmployee, db: Session = Depends(get_db)):
-    data = DocumentEmployeeClass(db).update(id, document_employee)
+    document_employee_inputs = document_employee.dict()
+
+    data = DocumentEmployeeClass(db).update(id, document_employee_inputs)
 
     return {"message": data}
 
