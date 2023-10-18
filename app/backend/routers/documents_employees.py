@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import DocumentEmployee, UpdateDocumentEmployee, UploadDocumentEmployee
+from app.backend.classes.vacation_class import VacationClass
 from app.backend.classes.document_employee_class import DocumentEmployeeClass
 from app.backend.classes.dropbox_class import DropboxClass
 import os
@@ -62,6 +63,11 @@ def delete(id:int, dropbox_path:str, db: Session = Depends(get_db)):
 @documents_employees.patch("/update/{id}")
 def update(id: int, document_employee: UpdateDocumentEmployee, db: Session = Depends(get_db)):
     document_employee_inputs = document_employee.dict()
+
+    print(document_employee_inputs['document_type_id'])
+    if document_employee_inputs['document_type_id'] == 6:
+        vacation = VacationClass(db).get('document_employee_id', id)
+        VacationClass(db).update(vacation.id, document_employee_inputs)
 
     data = DocumentEmployeeClass(db).update(id, document_employee_inputs)
 

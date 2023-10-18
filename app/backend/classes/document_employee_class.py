@@ -33,7 +33,7 @@ class DocumentEmployeeClass:
                 .outerjoin(EmployeeModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut) \
                 .outerjoin(SupervisorModel, SupervisorModel.branch_office_id == EmployeeLaborDatumModel.branch_office_id) \
                 .outerjoin(DocumentTypeModel, DocumentTypeModel.id == DocumentEmployeeModel.document_type_id) \
-                .filter(SupervisorModel.rut == '10923452') \
+                .filter(SupervisorModel.rut == rut) \
                 .filter(DocumentEmployeeModel.status_id == 1) \
                 .filter(DocumentTypeModel.document_group_id == 2) \
                 .order_by(DocumentEmployeeModel.id.desc())

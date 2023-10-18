@@ -50,6 +50,7 @@ from app.backend.routers.employee_types import employee_types
 from app.backend.routers.regimes import regimes
 from app.backend.routers.salary_settlements import salary_settlements
 from app.backend.routers.document_managements import document_managements
+from app.backend.routers.alerts import alerts
 
 app = FastAPI()
 
@@ -119,6 +120,7 @@ app.include_router(employee_types)
 app.include_router(regimes)
 app.include_router(salary_settlements)
 app.include_router(document_managements)
+app.include_router(alerts)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

@@ -11,9 +11,13 @@ document_managements = APIRouter(
     tags=["DocumentManagements"]
 )
 
+@document_managements.get("/{page}")
 @document_managements.get("/{rut}/{page}")
-def index(rut:int, page:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = DocumentManagementClass(db).get_all(rut, page)
+def index(rut:int = None, page:int = None, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    if rut != None:
+        data = DocumentManagementClass(db).get_all(rut, page)
+    else:
+        data = DocumentManagementClass(db).get_all('', page)
 
     return {"message": data}
 

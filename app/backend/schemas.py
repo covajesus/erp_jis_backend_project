@@ -5,6 +5,16 @@ from datetime import datetime
 from decimal import Decimal
 from fastapi import Form
 
+class Alert(BaseModel):
+    alert_type_id: int
+    status_id: int
+    rut: int
+
+class UpdateAlert(BaseModel):
+    alert_type_id: int = None
+    status_id: int = None
+    rut: int = None
+
 class BranchOffice(BaseModel):
     branch_office: str
     address: str
@@ -579,8 +589,10 @@ class UpdateDocumentEmployee(BaseModel):
     document_type_id: int = None
     old_document_status_id: int = None
     rut: int = None
+    since: str = None
+    until: str = None
+    no_valid_days: int = None
     support: str = None
-    updated_date: str = None
 
 class UploadDocumentEmployee(BaseModel):
     id: int

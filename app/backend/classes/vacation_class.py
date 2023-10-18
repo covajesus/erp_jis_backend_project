@@ -176,19 +176,31 @@ class VacationClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-    def update(self, id, vacation):
-        existing_vacation = self.db.query(VacationModel).filter(VacationModel.id == id).one_or_none()
+    def update(self, id, vacation_inputs):
+        vacation =  self.db.query(VacationModel).filter(VacationModel.id == id).one_or_none()
+        
+        if 'since' in vacation_inputs and vacation_inputs['since'] is not None:
+            vacation.since = vacation_inputs['since']
 
-        if not existing_vacation:
-            return "No se encontró el registro"
+        if 'until' in vacation_inputs and vacation_inputs['until'] is not None:
+            vacation.until = vacation_inputs['until']
 
-        existing_vacation_data = vacation.dict(exclude_unset=True)
-        for key, value in existing_vacation_data.items():
-            setattr(existing_vacation, key, value)
+        if 'no_valid_days' in vacation_inputs and vacation_inputs['no_valid_days'] is not None:
+            vacation.no_valid_days = vacation_inputs['no_valid_days']
 
-        self.db.commit()
+        if 'support' in vacation_inputs and vacation_inputs['support'] is not None:
+            vacation.support = vacation_inputs['support']
 
-        return "Registro actualizado"
+        vacation.update_date = datetime.now()
+
+        self.db.add(vacation)
+
+        try:
+            self.db.commit()
+
+            return 1
+        except Exception as e:
+            return 0
     
     def legal(self, rut):
         employee_labor_data = EmployeeLaborDatumClass(self.db).get("rut", rut)
