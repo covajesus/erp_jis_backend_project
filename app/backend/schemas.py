@@ -11,9 +11,7 @@ class Alert(BaseModel):
     rut: int
 
 class UpdateAlert(BaseModel):
-    alert_type_id: int = None
     status_id: int = None
-    rut: int = None
 
 class BranchOffice(BaseModel):
     branch_office: str
@@ -769,6 +767,10 @@ class ForgotPassword(BaseModel):
 class EmployeeList(BaseModel):
     rut: int
     rol_id: int
+    page: int
+
+class AlertList(BaseModel):
+    rut: int
     page: int
 
 class HonoraryList(BaseModel):

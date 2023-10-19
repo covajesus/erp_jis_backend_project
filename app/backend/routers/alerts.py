@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import Alert, UpdateAlert, UserLogin
+from app.backend.schemas import Alert, UpdateAlert, UserLogin, AlertList
 from app.backend.classes.alert_class import AlertClass
 from app.backend.auth.auth_user import get_current_active_user
 
@@ -11,9 +11,10 @@ alerts = APIRouter(
 )
 
 @alerts.post("/")
-def index(db: Session = Depends(get_db)):
-
-    return {"message": 1}
+def index(alert: AlertList, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = AlertClass(db).get_all(alert.rut, alert.page)
+    
+    return {"message": data}
 
 @alerts.post("/store")
 def store(alert:Alert, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
@@ -37,6 +38,8 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
 
 @alerts.patch("/update/{id}")
 def update(id: int, alert: UpdateAlert, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = AlertClass(db).update(id, alert)
+    alert_inputs = alert.dict()
+
+    data = AlertClass(db).update(id, alert_inputs)
 
     return {"message": data}
