@@ -256,7 +256,7 @@ class EmployeeClass:
             return f"Error: {error_message}"
         
     def update(self, id, employee_inputs):
-        employee =  self.db.query(EmployeeModel).filter(EmployeeModel.rut == id).one_or_none()
+        employee =  self.db.query(EmployeeModel).filter(EmployeeModel.rut == id).first()
 
         if 'rut' in employee_inputs and employee_inputs['rut'] is not None:
             numeric_rut = HelperClass().numeric_rut(str(employee_inputs['rut']))

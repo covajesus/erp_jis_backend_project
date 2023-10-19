@@ -50,6 +50,7 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
 @employee_labor_data.patch("/update/{id}")
 def update(id: int, employee_labor_datum: UpdateEmployeeLaborDatum, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     employee_labor_datum_inputs = employee_labor_datum.dict()
+    print(employee_labor_datum_inputs)
     data = EmployeeLaborDatumClass(db).update(id, employee_labor_datum_inputs)
 
     return {"message": data}

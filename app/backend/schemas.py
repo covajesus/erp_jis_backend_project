@@ -143,8 +143,8 @@ class UpdateEmployee(BaseModel):
     names: str = None
     father_lastname: str = None
     mother_lastname: str = None
-    gender_id: str = None
-    nationality_id: str = None
+    gender_id: int = None
+    nationality_id: int = None
     personal_email: str = None
     cellphone: str = None
     born_date: str = None
@@ -210,21 +210,18 @@ class UpdateEmployeeLaborDatum(BaseModel):
     health_id: int = None
     pention_id: int = None
     job_position_id: int = None
-    extreme_zone_id: int = None
     employee_type_id: int = None
     regime_id: int = None
-    status_id: int = None
-    health_payment_id: int = None
+    extra_health_payment_type_id: int = None
+    apv_payment_type_id: int = None
     entrance_pention: str = None
     entrance_company: str = None
     entrance_health: str = None
     salary: int = None
     collation: int = None
     locomotion: int = None
-    extra_health_amount: str = None
-    apv_payment_type_id: int = None
-    apv_amount: str = None
-    updated_date: Union[datetime, None]
+    extra_health_amount: int = None
+    apv_amount: int = None
 
 class EmployeeExtra(BaseModel):
     rut: int

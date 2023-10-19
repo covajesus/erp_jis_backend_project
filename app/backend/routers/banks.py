@@ -13,7 +13,9 @@ banks = APIRouter(
 @banks.post("/")
 def index(db: Session = Depends(get_db)):
 
-    return {"message": 1}
+    data = BankClass(db).get_all()
+
+    return {"message": data}
 
 @banks.post("/store")
 def store(bank:Bank, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
