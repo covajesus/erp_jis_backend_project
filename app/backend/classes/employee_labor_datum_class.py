@@ -89,17 +89,11 @@ class EmployeeLaborDatumClass:
         if employee_labor_datum_inputs['job_position_id'] != None:
             employee_labor_datum.job_position_id = employee_labor_datum_inputs['job_position_id']
         
-        if employee_labor_datum_inputs['extreme_zone_id'] != None:
-            employee_labor_datum.extreme_zone_id = employee_labor_datum_inputs['extreme_zone_id']
-        
         if employee_labor_datum_inputs['employee_type_id'] != None:
             employee_labor_datum.employee_type_id = employee_labor_datum_inputs['employee_type_id']
         
         if employee_labor_datum_inputs['regime_id'] != None:
             employee_labor_datum.regime_id = employee_labor_datum_inputs['regime_id']
-        
-        if employee_labor_datum_inputs['status_id'] != None:
-            employee_labor_datum.status_id = employee_labor_datum_inputs['status_id']
         
         if employee_labor_datum_inputs['health_payment_id'] != None:
             employee_labor_datum.health_payment_id = employee_labor_datum_inputs['health_payment_id']
