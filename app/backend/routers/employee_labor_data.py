@@ -38,7 +38,6 @@ def store(employee_labor_datum:EmployeeLaborDatum, session_user: UserLogin = Dep
 @employee_labor_data.get("/edit/{id}")
 def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = EmployeeLaborDatumClass(db).get("rut", id)
-
     return {"message": data}
 
 @employee_labor_data.delete("/delete/{id}")

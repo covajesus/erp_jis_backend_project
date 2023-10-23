@@ -240,7 +240,7 @@ class EmployeeLaborDatumModel(Base):
     health_id = Column(Integer, ForeignKey('healths.id'))
     pention_id = Column(Integer, ForeignKey('pentions.id'))
     job_position_id = Column(Integer, ForeignKey('job_positions.id'))
-    extreme_zone_id = Column(Integer)
+    extra_health_payment_type_id = Column(Integer)
     employee_type_id = Column(Integer, ForeignKey('employee_types.id'))
     regime_id = Column(Integer, ForeignKey('regimes.id'))
     status_id = Column(Integer)
