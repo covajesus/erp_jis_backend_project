@@ -129,6 +129,8 @@ class EmployeeClass:
                     data_query = data_query.filter(EmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
                 if search_branch_office_id:
                     data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
+                if search_status_id:
+                    data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
 
 
             total_items = data_query.count()
