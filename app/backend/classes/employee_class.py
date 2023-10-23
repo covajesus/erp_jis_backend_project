@@ -343,8 +343,9 @@ class EmployeeClass:
     
     def validate_cellphone(self, cellphone):
         existence = self.db.query(EmployeeModel).filter(EmployeeModel.cellphone == cellphone).count()
+        employeeExistence = self.db.query(EmployeeModel).filter(EmployeeModel.cellphone == cellphone).first()
 
         if existence == 1:
-            return 1
+            return 1, employeeExistence
         else:
             return 0
