@@ -208,10 +208,8 @@ class UpdateEmployeeLaborDatum(BaseModel):
     health_id: int = None
     pention_id: int = None
     job_position_id: int = None
-    extreme_zone_id: int = None
     employee_type_id: int = None
     regime_id: int = None
-    status_id: int = None
     health_payment_id: int = None
     entrance_pention: str = None
     entrance_company: str = None
