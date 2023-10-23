@@ -56,73 +56,74 @@ class EmployeeLaborDatumClass:
             return f"Error: {error_message}"
         
     def update(self, id, employee_labor_datum_inputs):
-        employee_labor_datum = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == id).one_or_none()
-        if employee_labor_datum_inputs['rut'] != None:
+        employee_labor_datum = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == id).first()
+
+        if 'rut' in employee_labor_datum_inputs and employee_labor_datum_inputs['rut'] is not None:
             numeric_rut = HelperClass().numeric_rut(str(employee_labor_datum_inputs['rut']))
-            employee_labor_datum.rut = numeric_rut
+            employee_labor_datum.rut =  numeric_rut
             employee_labor_datum.visual_rut = employee_labor_datum_inputs['rut']
         
-        if employee_labor_datum_inputs['contract_type_id'] != None:
+        if 'contract_type_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['contract_type_id'] is not None:
             employee_labor_datum.contract_type_id = employee_labor_datum_inputs['contract_type_id']
+         
+        if 'branch_office_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['branch_office_id'] is not None:
+             employee_labor_datum.branch_office_id = employee_labor_datum_inputs['branch_office_id']
         
-        if employee_labor_datum_inputs['branch_office_id'] != None:
-            employee_labor_datum.branch_office_id = employee_labor_datum_inputs['branch_office_id']
-        
-        if employee_labor_datum_inputs['address'] != None:
-            employee_labor_datum.address = employee_labor_datum_inputs['address']
-        
-        if employee_labor_datum_inputs['region_id'] != None:
+        if 'address' in employee_labor_datum_inputs and employee_labor_datum_inputs['address'] is not None:
+                 employee_labor_datum.address = employee_labor_datum_inputs['address']
+
+        if 'region_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['region_id'] is not None:
             employee_labor_datum.region_id = employee_labor_datum_inputs['region_id']
         
-        if employee_labor_datum_inputs['commune_id'] != None:
+        if 'commune_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['commune_id'] is not None:
             employee_labor_datum.commune_id = employee_labor_datum_inputs['commune_id']
         
-        if employee_labor_datum_inputs['civil_state_id'] != None:
+        if 'civil_state_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['civil_state_id'] is not None:
             employee_labor_datum.civil_state_id = employee_labor_datum_inputs['civil_state_id']
         
-        if employee_labor_datum_inputs['health_id'] != None:
+        if 'health_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['health_id'] is not None:
             employee_labor_datum.health_id = employee_labor_datum_inputs['health_id']
         
-        if employee_labor_datum_inputs['pention_id'] != None:
+        if 'pention_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['pention_id'] is not None:
             employee_labor_datum.pention_id = employee_labor_datum_inputs['pention_id']
-        
-        if employee_labor_datum_inputs['job_position_id'] != None:
+
+        if 'job_position_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['job_position_id'] is not None:
             employee_labor_datum.job_position_id = employee_labor_datum_inputs['job_position_id']
-        
-        if employee_labor_datum_inputs['employee_type_id'] != None:
+
+        if 'employee_type_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['employee_type_id'] is not None:
             employee_labor_datum.employee_type_id = employee_labor_datum_inputs['employee_type_id']
-        
-        if employee_labor_datum_inputs['regime_id'] != None:
+
+        if 'regime_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['regime_id'] is not None:
             employee_labor_datum.regime_id = employee_labor_datum_inputs['regime_id']
-        
-        if employee_labor_datum_inputs['health_payment_id'] != None:
-            employee_labor_datum.health_payment_id = employee_labor_datum_inputs['health_payment_id']
-        
-        if employee_labor_datum_inputs['entrance_pention'] != None:
+
+        if 'entrance_pention' in employee_labor_datum_inputs and employee_labor_datum_inputs['entrance_pention'] is not None:
             employee_labor_datum.entrance_pention = employee_labor_datum_inputs['entrance_pention']
-        
-        if employee_labor_datum_inputs['entrance_company'] != None:
+
+        if 'entrance_company' in employee_labor_datum_inputs and employee_labor_datum_inputs['entrance_company'] is not None:
             employee_labor_datum.entrance_company = employee_labor_datum_inputs['entrance_company']
-        
-        if employee_labor_datum_inputs['entrance_health'] != None:
+
+        if 'entrance_health' in employee_labor_datum_inputs and employee_labor_datum_inputs['entrance_health'] is not None:
             employee_labor_datum.entrance_health = employee_labor_datum_inputs['entrance_health']
-        
-        if employee_labor_datum_inputs['salary'] != None:
+
+        if 'salary' in employee_labor_datum_inputs and employee_labor_datum_inputs['salary'] is not None:
             employee_labor_datum.salary = employee_labor_datum_inputs['salary']
-        
-        if employee_labor_datum_inputs['collation'] != None:
+
+        if 'collation' in employee_labor_datum_inputs and employee_labor_datum_inputs['collation'] is not None:
             employee_labor_datum.collation = employee_labor_datum_inputs['collation']
-        
-        if employee_labor_datum_inputs['locomotion'] != None:
+
+        if 'locomotion' in employee_labor_datum_inputs and employee_labor_datum_inputs['locomotion'] is not None:
             employee_labor_datum.locomotion = employee_labor_datum_inputs['locomotion']
-        
-        if employee_labor_datum_inputs['extra_health_amount'] != None:
+
+        if 'extra_health_payment_type_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['extra_health_payment_type_id'] is not None:
+            employee_labor_datum.extra_health_payment_type_id = employee_labor_datum_inputs['extra_health_payment_type_id']
+
+        if 'extra_health_amount' in employee_labor_datum_inputs and employee_labor_datum_inputs['extra_health_amount'] is not None:
             employee_labor_datum.extra_health_amount = employee_labor_datum_inputs['extra_health_amount']
-        
-        if employee_labor_datum_inputs['apv_payment_type_id'] != None:
+
+        if 'apv_payment_type_id' in employee_labor_datum_inputs and employee_labor_datum_inputs['apv_payment_type_id'] is not None:
             employee_labor_datum.apv_payment_type_id = employee_labor_datum_inputs['apv_payment_type_id']
-        
-        if employee_labor_datum_inputs['apv_amount'] != None:
+
+        if 'apv_amount' in employee_labor_datum_inputs and employee_labor_datum_inputs['apv_amount'] is not None:
             employee_labor_datum.apv_amount = employee_labor_datum_inputs['apv_amount']
 
         employee_labor_datum.updated_date = datetime.now()

@@ -217,10 +217,10 @@ class UpdateEmployeeLaborDatum(BaseModel):
     salary: int = None
     collation: int = None
     locomotion: int = None
+    extra_health_payment_type_id: int = None
     extra_health_amount: str = None
     apv_payment_type_id: int = None
-    apv_amount: str = None
-    updated_date: Union[datetime, None]
+    apv_amount: int = None
 
 class EmployeeExtra(BaseModel):
     rut: int
@@ -605,6 +605,7 @@ class SearchEmployee(BaseModel):
     mother_lastname: Union[str, None]
     status_id: Union[str, None]
     branch_office_id: Union[str, None]
+    cellphone: Union[str, None]
     user_rut: str
     rol_id: int
     page: int
