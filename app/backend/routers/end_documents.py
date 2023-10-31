@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, Response
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee
+from app.backend.schemas import ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee, IndemnityYear, SubstituteCompensation, FertilityProportional
 from app.backend.classes.document_employee_class import DocumentEmployeeClass
+from app.backend.classes.end_document_class import EndDocumentClass 
 from app.backend.classes.dropbox_class import DropboxClass
 from app.backend.auth.auth_user import get_current_active_user
 import os
@@ -65,3 +66,26 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
     content_disposition = "attachment; filename="+ str(document_employee.support) +""
 
     return Response(content=response.content, headers={"Content-Disposition": content_disposition})
+
+@end_documents.post("/indemnity_years")
+def indemnity_years(inputs:IndemnityYear, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    indemnity_year_inputs = inputs.dict()
+    data  = EndDocumentClass(db).indemnity_years(indemnity_year_inputs)
+
+    return {"message": data}
+
+@end_documents.post("/substitute_compensation")
+def substitute_compensation(inputs:SubstituteCompensation, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    substitute_compesation_inputs = inputs.dict()
+    data  = EndDocumentClass(db).substitute_compensation(substitute_compesation_inputs)
+
+    return {"message": data}
+
+
+@end_documents.post("/human_resources/end_document/fertility_proportional")
+def fertility_proportional(inputs:FertilityProportional, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    fertility_proportional_inputs = inputs.dict() 
+
+    data  = EndDocumentClass(db).fertility_proportional(fertility_proportional_inputs)
+    total = EndDocumentClass(db).total_vacations(fertility_proportional_inputs)
+    return {"message": data, 'total': total}

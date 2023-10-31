@@ -34,13 +34,13 @@ class EmployeeExtraDatumClass:
         
     def delete(self, id):
         try:
-            data = self.db.query(EmployeeExtraModel).filter(EmployeeExtraModel.id == id).first()
+            data = self.db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == id).first()
             if data:
                 self.db.delete(data)
                 self.db.commit()
-                return "Registro eliminado"
+                return 1
             else:
-                return "No se encontró el registro"
+                return "No data found"
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

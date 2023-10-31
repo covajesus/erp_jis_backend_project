@@ -37,8 +37,8 @@ def upload(form_data: UploadDocumentEmployee = Depends(UploadDocumentEmployee), 
     return {"message": data}
 
 @documents_employees.get("/edit/{id}")
-def edit(id:int, db: Session = Depends(get_db)):
-    data = DocumentEmployeeClass(db).get("id", id)
+def edit(id:int,  db: Session = Depends(get_db)):
+    data = DocumentEmployeeClass(db).get("rut", id)
 
     return {"message": data}
 

@@ -52,7 +52,14 @@ from app.backend.routers.salary_settlements import salary_settlements
 from app.backend.routers.document_managements import document_managements
 from app.backend.routers.alerts import alerts
 from app.backend.routers.employee_contracts import employee_contracts
-
+from app.backend.routers.causals import causals
+from app.backend.routers.old_employees import old_employees
+from app.backend.routers.old_employee_extras import old_employee_extras
+from app.backend.routers.old_employee_labor_data import old_employee_labor_data
+from app.backend.routers.old_documents_employees import old_documents_employees
+from app.backend.routers.old_family_core_data import old_family_core_data
+from app.backend.routers.old_vacations import old_vacations
+from app.backend.routers.old_medical_licenses import old_medical_licenses
 app = FastAPI()
 
 os.environ['SECRET_KEY'] = '7de4c36b48fce8dcb3a4bb527ba62d789ebf3d3a7582472ee49d430b01a7f868'
@@ -123,6 +130,14 @@ app.include_router(salary_settlements)
 app.include_router(document_managements)
 app.include_router(alerts)
 app.include_router(employee_contracts)
+app.include_router(causals)
+app.include_router(old_employees)
+app.include_router(old_employee_extras)
+app.include_router(old_employee_labor_data)
+app.include_router(old_documents_employees)
+app.include_router(old_family_core_data)
+app.include_router(old_vacations)
+app.include_router(old_medical_licenses)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

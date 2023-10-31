@@ -42,6 +42,20 @@ class Employee(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class OldEmployee(BaseModel):
+    rut: int
+    visual_rut:str
+    names: str
+    father_lastname: str
+    mother_lastname: str
+    gender_id: int
+    nationality_id: int
+    personal_email: str
+    cellphone: str
+    born_date: str
+    privilege: Union[int, None]
+
+
 class UpdateBranchOffice(BaseModel):
     branch_office: str = None
     address: str = None
@@ -200,6 +214,34 @@ class EmployeeLaborDatum(BaseModel):
 class expirationDatum(BaseModel):
     rut: str
 
+class OldEmployeeLaborDatum(BaseModel):
+    rut: str = None
+    contract_type_id: int = None
+    branch_office_id: int = None
+    address: str = None
+    region_id: int = None
+    commune_id: int = None
+    civil_state_id: int = None
+    health_id: int = None
+    pention_id: int = None
+    job_position_id: int = None
+    employee_type_id: int = None
+    regime_id: int = None
+    status_id: int = None 
+    health_payment_id: int = None
+    extra_health_payment_type_id: int = None
+    apv_payment_type_id: int = None
+    entrance_pention: str = None
+    entrance_company: str = None
+    entrance_health: str = None
+    exit_company : str = None
+    salary: int = None
+    collation: int = None
+    locomotion: int = None
+    extra_health_amount: int = None
+    apv_amount: int = None
+
+
 class UpdateEmployeeLaborDatum(BaseModel):
     rut: str = None
     contract_type_id: int = None
@@ -229,6 +271,19 @@ class EmployeeExtra(BaseModel):
     rut: int
     added_date: datetime
     updated_date: Union[datetime, None]
+
+class OldEmployeeExtra(BaseModel):
+    rut: int 
+    extreme_zone_id : int = None   
+    employee_type_id: int = None
+    young_job_status_id: int = None
+    be_paid_id : int = None 
+    suplemental_health_insurance_id: int = None
+    disability_id: int = None
+    pensioner_id: int = None
+    progressive_vacation_status_id: int = None
+    progressive_vacation_date: Union[str, None]
+    recognized_years: Union[int, None]
 
 class GetEmployeeExtra(BaseModel):
     rut: int
@@ -388,6 +443,7 @@ class FamilyCoreDatum(BaseModel):
     mother_lastname: str
     born_date: str
 
+
     @classmethod
     def as_form(cls, 
                 family_type_id: int = Form(),
@@ -401,6 +457,16 @@ class FamilyCoreDatum(BaseModel):
                 ):
         return cls(family_type_id=family_type_id, employee_rut=employee_rut, gender_id=gender_id, rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, born_date=born_date)
    
+
+class OldFamilyCoreDatum(BaseModel):
+    family_type_id: int
+    employee_rut: int
+    gender_id: int
+    rut: str
+    names: str
+    father_lastname: str
+    mother_lastname: str
+    born_date: str
 class UpdateFamilyCoreDatum(BaseModel):
     family_type_id: int = None
     employee_rut: int = None
@@ -578,6 +644,13 @@ class DocumentEmployee(BaseModel):
     document_type_id: int
     rut: int
 
+class OldDocumentEmployee(BaseModel):
+    status_id: int
+    rut: int
+    document_type_id: int
+    support: str
+    
+
 class DocumentManagement(BaseModel):
     status_id: int
     document_type_id: int
@@ -632,6 +705,19 @@ class ContractDatum(BaseModel):
     rut: int
     status_id: int
     document_type_id: int
+
+class IndemnityYear(BaseModel):
+    rut: int
+    exit_company: str
+class SubstituteCompensation(BaseModel):
+    rut: int
+
+
+class FertilityProportional(BaseModel):
+    rut: int 
+    exit_company: str
+    balance:int
+    number_holidays:int
 
 class ContractType(BaseModel):
     contract_type: str
