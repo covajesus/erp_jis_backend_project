@@ -219,8 +219,9 @@ class VacationClass:
 
     def taken(self, rut):
         status_id = EmployeeClass(self.db).is_active(rut)
-
+        print(status_id)
         if status_id == 1:
+        
             vacations = self.db.query(VacationModel). \
                 outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id). \
                 filter(

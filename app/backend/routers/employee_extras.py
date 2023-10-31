@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.db.models import EmployeeExtraModel
-from app.backend.schemas import EmployeeExtra, UpdateEmployeeExtra
+from app.backend.schemas import EmployeeExtra, UpdateEmployeeExtra, UserLogin
+from app.backend.auth.auth_user import get_current_active_user
+from app.backend.classes.employee_extra_datum_class import EmployeeExtraDatumClass
+
 
 employee_extras = APIRouter(
     prefix="/employee_extras",
@@ -10,13 +13,13 @@ employee_extras = APIRouter(
 )
 
 @employee_extras.get("/")
-def index(db: Session = Depends(get_db)):
+def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = db.query(EmployeeExtraModel).all()
 
     return {"message": data}
 
 @employee_extras.post("/store")
-def store(employee_extra:EmployeeExtra, db: Session = Depends(get_db)):
+def store(employee_extra:EmployeeExtra, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     employee_extra_inputs = employee_extra.dict()
     data = EmployeeExtraModel(**employee_extra_inputs)
 
@@ -26,26 +29,19 @@ def store(employee_extra:EmployeeExtra, db: Session = Depends(get_db)):
     return {"message": data}
 
 @employee_extras.get("/edit/{rut}")
-def edit(rut:int, db: Session = Depends(get_db)):
+def edit(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut).first()
 
     return {"message": data}
 
 @employee_extras.delete("/delete/{id}")
-def delete(rut:int, db: Session = Depends(get_db)):
-    data = db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut)
+def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = EmployeeExtraDatumClass(db).delete(id)
 
-    if not data.first():
-        return {"message": "Datos no encontrados!"}
-    
-    data.delete(synchronize_session=False)
-
-    db.commit()
-
-    return {"message": "Datos eliminados!"}
+    return {"message": data}
 
 @employee_extras.patch("/update/{rut}")
-def update(rut:int, employee:UpdateEmployeeExtra, db: Session = Depends(get_db)):
+def update(rut:int, employee:UpdateEmployeeExtra, session_user: UserLogin = Depends(get_current_active_user),  db: Session = Depends(get_db)):
     existing_employee = db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut).one_or_none()
 
     if not existing_employee:

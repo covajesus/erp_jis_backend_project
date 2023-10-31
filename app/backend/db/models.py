@@ -258,6 +258,8 @@ class EmployeeLaborDatumModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+
+
 class EmployeeExtraModel(Base):
     __tablename__ = 'employee_extras'
 
@@ -278,6 +280,26 @@ class EmployeeExtraModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+
+class OldEmployeeExtraModel(Base):
+    __tablename__ = 'old_employee_extras'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(Integer)
+    extreme_zone_id = Column(Integer)
+    employee_type_id = Column(Integer, ForeignKey('employee_types.id'))
+    young_job_status_id = Column(Integer)
+    be_paid_id = Column(Integer)
+    suplemental_health_insurance_id = Column(Integer)
+    pensioner_id = Column(Integer)
+    disability_id = Column(Integer)
+    suplemental_health_insurance_id = Column(Integer)
+    progressive_vacation_level_id = Column(Integer)
+    recognized_years = Column(Integer)
+    progressive_vacation_status_id = Column(Integer)
+    progressive_vacation_date = Column(Date())
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
 class RegimeModel(Base):
     __tablename__ = 'regimes'
 
@@ -491,6 +513,21 @@ class FamilyCoreDatumModel(Base):
     support = Column(Text)
     added_date = Column(DateTime())
 
+class OldFamilyCoreDatumModel(Base):
+    __tablename__ = 'old_family_core_data'
+
+    id = Column(Integer, primary_key=True)
+    family_type_id = Column(Integer)
+    employee_rut = Column(Integer)
+    gender_id = Column(Integer)
+    rut = Column(Integer)
+    names = Column(String(255))
+    father_lastname = Column(String(255))
+    mother_lastname = Column(String(255))
+    born_date = Column(DateTime())
+    support = Column(Text)
+    added_date = Column(DateTime())
+
 class VacationModel(Base):
     __tablename__ = 'vacations'
 
@@ -540,6 +577,22 @@ class MedicalLicenseModel(Base):
     document_employee_id = Column(Integer)
     medical_license_type_id = Column(Integer, ForeignKey('medical_license_types.id'))
     patology_type_id = Column(Integer, ForeignKey('patology_types.id'))
+    period = Column(String(255))
+    rut = Column(Integer)
+    folio = Column(String(255))
+    since = Column(Date())
+    until = Column(Date())
+    days = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class OldMedicalLicenseModel(Base):
+    __tablename__ = 'old_medical_licenses'
+
+    id = Column(Integer, primary_key=True)
+    document_employee_id = Column(Integer)
+    medical_license_type_id = Column(Integer )
+    patology_type_id = Column(Integer)
     period = Column(String(255))
     rut = Column(Integer)
     folio = Column(String(255))
@@ -623,7 +676,6 @@ class OldDocumentEmployeeModel(Base):
 
     id = Column(Integer, primary_key=True)
     status_id = Column(Integer)
-    order_id = Column(Integer)
     document_type_id = Column(Integer)
     rut = Column(Integer)
     support = Column(String(255))
@@ -635,7 +687,6 @@ class OldVacationModel(Base):
 
     id = Column(Integer, primary_key=True)
     document_employee_id = Column(Integer)
-    order_id = Column(Integer)
     rut = Column(Integer)
     since = Column(Date())
     until = Column(Date())
@@ -654,10 +705,9 @@ class OldEmployeeModel(Base):
     names = Column(String(255))
     father_lastname = Column(String(255))
     mother_lastname = Column(String(255))
-    nickname = Column(String(255))
-    order_id = Column(Integer)
     gender_id = Column(Integer)
     nationality_id = Column(Integer)
+    signature_type_id = Column(Integer)
     personal_email = Column(String(255))
     cellphone = Column(String(100))
     born_date = Column(Date())
@@ -671,31 +721,29 @@ class OldEmployeeLaborDatumModel(Base):
 
     id = Column(Integer, primary_key=True)
     rut = Column(Integer)
-    visual_rut = Column(String(20))
-    contract_type_id = Column(Integer, ForeignKey('contract_types.id'))
-    branch_office_id = Column(Integer, ForeignKey('branch_offices.id'))
+    contract_type_id = Column(Integer )
+    branch_office_id = Column(Integer)
     address = Column(String(255))
-    region_id = Column(Integer, ForeignKey('regions.id'))
-    commune_id = Column(Integer, ForeignKey('communes.id'))
-    civil_state_id = Column(Integer, ForeignKey('civil_states.id'))
-    health_id = Column(Integer, ForeignKey('healths.id'))
-    pention_id = Column(Integer, ForeignKey('pentions.id'))
+    region_id = Column(Integer)
+    commune_id = Column(Integer)
+    civil_state_id = Column(Integer)
+    health_id = Column(Integer)
+    pention_id = Column(Integer)
     job_position_id = Column(Integer)
     employee_type_id = Column(Integer)
     regime_id = Column(Integer)
-    order_id = Column(Integer)
     status_id = Column(Integer)
     health_payment_id = Column(Integer)
+    extra_health_payment_type_id = Column(Integer)
+    apv_payment_type_id = Column(Integer)
     entrance_pention  = Column(Date())
     entrance_company  = Column(Date())
     entrance_health = Column(Date())
     exit_company  = Column(Date())
     salary = Column(Integer)
     collation = Column(Integer)
-    extra_health_amount = Column(String(255))
     locomotion = Column(Integer)
-    company_email = Column(String(255))
-    apv_payment_type_id = Column(Integer)
+    extra_health_amount = Column(String(255))
     apv_amount = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
@@ -716,5 +764,15 @@ class MedicalLicenseTypeModel(Base):
 
     id = Column(Integer, primary_key=True)
     medical_license_type = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+
+class CausalModel(Base):
+    __tablename__ = 'causals'
+    
+    id = Column(Integer, primary_key=True)
+    end_document_status_id = Column(Integer, ForeignKey('end_document_statuses.id'))
+    causal = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())

@@ -1,9 +1,69 @@
+import calendar
 import math
 import random
 from datetime import datetime, timedelta
 from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
 
 class HelperClass:
+
+    def add_business_days(start_date, num_days, holidays):
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        current_date = start_date
+        added_days = 0
+        while added_days < int(num_days):
+            # sumamos un día a la fecha actual
+            current_date += timedelta(days=1)
+            # verificamos si la fecha actual es hábil/laboral
+            if calendar.weekday(current_date.year, current_date.month, current_date.day) < 5:
+                added_days += 1
+
+        # sumamos los días feriados al resultado si la lista no está vacía
+        if holidays > 0:
+            current_date += timedelta(days=holidays)
+
+        return current_date
+    
+    def count_weekends(start_date, end_date):
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+        if end_date.weekday() == 5:  # Si es viernes (0=Lunes, 6=Domingo)
+            end_date += timedelta(days=2)  # Suma 2 dias
+        weekend_count = 0
+        delta = timedelta(days=1)
+        current_date = start_date
+        while current_date <= end_date:
+            if current_date.weekday() >= 5:  # Si es sábado o domingo
+                weekend_count += 1
+            current_date += delta
+
+        return weekend_count
+    
+    def vacation_day_value(amount):
+        value = math.ceil(amount/30)
+
+        return value
+
+    def gratification(salary): 
+        return math.ceil(salary*0.25)
+    
+    def get_end_document_total_years(self, start_year, end_year):
+        date1 = datetime.strptime(str(start_year), "%Y-%m-%d")
+        date2 = datetime.strptime(str(end_year), "%Y-%m-%d")
+
+        delta = date2 - date1
+
+        years = delta.days/365
+        months = self.split(end_year,'-')
+
+        if years >= 1:
+            if int(months[1]) >=6:
+                years = years + 1
+        else:
+            years = 0
+
+        return math.ceil(years)
+
     def months_to_years(self, months):
         years = int(months/12)
 
