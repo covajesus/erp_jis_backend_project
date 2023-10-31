@@ -130,7 +130,7 @@ class DocumentEmployeeClass:
             return f"Error: {error_message}"
     
     def update_file(self, id, file):
-        document_employee = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id==id).first()
+        document_employee = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()
         document_employee.support = file
         document_employee.status_id = 4
         document_employee.updated_date = datetime.now()

@@ -455,6 +455,7 @@ class UpdateVacation(BaseModel):
 class MedicalLicense(BaseModel):
     medical_license_type_id: int
     patology_type_id: int
+    document_type_id: int
     rut: int
     folio: str
     since: str
@@ -465,13 +466,14 @@ class MedicalLicense(BaseModel):
     def as_form(cls, 
                 medical_license_type_id: int = Form(),
                 patology_type_id: int = Form(),
+                document_type_id: int = Form(),
                 rut: int = Form(),
                 folio: str = Form(),
                 since: str = Form(),
                 until: str = Form(),
                 status_id: int = Form()
                 ):
-        return cls(medical_license_type_id=medical_license_type_id, patology_type_id=patology_type_id, rut=rut, folio=folio, since=since, until=until, status_id=status_id)
+        return cls(medical_license_type_id=medical_license_type_id,document_type_id=document_type_id,patology_type_id=patology_type_id, rut=rut, folio=folio, since=since, until=until, status_id=status_id)
 
 class UpdateMedicalLicense(BaseModel):
     document_employee_id: int = None

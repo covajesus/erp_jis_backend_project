@@ -114,31 +114,29 @@ class HelperClass:
         return rut[0]
     
     def final_day_month(self, month):
-        if month == 1:
+        if month == '1':
             return { "end_day": 31, "adjustment_day": -1 },
-        elif month == 2:
+        elif month == '2':
             return { "end_day": 28, "adjustment_day": 2 }
-        elif month == 2:
-            return { "end_day": 31, "adjustment_day": -1 }
-        elif month == 3:
+        elif month == '3':
             return { "end_day": 30, "adjustment_day": 0 }
-        elif month == 4:
+        elif month == '4':
             return { "end_day": 31, "adjustment_day": -1 }
-        elif month == 5:
+        elif month == '5':
             return { "end_day": 30, "adjustment_day": 0 }
-        elif month == 6:
+        elif month == '6':
             return { "end_day": 30, "adjustment_day": 0 }
-        elif month == 7:
+        elif month == '7':
             return { "end_day": 31, "adjustment_day": -1 }
-        elif month == 8:
+        elif month == '8':
             return { "end_day": 31, "adjustment_day": -1 }
-        elif month == 9:
+        elif month == '9':
             return { "end_day": 30, "adjustment_day": 0 }
-        elif month == 10:
+        elif month == '10':
             return { "end_day": 31, "adjustment_day": -1 }
-        elif month == 11:
+        elif month == '11':
             return { "end_day": 30, "adjustment_day": 0 }
-        elif month == 12:
+        elif month == '12':
             return { "end_day": 31, "adjustment_day": -1 }
     
     def get_time_Y_m_d(self):
@@ -173,8 +171,8 @@ class HelperClass:
 
                 data = [[first_since, first_until, first_days]]
             else:
-                final_day = HelperClass().final_day_month(splited_since[1])
-                final_day = final_day.end_day
+                final_day = self.final_day_month(splited_since[1])
+                final_day = final_day['end_day']
                 first_since = since
                 first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
                 d1 = datetime.strptime(first_since, "%Y-%m-%d")
@@ -190,10 +188,21 @@ class HelperClass:
                 second_days = second_days + 1
 
                 data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
+        elif days == 30:
+            final_day = self.final_day_month(splited_since[1])
+            final_day = final_day['end_day']
+            first_since = since
+            first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
+            d1 = datetime.strptime(first_since, "%Y-%m-%d")
+            d2 = datetime.strptime(first_until, "%Y-%m-%d")
+            first_days = abs((d2 - d1).days)
+            first_days = first_days + 1
+
+            data = [[first_since, first_until, first_days]]
         else:
             if days < 60:
-                final_day = HelperClass().final_day_month(splited_since[1])
-                final_day = final_day.end_day
+                final_day = self.final_day_month(splited_since[1])
+                final_day = final_day['end_day']
                 first_since = since
                 first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
                 d1 = datetime.strptime(first_since, "%Y-%m-%d")
@@ -209,9 +218,11 @@ class HelperClass:
                 second_days = second_days + 1
 
                 data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
+
+                print(data)
             else:
-                final_day = HelperClass().final_day_month(splited_since[1])
-                final_day = final_day.end_day
+                final_day = self.final_day_month(splited_since[1])
+                final_day = final_day['end_day']
                 first_since = since
                 first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
                 d1 = datetime.strptime(first_since, "%Y-%m-%d")
@@ -220,8 +231,8 @@ class HelperClass:
                 first_days = first_days + 1
                 
                 middle_month = int(splited_since[1]) + 1
-                final_day = HelperClass().final_day_month(middle_month)
-                final_day = final_day.end_day
+                final_day = self.final_day_month(middle_month)
+                final_day = final_day['end_day']
                 second_since = str(splited_until[0]) +'-'+ str(middle_month) + '-01'
                 second_until = str(splited_until[0]) +'-'+ str(middle_month) + '-' + str(final_day)
                 d1 = datetime.strptime(second_since, "%Y-%m-%d")

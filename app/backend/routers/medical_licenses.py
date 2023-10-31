@@ -23,30 +23,28 @@ def index(session_user: UserLogin = Depends(get_current_active_user), db: Sessio
 @medical_licenses.post("/store")
 def store(form_data: MedicalLicense = Depends(MedicalLicense.as_form), support: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     medical_license_inputs = form_data.dict()
-
     dropbox_client = DropboxClass(db)
-
     filename = dropbox_client.upload(name=str(medical_license_inputs['rut']), description=str('licencia_medica'), data=support,
                                  dropbox_path='/medical_licenses/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
     
     document_employee_id = DocumentEmployeeClass(db).store(medical_license_inputs)
-
     DocumentEmployeeClass(db).update_file(document_employee_id, filename)
-
-    data = MedicalLicenseClass(db).store(form_data, document_employee_id)
+    data = MedicalLicenseClass(db).store(medical_license_inputs, document_employee_id)
 
     return {"message": data}
 
 @medical_licenses.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     medical_license = MedicalLicenseClass(db).get("id", id, 1, 1, 1)
-    document_employee = DocumentEmployeeClass(db).get('id', medical_license.document_employee_id)
-    document_employee_response = DocumentEmployeeClass(db).delete(medical_license.document_employee_id)
+
+    document_employee_response = DocumentEmployeeClass(db).delete(medical_license['document_employee_id'])
     medical_license_response = MedicalLicenseClass(db).delete(id)
 
     if document_employee_response ==  1 and medical_license_response == 1:
-        if document_employee.support != None or document_employee.support != '':
-            response = DropboxClass(db).delete('/medical_licenses/', document_employee.support)
+
+        if medical_license['support'] != None or medical_license['support'] != '':
+            print(medical_license['support'])
+            response = DropboxClass(db).delete('/medical_licenses/', medical_license['support'])
 
         if response == 1:
             data = 1

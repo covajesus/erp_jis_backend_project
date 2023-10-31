@@ -22,20 +22,25 @@ class MedicalLicenseClass:
     def get(self, field, value, type=1, page=1, items_per_page=10):
         try:
             if type == 1:
-                data = self.db.query(MedicalLicenseModel).filter(getattr(MedicalLicenseModel, field) == value).first()
+                data = self.db.query(MedicalLicenseModel, DocumentEmployeeModel). \
+                        outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == MedicalLicenseModel.document_employee_id). \
+                        filter(MedicalLicenseModel.id == value). \
+                        first()
+
                 if data:
                     # Serializar el objeto MedicalLicenseModel a un diccionario
                     serialized_data = {
-                        "document_employee_id": data.document_employee_id,
-                        "document_type_id": data.document_type_id,
-                        "folio": data.folio,
-                        "since": data.since.strftime('%Y-%m-%d') if data.since else None,
-                        "until": data.until.strftime('%Y-%m-%d') if data.until else None,
-                        "days": data.days,
-                        "support": data.support,
-                        "status_id": data.status_id,
-                        "id": data.id
+                        "document_employee_id": data.DocumentEmployeeModel.id,
+                        "document_type_id": data.DocumentEmployeeModel.document_type_id,
+                        "folio": data.MedicalLicenseModel.folio,
+                        "since": data.MedicalLicenseModel.since.strftime('%Y-%m-%d') if data.MedicalLicenseModel.since else None,
+                        "until": data.MedicalLicenseModel.until.strftime('%Y-%m-%d') if data.MedicalLicenseModel.until else None,
+                        "days": data.MedicalLicenseModel.days,
+                        "support": data.DocumentEmployeeModel.support,
+                        "status_id": data.DocumentEmployeeModel.status_id,
+                        "id": data.MedicalLicenseModel.id
                     }
+
                     return serialized_data
                 else:
                     return "No data found"
@@ -94,21 +99,20 @@ class MedicalLicenseClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
-    def store(self, medicalLicense_inputs, document_employee_id):
+    def store(self, medical_license_inputs, document_employee_id):
         try:
-            get_periods = HelperClass().get_periods(medicalLicense_inputs['since'], medicalLicense_inputs['until'])
-
+            get_periods = HelperClass().get_periods(medical_license_inputs['since'], medical_license_inputs['until'])
             for i in range(len(get_periods)):
                 period = HelperClass().split(get_periods[i][0], '-')
                 period = period[1] +'-'+ period[0]
 
                 medical_license = MedicalLicenseModel()
                 medical_license.document_employee_id = document_employee_id
-                medical_license.medical_license_type_id = medicalLicense_inputs['medical_license_type_id']
-                medical_license.patology_type_id = medicalLicense_inputs['patology_type_id']
+                medical_license.medical_license_type_id = medical_license_inputs['medical_license_type_id']
+                medical_license.patology_type_id = medical_license_inputs['patology_type_id']
                 medical_license.period = period
-                medical_license.rut = medicalLicense_inputs['rut']
-                medical_license.folio = medicalLicense_inputs['folio']
+                medical_license.rut = medical_license_inputs['rut']
+                medical_license.folio = medical_license_inputs['folio']
                 medical_license.since = get_periods[i][0]
                 medical_license.until = get_periods[i][1]
                 medical_license.days = get_periods[i][2]
