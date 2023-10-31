@@ -141,6 +141,25 @@ class HelperClass:
     
     def get_time_Y_m_d(self):
         return datetime.now().strftime('%Y-%m-%d')
+
+    def count_months(since_date, until_date):
+        print(5455555555555555555555)
+        print(since_date)
+        print(until_date)
+        since_date = datetime.strptime(since_date, '%Y-%m-%d')
+        until_date = datetime.strptime(until_date, '%Y-%m-%d')
+        
+        months = 0
+        
+        while since_date <= until_date:
+            months += 1
+            
+            if since_date.month == 12:
+                since_date = since_date.replace(year=since_date.year + 1, month=1, day=1)
+            else:
+                since_date = since_date.replace(month=since_date.month + 1, day=1)
+        
+        return months
     
     def get_periods(self, since, until):
         format = "%Y-%m-%d"
@@ -159,37 +178,19 @@ class HelperClass:
 
         splited_since = since.split("-")
         splited_until = until.split("-")
+        how_many_months = HelperClass.count_months(since, until)
 
-        if days < 30:
-            if splited_since[1] == splited_until[1]:
-                first_since = since
-                first_until = until
-                d1 = datetime.strptime(first_since, "%Y-%m-%d")
-                d2 = datetime.strptime(first_until, "%Y-%m-%d")
-                first_days = abs((d2 - d1).days)
-                first_days = first_days + 1
+        if how_many_months == 1:
+            first_since = since
+            first_until = until
+            d1 = datetime.strptime(first_since, "%Y-%m-%d")
+            d2 = datetime.strptime(first_until, "%Y-%m-%d")
+            first_days = abs((d2 - d1).days)
+            first_days = first_days + 1
 
-                data = [[first_since, first_until, first_days]]
-            else:
-                final_day = self.final_day_month(splited_since[1])
-                final_day = final_day['end_day']
-                first_since = since
-                first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
-                d1 = datetime.strptime(first_since, "%Y-%m-%d")
-                d2 = datetime.strptime(first_until, "%Y-%m-%d")
-                first_days = abs((d2 - d1).days)
-                first_days = first_days + 1
-
-                second_since = splited_until[0] +'-'+ splited_until[1] + '-01'
-                second_until = until
-                d1 = datetime.strptime(second_since, "%Y-%m-%d")
-                d2 = datetime.strptime(second_until, "%Y-%m-%d")
-                second_days = abs((d2 - d1).days)
-                second_days = second_days + 1
-
-                data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
-        elif days == 30:
-            final_day = self.final_day_month(splited_since[1])
+            data = [[first_since, first_until, first_days]]
+        elif how_many_months == 2:
+            final_day = self.final_day_month(str(splited_since[1]))
             final_day = final_day['end_day']
             first_since = since
             first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
@@ -198,60 +199,44 @@ class HelperClass:
             first_days = abs((d2 - d1).days)
             first_days = first_days + 1
 
-            data = [[first_since, first_until, first_days]]
+            second_since = splited_until[0] +'-'+ splited_until[1] + '-01'
+            second_until = until
+            d1 = datetime.strptime(second_since, "%Y-%m-%d")
+            d2 = datetime.strptime(second_until, "%Y-%m-%d")
+            second_days = abs((d2 - d1).days)
+            second_days = second_days + 1
+
+            data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
         else:
-            if days < 60:
-                final_day = self.final_day_month(splited_since[1])
-                final_day = final_day['end_day']
-                first_since = since
-                first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
-                d1 = datetime.strptime(first_since, "%Y-%m-%d")
-                d2 = datetime.strptime(first_until, "%Y-%m-%d")
-                first_days = abs((d2 - d1).days)
-                first_days = first_days + 1
+            final_day = self.final_day_month(str(splited_since[1]))
+            final_day = final_day['end_day']
+            first_since = since
+            first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
+            d1 = datetime.strptime(first_since, "%Y-%m-%d")
+            d2 = datetime.strptime(first_until, "%Y-%m-%d")
+            first_days = abs((d2 - d1).days)
+            first_days = first_days + 1
+            
+            middle_month = int(splited_since[1]) + 1
+            final_day = self.final_day_month(str(middle_month))
+            final_day = final_day['end_day']
+            second_since = str(splited_until[0]) +'-'+ str(middle_month) + '-01'
+            second_until = str(splited_until[0]) +'-'+ str(middle_month) + '-' + str(final_day)
+            d1 = datetime.strptime(second_since, "%Y-%m-%d")
+            d2 = datetime.strptime(second_until, "%Y-%m-%d")
+            second_days = abs((d2 - d1).days)
+            second_days = second_days + 1
 
-                second_since = splited_until[0] +'-'+ splited_until[1] + '-01'
-                second_until = until
-                d1 = datetime.strptime(second_since, "%Y-%m-%d")
-                d2 = datetime.strptime(second_until, "%Y-%m-%d")
-                second_days = abs((d2 - d1).days)
-                second_days = second_days + 1
+            splited_since = second_since.split("-")
+            splited_until = second_until.split("-")
 
-                data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
-
-                print(data)
-            else:
-                final_day = self.final_day_month(splited_since[1])
-                final_day = final_day['end_day']
-                first_since = since
-                first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
-                d1 = datetime.strptime(first_since, "%Y-%m-%d")
-                d2 = datetime.strptime(first_until, "%Y-%m-%d")
-                first_days = abs((d2 - d1).days)
-                first_days = first_days + 1
-                
-                middle_month = int(splited_since[1]) + 1
-                final_day = self.final_day_month(middle_month)
-                final_day = final_day['end_day']
-                second_since = str(splited_until[0]) +'-'+ str(middle_month) + '-01'
-                second_until = str(splited_until[0]) +'-'+ str(middle_month) + '-' + str(final_day)
-                d1 = datetime.strptime(second_since, "%Y-%m-%d")
-                d2 = datetime.strptime(second_until, "%Y-%m-%d")
-                second_days = abs((d2 - d1).days)
-                second_days = second_days + 1
-
-                splited_since = second_since.split("-")
-                splited_until = second_until.split("-")
-
-                middle_month = int(splited_since[1]) + 1
-                third_since = splited_until[0] +'-'+ str(middle_month) + '-01'
-                third_until = until
-                d1 = datetime.strptime(third_since, "%Y-%m-%d")
-                d2 = datetime.strptime(third_until, "%Y-%m-%d")
-                third_days = abs((d2 - d1).days)
-                third_days = third_days + 1
-
-                data = [[first_since, first_until, first_days], [second_since, second_until, second_days], [third_since, third_until, third_days]]
+            middle_month = int(splited_since[1]) + 1
+            third_since = splited_until[0] +'-'+ str(middle_month) + '-01'
+            third_until = until
+            d1 = datetime.strptime(third_since, "%Y-%m-%d")
+            d2 = datetime.strptime(third_until, "%Y-%m-%d")
+            third_days = abs((d2 - d1).days)
+            third_days = third_days + 1
 
         return data
 

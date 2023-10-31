@@ -102,6 +102,7 @@ class MedicalLicenseClass:
     def store(self, medical_license_inputs, document_employee_id):
         try:
             get_periods = HelperClass().get_periods(medical_license_inputs['since'], medical_license_inputs['until'])
+            print(medical_license_inputs['since'])
             for i in range(len(get_periods)):
                 period = HelperClass().split(get_periods[i][0], '-')
                 period = period[1] +'-'+ period[0]
