@@ -2,6 +2,8 @@ import math
 import random
 from datetime import datetime, timedelta
 from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
+import calendar
+from dateutil.relativedelta import relativedelta
 
 class HelperClass:
     def months_to_years(self, months):
@@ -294,3 +296,14 @@ class HelperClass:
             total = 0
 
         return total
+
+    def get_last_day_of_month(date_str):
+        date = datetime.strptime(date_str, '%Y-%m-%d')
+        last_day = calendar.monthrange(date.year, date.month)[1]
+        last_day_date = datetime(date.year, date.month, last_day)
+        return last_day_date.strftime('%Y-%m-%d')
+
+    def extention_contract(date):
+        date_dt = datetime.strptime(date, "%Y-%m-%d").date()
+        next_month_date = date_dt + relativedelta(months=1)
+        return next_month_date.strftime("%Y-%m-%d")

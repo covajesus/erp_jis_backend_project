@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, Response
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee
+from app.backend.schemas import ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee, expirationDatum
 from app.backend.classes.document_employee_class import DocumentEmployeeClass
+from app.backend.classes.contract_data_class import ContractDataClass
 from app.backend.classes.dropbox_class import DropboxClass
 from app.backend.auth.auth_user import get_current_active_user
 import os
@@ -66,3 +67,13 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
     content_disposition = "attachment; filename="+ str(document_employee.support) +""
 
     return Response(content=response.content, headers={"Content-Disposition": content_disposition})
+
+@contract_data.post("/expiration")
+def expiration(inputs:expirationDatum, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    expiration_inputs = inputs.dict()
+
+    first_expiration = ContractDataClass(db).first_expiration(expiration_inputs)
+
+    second_expiration = ContractDataClass(db).second_expiration(first_expiration)
+
+    return {"first_expiration": first_expiration, "second_expiration": second_expiration}

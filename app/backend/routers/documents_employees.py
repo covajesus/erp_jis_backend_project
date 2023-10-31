@@ -49,7 +49,8 @@ def delete(id:int, dropbox_path:str, db: Session = Depends(get_db)):
     response = DocumentEmployeeClass(db).delete(id)
 
     if response == 1:
-        response = DropboxClass(db).delete('/'+ dropbox_path +'/', document_employee.support)
+        if document_employee.support != None:
+            response = DropboxClass(db).delete('/'+ dropbox_path +'/', document_employee.support)
 
         if response == 1:
             data = 1

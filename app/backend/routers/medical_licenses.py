@@ -22,14 +22,14 @@ def index(session_user: UserLogin = Depends(get_current_active_user), db: Sessio
 
 @medical_licenses.post("/store")
 def store(form_data: MedicalLicense = Depends(MedicalLicense.as_form), support: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    document_type = DocumentTypeClass(db).get("id", form_data.document_type_id)
+    medical_license_inputs = form_data.dict()
 
     dropbox_client = DropboxClass(db)
 
-    filename = dropbox_client.upload(name=str(form_data.rut), description=str(document_type.document_type), data=support,
-                                 dropbox_path='/medical_licenses/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'backend', 'app', 'backend'))
+    filename = dropbox_client.upload(name=str(medical_license_inputs['rut']), description=str('licencia_medica'), data=support,
+                                 dropbox_path='/medical_licenses/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
     
-    document_employee_id = DocumentEmployeeClass(db).medical_license_store(form_data)
+    document_employee_id = DocumentEmployeeClass(db).store(medical_license_inputs)
 
     DocumentEmployeeClass(db).update_file(document_employee_id, filename)
 

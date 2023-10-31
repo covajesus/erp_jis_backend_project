@@ -96,7 +96,7 @@ class MedicalLicenseClass:
     
     def store(self, medicalLicense_inputs, document_employee_id):
         try:
-            get_periods = HelperClass().get_periods(medicalLicense_inputs.since, medicalLicense_inputs.until)
+            get_periods = HelperClass().get_periods(medicalLicense_inputs['since'], medicalLicense_inputs['until'])
 
             for i in range(len(get_periods)):
                 period = HelperClass().split(get_periods[i][0], '-')
@@ -104,11 +104,11 @@ class MedicalLicenseClass:
 
                 medical_license = MedicalLicenseModel()
                 medical_license.document_employee_id = document_employee_id
-                medical_license.medical_license_type_id = medicalLicense_inputs.medical_license_type_id
-                medical_license.patology_type_id = medicalLicense_inputs.patology_type_id 
+                medical_license.medical_license_type_id = medicalLicense_inputs['medical_license_type_id']
+                medical_license.patology_type_id = medicalLicense_inputs['patology_type_id']
                 medical_license.period = period
-                medical_license.rut = medicalLicense_inputs.rut
-                medical_license.folio = medicalLicense_inputs.folio
+                medical_license.rut = medicalLicense_inputs['rut']
+                medical_license.folio = medicalLicense_inputs['folio']
                 medical_license.since = get_periods[i][0]
                 medical_license.until = get_periods[i][1]
                 medical_license.days = get_periods[i][2]

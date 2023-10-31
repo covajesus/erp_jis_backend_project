@@ -18,7 +18,7 @@ class FamilyCoreDatumClass:
     def get(self, field, value, one=1):
         try:
             if one == 1:
-                data = self.db.query(FamilyCoreDatumModel).filter(getattr(FamilyCoreDatumModel, field) == value).order_by(FamilyCoreDatumModel.rut).first()
+                data = self.db.query(FamilyCoreDatumModel).filter(getattr(FamilyCoreDatumModel, field) == value).first()
             else:
                 data = self.db.query(FamilyCoreDatumModel).filter(getattr(FamilyCoreDatumModel, field) == value).order_by(FamilyCoreDatumModel.rut).all()
 

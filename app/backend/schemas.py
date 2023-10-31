@@ -197,6 +197,9 @@ class EmployeeLaborDatum(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class expirationDatum(BaseModel):
+    rut: str
+
 class UpdateEmployeeLaborDatum(BaseModel):
     rut: str = None
     contract_type_id: int = None
@@ -457,7 +460,6 @@ class MedicalLicense(BaseModel):
     since: str
     until: str
     status_id: int
-    document_type_id: int
 
     @classmethod
     def as_form(cls, 
@@ -467,10 +469,9 @@ class MedicalLicense(BaseModel):
                 folio: str = Form(),
                 since: str = Form(),
                 until: str = Form(),
-                status_id: int = Form(),
-                document_type_id: int = Form()
+                status_id: int = Form()
                 ):
-        return cls(medical_license_type_id=medical_license_type_id, document_type_id=document_type_id, patology_type_id=patology_type_id, rut=rut, folio=folio, since=since, until=until, status_id=status_id)
+        return cls(medical_license_type_id=medical_license_type_id, patology_type_id=patology_type_id, rut=rut, folio=folio, since=since, until=until, status_id=status_id)
 
 class UpdateMedicalLicense(BaseModel):
     document_employee_id: int = None
@@ -695,6 +696,17 @@ class UploadVacation(BaseModel):
                 ):
         return cls(vacation_id=vacation_id, rut=rut)
 
+class UploadEmployeeContract(BaseModel):
+    id: int
+    rut: int
+
+    @classmethod
+    def as_form(cls, 
+                id: int = Form(),
+                rut: int = Form()
+                ):
+        return cls(id=id, rut=rut)
+    
 class UploadSignature(BaseModel):
     rut: int
     signature: str

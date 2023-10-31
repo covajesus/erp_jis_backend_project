@@ -1,4 +1,4 @@
-from app.backend.db.models import EmployeeLaborDatumModel, EmployeeModel
+from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
 
@@ -18,7 +18,16 @@ class EmployeeLaborDatumClass:
     
     def get(self, field, value):
         try:
-            data = self.db.query(EmployeeLaborDatumModel).filter(getattr(EmployeeLaborDatumModel, field) == value).first()
+            data = self.db.query(EmployeeLaborDatumModel, RegionModel, HealthModel, CommuneModel, CivilStateModel, JobPositionModel, BranchOfficeModel, PentionModel). \
+                        outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
+                        outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
+                        outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
+                        outerjoin(JobPositionModel, JobPositionModel.id == EmployeeLaborDatumModel.job_position_id). \
+                        outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
+                        outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
+                        outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
+                        filter(getattr(EmployeeLaborDatumModel, field) == value).first()
+            
             return data
         except Exception as e:
             error_message = str(e)
