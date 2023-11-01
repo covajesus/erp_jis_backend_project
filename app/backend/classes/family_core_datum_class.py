@@ -22,11 +22,52 @@ class FamilyCoreDatumClass:
             else:
                 data = self.db.query(FamilyCoreDatumModel).filter(getattr(FamilyCoreDatumModel, field) == value).order_by(FamilyCoreDatumModel.rut).all()
 
-            return data
+            if data:
+                if one == 1:
+                    # Serializar los datos de un solo objeto FamilyCoreDatumModel
+                    serialized_data = {
+                        "id": data.id,
+                        "family_type_id": data.family_type_id,
+                        "employee_rut": data.employee_rut,
+                        "gender_id": data.gender_id,
+                        "rut": data.rut,
+                        "names": data.names,
+                        "father_lastname": data.father_lastname,
+                        "mother_lastname": data.mother_lastname,
+                        "born_date": data.born_date.strftime('%Y-%m-%d') if data.born_date else None,
+                        "support": data.support,
+                        "added_date": data.added_date.strftime('%Y-%m-%d %H:%M:%S') if data.added_date else None
+                    }
+                else:
+                    # Serializar una lista de objetos FamilyCoreDatumModel
+                    serialized_data = []
+                    for item in data:
+                        serialized_item = {
+                            "id": item.id,
+                            "family_type_id": item.family_type_id,
+                            "employee_rut": item.employee_rut,
+                            "gender_id": item.gender_id,
+                            "rut": item.rut,
+                            "names": item.names,
+                            "father_lastname": item.father_lastname,
+                            "mother_lastname": item.mother_lastname,
+                            "born_date": item.born_date.strftime('%Y-%m-%d') if item.born_date else None,
+                            "support": item.support,
+                            "added_date": item.added_date.strftime('%Y-%m-%d %H:%M:%S') if item.added_date else None
+                        }
+                        serialized_data.append(serialized_item)
+
+                # Convierte el resultado a una cadena JSON
+                serialized_result = json.dumps(serialized_data)
+
+                return serialized_result
+            else:
+                return "No se encontraron datos para el campo especificado."
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-    
+
     def store(self, family_core_datum_inputs, support):
         try:
             family_core_datum = FamilyCoreDatumModel()
