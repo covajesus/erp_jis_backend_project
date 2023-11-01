@@ -35,7 +35,7 @@ class UniformClass:
                     "id": record.id,
                     "uniform_type_id": record.uniform_type_id,
                     "rut": record.rut,
-                    "delivered_date": record.delivered_date.strftime('%Y-%m-%d') if record.delivered_date else None,
+                    "delivered_date": record.delivered_date,
                     "uniform_type": record.uniform_type
                 }
                 serialized_data.append(serialized_record)
