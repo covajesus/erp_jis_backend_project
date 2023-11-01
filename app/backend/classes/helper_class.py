@@ -4,7 +4,6 @@ import random
 from datetime import datetime, timedelta
 from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
 import calendar
-from dateutil.relativedelta import relativedelta
 
 class HelperClass:
 
@@ -357,6 +356,20 @@ class HelperClass:
         return last_day_date.strftime('%Y-%m-%d')
 
     def extention_contract(date):
-        date_dt = datetime.strptime(date, "%Y-%m-%d").date()
-        next_month_date = date_dt + relativedelta(months=1)
+        # Convertir la fecha de entrada a un objeto datetime
+        date_dt = datetime.strptime(date, "%Y-%m-%d")
+        
+        # Calcular el mes siguiente
+        year = date_dt.year
+        month = date_dt.month
+        if month == 12:
+            year += 1
+            month = 1
+        else:
+            month += 1
+        
+        # Crear una nueva fecha con el mes siguiente
+        next_month_date = datetime(year, month, date_dt.day)
+        
+        # Formatear la fecha como "YYYY-MM-DD"
         return next_month_date.strftime("%Y-%m-%d")
