@@ -31,11 +31,12 @@ class UniformClass:
             # Serializar los datos en formato JSON
             serialized_data = []
             for record in data:
+                delivered_date_str = record.delivered_date.strftime('%Y-%m-%d') if record.delivered_date else None
                 serialized_record = {
                     "id": record.id,
                     "uniform_type_id": record.uniform_type_id,
                     "rut": record.rut,
-                    "delivered_date": record.delivered_date,
+                    "delivered_date": delivered_date_str,
                     "uniform_type": record.uniform_type
                 }
                 serialized_data.append(serialized_record)
