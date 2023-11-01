@@ -65,3 +65,9 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
     content_disposition = "attachment; filename="+ str(document_employee.support) +""
 
     return Response(content=response.content, headers={"Content-Disposition": content_disposition})
+
+@end_documents.get("/edit/{rut}")
+def index(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = DocumentEmployeeClass(db).get_all_rut_where(rut, 22)
+
+    return {"message": data}
