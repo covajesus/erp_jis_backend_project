@@ -1,5 +1,6 @@
 from app.backend.db.models import FamilyCoreDatumModel
 from datetime import datetime
+import json
 
 class FamilyCoreDatumClass:
     def __init__(self, db):
