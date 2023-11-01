@@ -81,7 +81,6 @@ def substitute_compensation(inputs:SubstituteCompensation, session_user: UserLog
 
     return {"message": data}
 
-
 @end_documents.post("/human_resources/end_document/fertility_proportional")
 def fertility_proportional(inputs:FertilityProportional, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     fertility_proportional_inputs = inputs.dict() 
@@ -89,3 +88,10 @@ def fertility_proportional(inputs:FertilityProportional, session_user: UserLogin
     data  = EndDocumentClass(db).fertility_proportional(fertility_proportional_inputs)
     total = EndDocumentClass(db).total_vacations(fertility_proportional_inputs)
     return {"message": data, 'total': total}
+
+@end_documents.get("/edit/{rut}")
+def index(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = DocumentEmployeeClass(db).get_all_rut_where(rut, 22)
+
+    return {"message": data}
+
