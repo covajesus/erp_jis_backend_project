@@ -17,7 +17,7 @@ class OldEmployeeExtraDatumClass:
             data = OldEmployeeExtraModel(**old_employee_extra_datum_inputs)
             self.db.add(data)
             self.db.commit()
-            return "Registro agregado"
+            return 1
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

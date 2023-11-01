@@ -244,9 +244,9 @@ class EmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-    def delete(self, id):
+    def delete(self, rut):
         try:
-            data = self.db.query(EmployeeModel).filter(EmployeeModel.rut == id).first()
+            data = self.db.query(EmployeeModel).filter(EmployeeModel.rut == rut).first()
             if data:
                 self.db.delete(data)
                 self.db.commit()

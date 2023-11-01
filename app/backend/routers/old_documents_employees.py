@@ -10,33 +10,25 @@ from app.backend.auth.auth_user import get_current_active_user
 from app.backend.db.models import DocumentEmployeeModel, OldDocumentEmployeeModel
 from sqlalchemy import delete
 
-
 old_documents_employees = APIRouter(
     prefix="/old_documents_employees",
     tags=["OldDocumentsEmployees"]
 )
 
-
 @old_documents_employees.post("/transfer/{rut}")
-def transfer_documents(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    # Obtén los documentos del empleado
-    documents = db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut == rut).all()
+def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    document_data = db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut == rut).all()
 
-    # Inserta los documentos en old_documents_employees
-    for doc in documents:
-        old_doc_inputs = {
-            'status_id': doc.status_id,
-            'document_type_id': doc.document_type_id,
-            'rut': doc.rut,
-            'support': doc.support,
+    for docucment_datum in document_data:
+        old_document_datum_inputs = {
+            'status_id': docucment_datum.status_id,
+            'document_type_id': docucment_datum.document_type_id,
+            'rut': docucment_datum.rut,
+            'support': docucment_datum.support,
         }
-        OldDocumentEmployeeClass(db).store(old_doc_inputs)
 
-    # Elimina los documentos de documents_employees
-    delete_statement = delete(DocumentEmployeeModel).where(DocumentEmployeeModel.rut == rut)
-    db.execute(delete_statement)
-
-    db.commit()
+        OldDocumentEmployeeClass(db).store(old_document_datum_inputs)
+        # DocumentEmployeeClass(db).delete(docucment_datum.id)
 
     return {"message": f"Documentos transferidos para el RUT {rut}"}
 

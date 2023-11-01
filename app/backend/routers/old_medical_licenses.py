@@ -16,30 +16,24 @@ old_medical_licenses = APIRouter(
 )
 
 @old_medical_licenses.post("/transfer/{rut}")
-def transfer_medical_licenses(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    # Obtén los datos de las licencias médicas del empleado
+def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     medical_licenses = db.query(MedicalLicenseModel).filter(MedicalLicenseModel.rut == rut).all()
 
-    # Inserta los datos en old_medical_licenses
-    for medical in medical_licenses:
-        old_license_inputs = {
-            'document_employee_id': medical.document_employee_id,
-            'medical_license_type_id': medical.medical_license_type_id,
-            'patology_type_id': medical.patology_type_id,
-            'period': medical.period,
-            'rut': medical.rut,
-            'folio': medical.folio,
-            'since': medical.since,
-            'until': medical.until,
-            'days': medical.days,
+    for medical_license in medical_licenses:
+        old_medical_license_inputs = {
+            'document_employee_id': medical_license.document_employee_id,
+            'medical_license_type_id': medical_license.medical_license_type_id,
+            'patology_type_id': medical_license.patology_type_id,
+            'period': medical_license.period,
+            'rut': medical_license.rut,
+            'folio': medical_license.folio,
+            'since': medical_license.since,
+            'until': medical_license.until,
+            'days': medical_license.days,
         }
-        OldMedicalLicenseClass(db).store(old_license_inputs)
 
-    # Elimina los datos de medical_licenses
-    delete_statement = delete(MedicalLicenseModel).where(MedicalLicenseModel.rut == rut)
-    db.execute(delete_statement)
-
-    db.commit()
+        OldMedicalLicenseClass(db).store(old_medical_license_inputs)
+        # MedicalLicenseClass(db).delete(medical_license.id)
 
     return {"message": f"Datos de licencias médicas transferidos para el RUT {rut}"}
 

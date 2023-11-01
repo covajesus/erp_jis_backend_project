@@ -17,22 +17,21 @@ class OldFamilyCoreDatumClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
-    def store(self, old_family_core_datum_inputs,):
+    def store(self, old_family_core_datum_inputs):
         try:
-            family_core_datum = OldFamilyCoreDatumModel()
-            family_core_datum.family_type_id = old_family_core_datum_inputs['family_type_id']
-            family_core_datum.employee_rut = old_family_core_datum_inputs['employee_rut']
-            family_core_datum.gender_id = old_family_core_datum_inputs['gender_id']
-            family_core_datum.rut = old_family_core_datum_inputs['rut']
-            family_core_datum.names = old_family_core_datum_inputs['names']
-            family_core_datum.father_lastname = old_family_core_datum_inputs['father_lastname']
-            family_core_datum.mother_lastname = old_family_core_datum_inputs['mother_lastname']
-            family_core_datum.born_date = old_family_core_datum_inputs['born_date']
-            family_core_datum.support = old_family_core_datum_inputs['support']
-            family_core_datum.added_date = datetime.now()
-            family_core_datum.updated_date = datetime.now()
+            old_family_core_datum = OldFamilyCoreDatumModel()
+            old_family_core_datum.family_type_id = old_family_core_datum_inputs['family_type_id']
+            old_family_core_datum.employee_rut = old_family_core_datum_inputs['employee_rut']
+            old_family_core_datum.gender_id = old_family_core_datum_inputs['gender_id']
+            old_family_core_datum.rut = old_family_core_datum_inputs['rut']
+            old_family_core_datum.names = old_family_core_datum_inputs['names']
+            old_family_core_datum.father_lastname = old_family_core_datum_inputs['father_lastname']
+            old_family_core_datum.mother_lastname = old_family_core_datum_inputs['mother_lastname']
+            old_family_core_datum.born_date = old_family_core_datum_inputs['born_date']
+            old_family_core_datum.support = old_family_core_datum_inputs['support']
+            old_family_core_datum.added_date = datetime.now()
 
-            self.db.add(family_core_datum)
+            self.db.add(old_family_core_datum)
             self.db.commit()
             return 1
         except Exception as e:

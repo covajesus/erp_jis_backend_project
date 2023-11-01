@@ -11,7 +11,7 @@ collections = APIRouter(
 @collections.post("/total")
 def total(user: GetCollection, session_user: UserLogin = Depends(get_current_active_user)):
     user_inputs = user.dict()
-    print(user_inputs)
+
     data = CollectionClass.get_total(user_inputs)
 
     return {"message": data}

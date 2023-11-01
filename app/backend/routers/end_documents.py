@@ -94,4 +94,3 @@ def index(rut:int, session_user: UserLogin = Depends(get_current_active_user), d
     data = DocumentEmployeeClass(db).get_all_rut_where(rut, 22)
 
     return {"message": data}
-

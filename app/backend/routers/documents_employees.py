@@ -65,7 +65,6 @@ def delete(id:int, dropbox_path:str, db: Session = Depends(get_db)):
 def update(id: int, document_employee: UpdateDocumentEmployee, db: Session = Depends(get_db)):
     document_employee_inputs = document_employee.dict()
 
-    print(document_employee_inputs['document_type_id'])
     if document_employee_inputs['document_type_id'] == 6:
         vacation = VacationClass(db).get('document_employee_id', id)
         VacationClass(db).update(vacation.id, document_employee_inputs)

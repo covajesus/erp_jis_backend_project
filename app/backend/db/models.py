@@ -520,11 +520,11 @@ class OldFamilyCoreDatumModel(Base):
     family_type_id = Column(Integer)
     employee_rut = Column(Integer)
     gender_id = Column(Integer)
-    rut = Column(Integer)
+    rut = Column(String(255))
     names = Column(String(255))
     father_lastname = Column(String(255))
     mother_lastname = Column(String(255))
-    born_date = Column(DateTime())
+    born_date = Column(String(255))
     support = Column(Text)
     added_date = Column(DateTime())
 

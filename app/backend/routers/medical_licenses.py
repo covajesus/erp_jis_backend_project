@@ -43,7 +43,6 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     if document_employee_response ==  1 and medical_license_response == 1:
 
         if medical_license['support'] != None or medical_license['support'] != '':
-            print(medical_license['support'])
             response = DropboxClass(db).delete('/medical_licenses/', medical_license['support'])
 
         if response == 1:

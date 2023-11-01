@@ -51,9 +51,9 @@ class EmployeeLaborDatumClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-    def delete(self, id):
+    def delete(self, rut):
         try:
-            data = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == id).first()
+            data = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == rut).first()
             if data:
                 self.db.delete(data)
                 self.db.commit()

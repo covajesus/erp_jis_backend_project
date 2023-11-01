@@ -87,6 +87,16 @@ class DocumentEmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
+    def get_all_rut_where(self, rut, document_type_id):
+        try:
+            data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut==rut).filter(DocumentEmployeeModel.document_type_id==document_type_id).order_by(DocumentEmployeeModel.id).all()
+            if not data:
+                return "No data found"
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
     def get(self, field, value):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(getattr(DocumentEmployeeModel, field) == value).first()

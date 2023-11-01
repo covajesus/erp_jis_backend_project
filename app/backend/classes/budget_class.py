@@ -9,6 +9,4 @@ class BudgetClass:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        print(response.text)
-
         return response.text

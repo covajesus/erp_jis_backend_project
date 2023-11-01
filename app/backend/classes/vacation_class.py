@@ -64,7 +64,22 @@ class VacationClass:
             error_message = str(e)
             return f"Error: {error_message}"
 
-    
+    def get_all_with_no_pagination(self, rut):
+        try:
+            data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.document_type_id, VacationModel.document_employee_id, DocumentEmployeeModel.support, VacationModel.rut, VacationModel.id, VacationModel.since, VacationModel.until, VacationModel.days, VacationModel.no_valid_days).\
+                    outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id).\
+                    filter(VacationModel.rut == rut).\
+                    filter(DocumentEmployeeModel.document_type_id == 6).\
+                    order_by(desc(VacationModel.since)).all()
+
+            if not data:
+                return "No data found"
+
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
     def pdf_get_all(self, rut, page=1, items_per_page=10):
         try:
             data_query = self.db.query(
@@ -205,7 +220,7 @@ class VacationClass:
     def legal(self, rut):
         employee_labor_data = EmployeeLaborDatumClass(self.db).get("rut", rut)
         employee_extra_data = EmployeeExtraDatumClass(self.db).get("rut", rut)
-        months = HelperClass().months(employee_labor_data.entrance_company, date.today())
+        months = HelperClass().months(employee_labor_data.EmployeeLaborDatumModel.entrance_company, date.today())
         vacation_days = HelperClass().vacation_days(months, employee_extra_data.extreme_zone_id)
 
         return vacation_days
@@ -219,7 +234,7 @@ class VacationClass:
 
     def taken(self, rut):
         status_id = EmployeeClass(self.db).is_active(rut)
-        print(status_id)
+
         if status_id == 1:
         
             vacations = self.db.query(VacationModel). \

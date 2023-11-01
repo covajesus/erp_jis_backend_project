@@ -16,8 +16,6 @@ class DteClass:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        print(response.text)
-
         return response.text
     
     def get_total_amount(user_inputs):
@@ -34,7 +32,5 @@ class DteClass:
         headers = {}
 
         response = requests.request("POST", url, headers=headers, data=payload)
-
-        print(response.text)
 
         return response.text

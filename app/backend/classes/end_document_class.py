@@ -13,17 +13,17 @@ class EndDocumentClass:
         try:
             hr_settings = HrSettingClass(self.db).get()
             employee_labor_datum = EmployeeLaborDatumClass(self.db).get('rut', indemnity_year_inputs['rut'])
-            gratification = HelperClass.gratification(employee_labor_datum.salary)
+            gratification = HelperClass.gratification(employee_labor_datum.EmployeeLaborDatumModel.salary)
             if gratification > hr_settings.top_gratification:
                 gratification = hr_settings.top_gratification
-            years = HelperClass().get_end_document_total_years(employee_labor_datum.entrance_company, indemnity_year_inputs['exit_company'] )
+            years = HelperClass().get_end_document_total_years(employee_labor_datum.EmployeeLaborDatumModel.entrance_company, indemnity_year_inputs['exit_company'] )
             
             if years > 11:
                 years = 11
 
-            result = (int(employee_labor_datum.salary) + 
-                    int(employee_labor_datum.collation) + 
-                    int(employee_labor_datum.locomotion) + 
+            result = (int(employee_labor_datum.EmployeeLaborDatumModel.salary) + 
+                    int(employee_labor_datum.EmployeeLaborDatumModel.collation) + 
+                    int(employee_labor_datum.EmployeeLaborDatumModel.locomotion) + 
                     int(gratification)) * (years) 
             return result
         
@@ -35,13 +35,13 @@ class EndDocumentClass:
         try:
             hr_settings = HrSettingClass(self.db).get()
             employee_labor_datum = EmployeeLaborDatumClass(self.db).get('rut', substitute_compesation_inputs['rut'])
-            gratification = HelperClass.gratification(employee_labor_datum.salary)
+            gratification = HelperClass.gratification(employee_labor_datum.EmployeeLaborDatumModel.salary)
             if gratification > hr_settings.top_gratification:
                 gratification = hr_settings.top_gratification
 
-            result = (int(employee_labor_datum.salary)  
-                    + int(employee_labor_datum.collation) 
-                    + int(employee_labor_datum.locomotion)  
+            result = (int(employee_labor_datum.EmployeeLaborDatumModel.salary)  
+                    + int(employee_labor_datum.EmployeeLaborDatumModel.collation) 
+                    + int(employee_labor_datum.EmployeeLaborDatumModel.locomotion)  
                     + int(gratification))
            
             return result
@@ -57,7 +57,7 @@ class EndDocumentClass:
         end_date_split = HelperClass().split(str(end_date), " ")
         weekends_between_dates = HelperClass.count_weekends(start_date, end_date_split[0])
         total = int(fertility_proportional_inputs['balance']) + int(weekends_between_dates) + int(fertility_proportional_inputs['number_holidays'])
-        vacation_day_value = HelperClass.vacation_day_value(employee_labor_datum.salary)
+        vacation_day_value = HelperClass.vacation_day_value(employee_labor_datum.EmployeeLaborDatumModel.salary)
 
         result = int(vacation_day_value) * int(total)
 

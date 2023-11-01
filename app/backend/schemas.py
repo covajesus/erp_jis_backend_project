@@ -55,7 +55,6 @@ class OldEmployee(BaseModel):
     born_date: str
     privilege: Union[int, None]
 
-
 class UpdateBranchOffice(BaseModel):
     branch_office: str = None
     address: str = None
@@ -240,7 +239,6 @@ class OldEmployeeLaborDatum(BaseModel):
     locomotion: int = None
     extra_health_amount: int = None
     apv_amount: int = None
-
 
 class UpdateEmployeeLaborDatum(BaseModel):
     rut: str = None
@@ -432,7 +430,6 @@ class KardexDatum(BaseModel):
                 ):
         return cls(status_id=status_id, document_type_id=document_type_id, old_document_status_id=old_document_status_id, rut=rut)
    
-
 class FamilyCoreDatum(BaseModel):
     family_type_id: int
     employee_rut: int
@@ -442,7 +439,6 @@ class FamilyCoreDatum(BaseModel):
     father_lastname: str
     mother_lastname: str
     born_date: str
-
 
     @classmethod
     def as_form(cls, 
@@ -457,7 +453,6 @@ class FamilyCoreDatum(BaseModel):
                 ):
         return cls(family_type_id=family_type_id, employee_rut=employee_rut, gender_id=gender_id, rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, born_date=born_date)
    
-
 class OldFamilyCoreDatum(BaseModel):
     family_type_id: int
     employee_rut: int
@@ -467,6 +462,7 @@ class OldFamilyCoreDatum(BaseModel):
     father_lastname: str
     mother_lastname: str
     born_date: str
+
 class UpdateFamilyCoreDatum(BaseModel):
     family_type_id: int = None
     employee_rut: int = None
@@ -491,7 +487,6 @@ class UpdateFamilyCoreDatum(BaseModel):
                 ):
         return cls(family_type_id=family_type_id, employee_rut=employee_rut, gender_id=gender_id, rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, born_date=born_date)
    
-
 class Vacation(BaseModel):
     rut: int
     since: str
@@ -650,7 +645,6 @@ class OldDocumentEmployee(BaseModel):
     document_type_id: int
     support: str
     
-
 class DocumentManagement(BaseModel):
     status_id: int
     document_type_id: int
@@ -709,9 +703,9 @@ class ContractDatum(BaseModel):
 class IndemnityYear(BaseModel):
     rut: int
     exit_company: str
+
 class SubstituteCompensation(BaseModel):
     rut: int
-
 
 class FertilityProportional(BaseModel):
     rut: int 

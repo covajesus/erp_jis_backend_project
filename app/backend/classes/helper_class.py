@@ -203,9 +203,6 @@ class HelperClass:
         return datetime.now().strftime('%Y-%m-%d')
 
     def count_months(since_date, until_date):
-        print(5455555555555555555555)
-        print(since_date)
-        print(until_date)
         since_date = datetime.strptime(since_date, '%Y-%m-%d')
         until_date = datetime.strptime(until_date, '%Y-%m-%d')
         

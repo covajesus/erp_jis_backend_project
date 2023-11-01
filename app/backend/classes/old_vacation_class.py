@@ -1,10 +1,5 @@
 from app.backend.db.models import  OldVacationModel
-from app.backend.classes.helper_class import HelperClass
-from datetime import date
 from datetime import datetime
-from sqlalchemy import desc
-from sqlalchemy import or_
-import json
 
 class OldVacationClass:
     def __init__(self, db):
