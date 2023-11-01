@@ -24,7 +24,7 @@ def store(form_data: FamilyCoreDatum = Depends(FamilyCoreDatum.as_form), support
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=str(form_data.employee_rut) + "_" + str(form_data.rut), description='partida_nacimiento', data=support,
-                                 dropbox_path='/birth_certificates/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/birth_certificates/', computer_path=os.path.join(os.path.dirname(__file__)))
 
     data = FamilyCoreDatumClass(db).store(form_data, filename)
 
