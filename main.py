@@ -138,3 +138,6 @@ app.include_router(old_documents_employees)
 app.include_router(old_family_core_data)
 app.include_router(old_vacations)
 app.include_router(old_medical_licenses)
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=8000, reload=True)
