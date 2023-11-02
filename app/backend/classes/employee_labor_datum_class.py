@@ -1,6 +1,7 @@
 from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
+import json
 
 class EmployeeLaborDatumClass:
     def __init__(self, db):
@@ -19,19 +20,152 @@ class EmployeeLaborDatumClass:
     def get(self, field, value):
         try:
             data = self.db.query(EmployeeLaborDatumModel, RegionModel, HealthModel, CommuneModel, CivilStateModel, JobPositionModel, BranchOfficeModel, PentionModel). \
-                        outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
-                        outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
-                        outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
-                        outerjoin(JobPositionModel, JobPositionModel.id == EmployeeLaborDatumModel.job_position_id). \
-                        outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
-                        outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
-                        outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
-                        filter(getattr(EmployeeLaborDatumModel, field) == value).first()
-            
-            return data
+                outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
+                outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
+                outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
+                outerjoin(JobPositionModel, JobPositionModel.id == EmployeeLaborDatumModel.job_position_id). \
+                outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
+                outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
+                outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
+                filter(getattr(EmployeeLaborDatumModel, field) == value).first()
+
+            if data:
+                employee_labor_data, region, health, commune, civil_state, job_position, branch_office, pention = data
+
+                # Serializar los datos de la región
+                serialized_region = {
+                    "id": region.id,
+                    "region": region.region,
+                    "region_remuneration_code": region.region_remuneration_code,
+                    "added_date": region.added_date.strftime('%Y-%m-%d %H:%M:%S') if region.added_date else None,
+                    "updated_date": region.updated_date.strftime('%Y-%m-%d %H:%M:%S') if region.updated_date else None
+                }
+
+                # Serializar los datos de la salud
+                serialized_health = {
+                    "id": health.id,
+                    "health_remuneration_code": health.health_remuneration_code,
+                    "health": health.health,
+                    "rut": health.rut,
+                    "previred_code": health.previred_code,
+                    "added_date": health.added_date.strftime('%Y-%m-%d %H:%M:%S') if health.added_date else None,
+                    "updated_date": health.updated_date.strftime('%Y-%m-%d %H:%M:%S') if health.updated_date else None
+                }
+
+                # Serializar los datos de la comuna
+                serialized_commune = {
+                    "id": commune.id,
+                    "region_id": commune.region_id,
+                    "commune": commune.commune,
+                    "added_date": commune.added_date.strftime('%Y-%m-%d %H:%M:%S') if commune.added_date else None,
+                    "updated_date": commune.updated_date.strftime('%Y-%m-%d %H:%M:%S') if commune.updated_date else None
+                }
+
+                # Serializar los datos del estado civil
+                serialized_civil_state = {
+                    "id": civil_state.id,
+                    "civil_state": civil_state.civil_state,
+                    "added_date": civil_state.added_date.strftime('%Y-%m-%d %H:%M:%S') if civil_state.added_date else None,
+                    "updated_date": civil_state.updated_date.strftime('%Y-%m-%d %H:%M:%S') if civil_state.updated_date else None
+                }
+
+                # Serializar los datos del cargo
+                serialized_job_position = {
+                    "id": job_position.id,
+                    "job_position": job_position.job_position,
+                    "functions": job_position.functions,
+                    "added_date": job_position.added_date.strftime('%Y-%m-%d %H:%M:%S') if job_position.added_date else None,
+                    "updated_date": job_position.updated_date.strftime('%Y-%m-%d %H:%M:%S') if job_position.updated_date else None
+                }
+
+                # Serializar los datos de la sucursal
+                serialized_branch_office = {
+                    "id": branch_office.id,
+                    "branch_office": branch_office.branch_office,
+                    "address": branch_office.address,
+                    "region_id": branch_office.region_id,
+                    "commune_id": branch_office.commune_id,
+                    "segment_id": branch_office.segment_id,
+                    "zone_id": branch_office.zone_id,
+                    "principal_id": branch_office.principal_id,
+                    "status_id": branch_office.status_id,
+                    "visibility_id": branch_office.visibility_id,
+                    "opening_date": branch_office.opening_date,
+                    "dte_code": branch_office.dte_code,
+                    "added_date": branch_office.added_date.strftime('%Y-%m-%d %H:%M:%S') if branch_office.added_date else None,
+                    "updated_date": branch_office.updated_date.strftime('%Y-%m-%d %H:%M:%S') if branch_office.updated_date else None
+                }
+
+                # Serializar los datos de la pensión
+                serialized_pention = {
+                    "id": pention.id,
+                    "pention": pention.pention,
+                    "pention_remuneration_code": pention.pention_remuneration_code,
+                    "rut": pention.rut,
+                    "amount": pention.amount,
+                    "previred_code": pention.previred_code,
+                    "added_date": pention.added_date.strftime('%Y-%m-%d %H:%M:%S') if pention.added_date else None,
+                    "updated_date": pention.updated_date.strftime('%Y-%m-%d %H:%M:%S') if pention.updated_date else None
+                }
+
+                # Serializar los datos del empleado
+                serialized_employee_labor_data = {
+                    "id": employee_labor_data.id,
+                    "rut": employee_labor_data.rut,
+                    "contract_type_id": employee_labor_data.contract_type_id,
+                    "branch_office_id": employee_labor_data.branch_office_id,
+                    "address": employee_labor_data.address,
+                    "region_id": region.id if region else None,
+                    "region_name": region.region if region else None,
+                    "commune_id": commune.id if commune else None,
+                    "commune_name": commune.commune if commune else None,
+                    "civil_state_id": civil_state.id if civil_state else None,
+                    "civil_state_name": civil_state.civil_state if civil_state else None,
+                    "health_id": health.id if health else None,
+                    "health_name": health.health if health else None,
+                    "pention_id": pention.id if pention else None,
+                    "pention_name": pention.pention if pention else None,
+                    "job_position_id": job_position.id if job_position else None,
+                    "job_position_name": job_position.job_position if job_position else None,
+                    "extra_health_payment_type_id": employee_labor_data.extra_health_payment_type_id,
+                    "employee_type_id": employee_labor_data.employee_type_id,
+                    "regime_id": employee_labor_data.regime_id,
+                    "status_id": employee_labor_data.status_id,
+                    "health_payment_id": employee_labor_data.health_payment_id,
+                    "entrance_pention": employee_labor_data.entrance_pention.strftime('%Y-%m-%d') if employee_labor_data.entrance_pention else None,
+                    "entrance_company": employee_labor_data.entrance_company.strftime('%Y-%m-%d') if employee_labor_data.entrance_company else None,
+                    "entrance_health": employee_labor_data.entrance_health.strftime('%Y-%m-%d') if employee_labor_data.entrance_health else None,
+                    "exit_company": employee_labor_data.exit_company.strftime('%Y-%m-%d') if employee_labor_data.exit_company else None,
+                    "salary": employee_labor_data.salary,
+                    "collation": employee_labor_data.collation,
+                    "locomotion": employee_labor_data.locomotion,
+                    "extra_health_amount": employee_labor_data.extra_health_amount,
+                    "apv_payment_type_id": employee_labor_data.apv_payment_type_id,
+                    "apv_amount": employee_labor_data.apv_amount,
+                    "added_date": employee_labor_data.added_date.strftime('%Y-%m-%d %H:%M:%S') if employee_labor_data.added_date else None,
+                    "updated_date": employee_labor_data.updated_date.strftime('%Y-%m-%d %H:%M:%S') if employee_labor_data.updated_date else None
+                }
+
+                # Convierte el resultado a una cadena JSON
+                serialized_result = json.dumps({
+                    "employee_labor_data": serialized_employee_labor_data,
+                    "region": serialized_region,
+                    "health": serialized_health,
+                    "commune": serialized_commune,
+                    "civil_state": serialized_civil_state,
+                    "job_position": serialized_job_position,
+                    "branch_office": serialized_branch_office,
+                    "pention": serialized_pention
+                })
+
+                return serialized_result
+            else:
+                return "No se encontraron datos para el campo especificado."
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
     
     def store(self, employee_labor_datum_inputs):
         numeric_rut = HelperClass().numeric_rut(str(employee_labor_datum_inputs['rut']))
