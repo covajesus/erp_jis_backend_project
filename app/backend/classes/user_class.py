@@ -63,7 +63,7 @@ class UserClass:
             return f"Error: {error_message}"
         
     def update(self, id, user_inputs):
-        user = self.db.query(UserModel).filter(UserModel.rut == id).one_or_none()
+        user = self.db.query(UserModel).filter(UserModel.rut == id).first()
 
         if 'rut' in user_inputs and user_inputs['rut'] is not None:
             numeric_rut = HelperClass().numeric_rut(user_inputs['rut'])
