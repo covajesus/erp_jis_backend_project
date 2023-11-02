@@ -27,7 +27,7 @@ def upload(form_data: UploadEmployeeContract = Depends(UploadEmployeeContract.as
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description='contrato_empleado', data=support,
-                                 dropbox_path='/employee_contracts/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/employee_contracts/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     data = DocumentEmployeeClass(db).update_file(form_data.id, filename)
 

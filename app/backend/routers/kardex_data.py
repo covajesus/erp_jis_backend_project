@@ -26,7 +26,7 @@ def store(form_data: KardexDatum = Depends(KardexDatum.as_form), support: Upload
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=str(form_data.rut), description=str(document_type.document_type), data=support,
-                                 dropbox_path='/employee_documents/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/employee_documents/', computer_path=os.path.join(os.path.dirname(__file__)))
 
     data = KardexDatumClass(db).store(form_data, filename)
 

@@ -85,7 +85,7 @@ def upload(form_data: UploadVacation = Depends(UploadVacation.as_form), support:
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description='vacaciones', data=support,
-                                 dropbox_path='/employee_documents/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'backend', 'app', 'backend'))
+                                 dropbox_path='/employee_documents/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     vacation = VacationClass(db).get("id", form_data.vacation_id)
     data = DocumentEmployeeClass(db).update_file(vacation.document_employee_id, filename)

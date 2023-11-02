@@ -28,7 +28,7 @@ async def store(form_data: New = Depends(New), user: UserLogin = Depends(get_cur
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name='nueva', description='noticia', data=form_data.picture,
-                                 dropbox_path='/news/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'app', 'backend'))
+                                 dropbox_path='/news/', computer_path=os.path.join(os.path.dirname(__file__)))
 
     data = NewClass(db).store(form_data, filename)
 

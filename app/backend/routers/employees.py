@@ -32,7 +32,7 @@ def signature(form_data: UploadSignature = Depends(UploadSignature.as_form), ses
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.sign(name=form_data.rut, description='firma', data=form_data.signature,
-                                 dropbox_path='/signatures/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'backend', 'pre_upload_images'))
+                                 dropbox_path='/signatures/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     employee_inputs = {}
 
@@ -112,7 +112,7 @@ def upload(form_data: UploadPicture = Depends(UploadPicture.as_form), picture: U
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description='foto', data=picture,
-                                 dropbox_path='/pictures/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'backend', 'app', 'backend'))
+                                 dropbox_path='/pictures/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     employee_inputs = {}
 

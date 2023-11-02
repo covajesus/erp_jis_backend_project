@@ -30,7 +30,7 @@ def upload(form_data: UploadDocumentEmployee = Depends(UploadDocumentEmployee), 
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description=form_data.file_name, data=form_data.picture,
-                                 dropbox_path='/'+ form_data.dropbox_path +'/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'app', 'backend'))
+                                 dropbox_path='/'+ form_data.dropbox_path +'/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     data = DocumentEmployeeClass(db).update_file(form_data.id, filename)
 

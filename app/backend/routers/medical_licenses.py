@@ -25,7 +25,7 @@ def store(form_data: MedicalLicense = Depends(MedicalLicense.as_form), support: 
     medical_license_inputs = form_data.dict()
     dropbox_client = DropboxClass(db)
     filename = dropbox_client.upload(name=str(medical_license_inputs['rut']), description=str('licencia_medica'), data=support,
-                                 dropbox_path='/medical_licenses/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/medical_licenses/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     document_employee_id = DocumentEmployeeClass(db).store(medical_license_inputs)
     DocumentEmployeeClass(db).update_file(document_employee_id, filename)
@@ -77,7 +77,7 @@ def upload(form_data: UploadMedicalLicense = Depends(UploadMedicalLicense.as_for
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description='contrato', data=support,
-                                 dropbox_path='/medical_licenses/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'erpjis_fastapi', 'backend', 'app', 'backend'))
+                                 dropbox_path='/medical_licenses/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     medical_license = MedicalLicenseClass(db).get("id", form_data.medical_license_id)
     data = DocumentEmployeeClass(db).update_file(medical_license.document_employee_id, filename)
