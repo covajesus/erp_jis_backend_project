@@ -1,6 +1,7 @@
 from app.backend.db.models import DocumentEmployeeModel, EmployeeModel
 from sqlalchemy import desc
 from app.backend.classes.dropbox_class import DropboxClass
+import json
 
 class EmployeeContractClass:
     def __init__(self, db):
@@ -16,13 +17,29 @@ class EmployeeContractClass:
                         all()
             
             if not data:
-                return "No data found"
-            return data
+                return json.dumps("No data found")
+            
+            # Convertir los resultados a una lista de diccionarios
+            serialized_data = []
+            for row in data:
+                serialized_row = {
+                    "status_id": row.status_id,
+                    "added_date": row.added_date.strftime('%Y-%m-%d'),  # Convierte la fecha a formato string
+                    "support": row.support,
+                    "rut": row.rut,
+                    "id": row.id,
+                    "visual_rut": row.visual_rut,
+                    "names": row.names,
+                    "father_lastname": row.father_lastname,
+                    "mother_lastname": row.mother_lastname
+                }
+                serialized_data.append(serialized_row)
+            
+            return json.dumps(serialized_data)
         except Exception as e:
             error_message = str(e)
-            return f"Error: {error_message}"
-        
-    
+            return json.dumps(f"Error: {error_message}")
+
     def download(self, id):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()

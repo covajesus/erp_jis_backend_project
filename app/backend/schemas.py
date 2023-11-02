@@ -254,7 +254,7 @@ class UpdateEmployeeLaborDatum(BaseModel):
     employee_type_id: int = None
     regime_id: int = None
     health_payment_id: int = None
-    entrance_pention: str = None
+    entrance_pention: Union[str, None]
     entrance_company: str = None
     entrance_health: str = None
     salary: int = None
