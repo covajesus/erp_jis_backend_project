@@ -43,6 +43,7 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
 @employee_extras.patch("/update/{rut}")
 def update(rut:int, inputs:UpdateEmployeeExtra, session_user: UserLogin = Depends(get_current_active_user),  db: Session = Depends(get_db)):
     employee_extra_inputs = inputs.dict()
+    print(employee_extra_inputs)
     data = EmployeeExtraDatumClass(db).update(rut, employee_extra_inputs)
 
     return {"message": data}

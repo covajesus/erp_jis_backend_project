@@ -47,7 +47,8 @@ class EmployeeExtraDatumClass:
             return f"Error: {error_message}"
         
     def update(self, rut, employee_extra_datum_inputs):
-        employee_extra =  self.db.query(employee_extra).filter(employee_extra.rut == rut).first()
+        print(employee_extra_datum_inputs)
+        employee_extra =  self.db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut).first()
         
         if 'extreme_zone_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['extreme_zone_id'] is not None:
             employee_extra.extreme_zone_id = employee_extra_datum_inputs['extreme_zone_id']
@@ -68,7 +69,7 @@ class EmployeeExtraDatumClass:
             employee_extra.progressive_vacation_level_id = employee_extra_datum_inputs['progressive_vacation_level_id']
 
         if 'recognized_years' in employee_extra_datum_inputs and employee_extra_datum_inputs['recognized_years'] is not None:
-            employee_extra.suplemental_health_insurance_id = employee_extra_datum_inputs['recognized_years']
+            employee_extra.recognized_years = employee_extra_datum_inputs['recognized_years']
 
         if 'progressive_vacation_status_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['progressive_vacation_status_id'] is not None:
             employee_extra.progressive_vacation_status_id = employee_extra_datum_inputs['progressive_vacation_status_id']
