@@ -31,7 +31,7 @@ def store(form_data: FamilyCoreDatum = Depends(FamilyCoreDatum.as_form), support
     return {"message": data}
 
 @family_core_data.get("/edit/{rut}/{get_type_id}")
-def edit(rut:int, get_type_id:int, db: Session = Depends(get_db)):
+def edit(rut:int, get_type_id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
 
     data = FamilyCoreDatumClass(db).get("employee_rut", rut, get_type_id)
 
