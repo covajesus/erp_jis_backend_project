@@ -24,16 +24,16 @@ def store(form_data: FamilyCoreDatum = Depends(FamilyCoreDatum.as_form), support
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=str(form_data.employee_rut) + "_" + str(form_data.rut), description='partida_nacimiento', data=support,
-                                 dropbox_path='/birth_certificates/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/birth_certificates/', computer_path=os.path.join(os.path.dirname(__file__)))
 
     data = FamilyCoreDatumClass(db).store(form_data, filename)
 
     return {"message": data}
 
-@family_core_data.get("/edit/{id}/{get_type_id}")
-def edit(id:int, get_type_id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+@family_core_data.get("/edit/{rut}/{get_type_id}")
+def edit(rut:int, get_type_id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
 
-    data = FamilyCoreDatumClass(db).get("id", id, get_type_id)
+    data = FamilyCoreDatumClass(db).get("employee_rut", rut, get_type_id)
 
     return {"message": data}
 
@@ -65,7 +65,7 @@ def update(id: int, form_data: UpdateFamilyCoreDatum = Depends(UpdateFamilyCoreD
         dropbox_client = DropboxClass(db)
 
         filename = dropbox_client.upload(name=str(form_data.employee_rut) + "_" + str(form_data.rut), description='partida_nacimiento', data=support,
-                                 dropbox_path='/birth_certificates/', computer_path=os.path.join('C:\\', 'Users', 'jesus', 'OneDrive', 'Desktop', 'escritorio', 'erp_jis_project', 'backend', 'app', 'backend'))
+                                 dropbox_path='/birth_certificates/', computer_path=os.path.join(os.path.dirname(__file__)))
 
         if family_core_data.support != None or family_core_data.support != '': 
             response = DropboxClass(db).delete('/birth_certificates/', str(family_core_data.support))

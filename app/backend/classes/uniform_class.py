@@ -1,4 +1,5 @@
 from app.backend.db.models import UniformModel, UniformTypeModel
+import json
 
 class UniformClass:
     def __init__(self, db):
@@ -26,8 +27,21 @@ class UniformClass:
             outerjoin(UniformTypeModel, UniformModel.uniform_type_id == UniformTypeModel.id).\
             filter(getattr(UniformModel, field) == value).\
             order_by(UniformModel.delivered_date.desc()).all()
-            
-            return data
+
+            # Serializar los datos en formato JSON
+            serialized_data = []
+            for record in data:
+                delivered_date_str = record.delivered_date.strftime('%Y-%m-%d') if record.delivered_date else None
+                serialized_record = {
+                    "id": record.id,
+                    "uniform_type_id": record.uniform_type_id,
+                    "rut": record.rut,
+                    "delivered_date": delivered_date_str,
+                    "uniform_type": record.uniform_type
+                }
+                serialized_data.append(serialized_record)
+
+            return json.dumps(serialized_data)
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
