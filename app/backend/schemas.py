@@ -154,8 +154,8 @@ class UpdateEmployee(BaseModel):
     names: str = None
     father_lastname: str = None
     mother_lastname: str = None
-    gender_id: str = None
-    nationality_id: str = None
+    gender_id: int = None
+    nationality_id: int = None
     personal_email: str = None
     cellphone: str = None
     born_date: str = None
