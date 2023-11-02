@@ -3,6 +3,7 @@ from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
 import json
 
+
 class EmployeeLaborDatumClass:
     def __init__(self, db):
         self.db = db
@@ -30,19 +31,21 @@ class EmployeeLaborDatumClass:
                 filter(getattr(EmployeeLaborDatumModel, field) == value).first()
 
             if data:
-                employee_labor_data, region, health, commune, civil_state, job_position, branch_office, pention = data
-
-                # Función para formatear la fecha a una cadena
-                def format_date(date):
-                    return date.strftime('%Y-%m-%d %H:%M:%S') if date else None
+                # Acceder a los datos directamente por índice
+                employee_labor_data = data[0]
+                region = data[1]
+                health = data[2]
+                commune = data[3]
+                civil_state = data[4]
+                job_position = data[5]
+                branch_office = data[6]
+                pention = data[7]
 
                 # Serializar los datos de la región
                 serialized_region = {
                     "id": region.id,
                     "region": region.region,
                     "region_remuneration_code": region.region_remuneration_code,
-                    "added_date": format_date(region.added_date),
-                    "updated_date": format_date(region.updated_date)
                 }
 
                 # Serializar los datos de la salud
@@ -52,8 +55,6 @@ class EmployeeLaborDatumClass:
                     "health": health.health,
                     "rut": health.rut,
                     "previred_code": health.previred_code,
-                    "added_date": format_date(health.added_date),
-                    "updated_date": format_date(health.updated_date)
                 }
 
                 # Serializar los datos de la comuna
@@ -61,16 +62,12 @@ class EmployeeLaborDatumClass:
                     "id": commune.id,
                     "region_id": commune.region_id,
                     "commune": commune.commune,
-                    "added_date": format_date(commune.added_date),
-                    "updated_date": format_date(commune.updated_date)
                 }
 
                 # Serializar los datos del estado civil
                 serialized_civil_state = {
                     "id": civil_state.id,
                     "civil_state": civil_state.civil_state,
-                    "added_date": format_date(civil_state.added_date),
-                    "updated_date": format_date(civil_state.updated_date)
                 }
 
                 # Serializar los datos del cargo
@@ -78,8 +75,6 @@ class EmployeeLaborDatumClass:
                     "id": job_position.id,
                     "job_position": job_position.job_position,
                     "functions": job_position.functions,
-                    "added_date": format_date(job_position.added_date),
-                    "updated_date": format_date(job_position.updated_date)
                 }
 
                 # Serializar los datos de la sucursal
@@ -96,8 +91,6 @@ class EmployeeLaborDatumClass:
                     "visibility_id": branch_office.visibility_id,
                     "opening_date": branch_office.opening_date,
                     "dte_code": branch_office.dte_code,
-                    "added_date": format_date(branch_office.added_date),
-                    "updated_date": format_date(branch_office.updated_date)
                 }
 
                 # Serializar los datos de la pensión
@@ -108,9 +101,34 @@ class EmployeeLaborDatumClass:
                     "rut": pention.rut,
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
-                    "added_date": format_date(pention.added_date),
-                    "updated_date": format_date(pention.updated_date)
                 }
+
+                entrance_pention = employee_labor_data.entrance_pention
+
+                entrance_company = employee_labor_data.entrance_company
+
+                entrance_health = employee_labor_data.entrance_health
+
+                if entrance_pention:
+                    formatted_entrance_pention = datetime.strptime(entrance_pention, '%Y-%m-%d').date()
+                    formatted_entrance_pention_str = formatted_entrance_pention.strftime('%Y-%m-%d')
+                else:
+                    formatted_entrance_pention = None
+                    formatted_entrance_pention_str = None
+
+                if entrance_company:
+                    formatted_entrance_company = datetime.strptime(entrance_company, '%Y-%m-%d').date()
+                    formatted_entrance_company_str = formatted_entrance_company.strftime('%Y-%m-%d')
+                else:
+                    formatted_entrance_company = None
+                    formatted_entrance_company_str = None
+
+                if entrance_health:
+                    formatted_entrance_health = datetime.strptime(entrance_health, '%Y-%m-%d').date()
+                    formatted_entrance_health_str = formatted_entrance_health.strftime('%Y-%m-%d')
+                else:
+                    formatted_entrance_health = None
+                    formatted_entrance_health_str = None
 
                 # Serializar los datos del empleado
                 serialized_employee_labor_data = {
@@ -136,30 +154,27 @@ class EmployeeLaborDatumClass:
                     "regime_id": employee_labor_data.regime_id,
                     "status_id": employee_labor_data.status_id,
                     "health_payment_id": employee_labor_data.health_payment_id,
-                    "entrance_pention": format_date(employee_labor_data.entrance_pention),
-                    "entrance_company": format_date(employee_labor_data.entrance_company),
-                    "entrance_health": format_date(employee_labor_data.entrance_health),
-                    "exit_company": format_date(employee_labor_data.exit_company),
+                    "entrance_pention": formatted_entrance_pention_str,
+                    "entrance_company": formatted_entrance_company_str,
+                    "entrance_health": formatted_entrance_health_str,
                     "salary": employee_labor_data.salary,
                     "collation": employee_labor_data.collation,
                     "locomotion": employee_labor_data.locomotion,
                     "extra_health_amount": employee_labor_data.extra_health_amount,
                     "apv_payment_type_id": employee_labor_data.apv_payment_type_id,
-                    "apv_amount": employee_labor_data.apv_amount,
-                    "added_date": format_date(employee_labor_data.added_date),
-                    "updated_date": format_date(employee_labor_data.updated_date)
+                    "apv_amount": employee_labor_data.apv_amount
                 }
 
                 # Convierte el resultado a una cadena JSON
                 serialized_result = json.dumps({
-                    "employee_labor_data": serialized_employee_labor_data,
-                    "region": serialized_region,
-                    "health": serialized_health,
-                    "commune": serialized_commune,
-                    "civil_state": serialized_civil_state,
-                    "job_position": serialized_job_position,
-                    "branch_office": serialized_branch_office,
-                    "pention": serialized_pention
+                    "EmployeeLaborDatumModel": serialized_employee_labor_data,
+                    "RegionModel": serialized_region,
+                    "HealthModel": serialized_health,
+                    "CommuneModel": serialized_commune,
+                    "CivilStateModel": serialized_civil_state,
+                    "JobPositionModel": serialized_job_position,
+                    "BranchOfficeModel": serialized_branch_office,
+                    "PentionModel": serialized_pention
                 })
 
                 return serialized_result
