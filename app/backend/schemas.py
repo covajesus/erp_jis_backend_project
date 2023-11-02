@@ -634,6 +634,12 @@ class UpdateEmployeeBankAccount(BaseModel):
     rut: int = None
     account_number: str = None
 
+class StoreEmployeeBankAccount(BaseModel):
+    bank_id: int = None
+    account_type_id: int = None
+    rut: int = None
+    account_number: str = None
+
 class DocumentEmployee(BaseModel):
     status_id: int
     document_type_id: int

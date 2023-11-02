@@ -17,7 +17,7 @@ old_documents_employees = APIRouter(
 
 @old_documents_employees.post("/transfer/{rut}")
 def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    document_data = db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut == rut).all()
+    document_data = DocumentEmployeeClass(db).get_all(rut)
 
     for docucment_datum in document_data:
         old_document_datum_inputs = {

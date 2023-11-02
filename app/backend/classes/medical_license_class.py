@@ -18,6 +18,16 @@ class MedicalLicenseClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    def get_all_with_rut(self, rut):
+        try:
+            data = self.db.query(MedicalLicenseModel).filter(MedicalLicenseModel.rut == rut).all()
+            if not data:
+                return "No hay registros"
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
     
     def get(self, field, value, type=1, page=1, items_per_page=10):
         try:

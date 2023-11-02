@@ -1,6 +1,7 @@
 from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
+import json
 
 class EmployeeLaborDatumClass:
     def __init__(self, db):
@@ -19,16 +20,37 @@ class EmployeeLaborDatumClass:
     def get(self, field, value):
         try:
             data = self.db.query(EmployeeLaborDatumModel, RegionModel, HealthModel, CommuneModel, CivilStateModel, JobPositionModel, BranchOfficeModel, PentionModel). \
-                        outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
-                        outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
-                        outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
-                        outerjoin(JobPositionModel, JobPositionModel.id == EmployeeLaborDatumModel.job_position_id). \
-                        outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
-                        outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
-                        outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
-                        filter(getattr(EmployeeLaborDatumModel, field) == value).first()
-            
-            return data
+                outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
+                outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
+                outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
+                outerjoin(JobPositionModel, JobPositionModel.id == EmployeeLaborDatumModel.job_position_id). \
+                outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
+                outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
+                outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
+                filter(getattr(EmployeeLaborDatumModel, field) == value).first()
+
+            if data:
+                employee_labor_data, region, health, commune, civil_state, job_position, branch_office, pention = data
+
+                # Serializar los datos del empleado
+                serialized_employee_labor_data = {
+                    "id": employee_labor_data.id,
+                    "region": region.name if region else None,
+                    "commune": commune.name if commune else None,
+                    "civil_state": civil_state.name if civil_state else None,
+                    "job_position": job_position.name if job_position else None,
+                    "branch_office": branch_office.name if branch_office else None,
+                    "pention": pention.name if pention else None,
+                    "health": health.name if health else None,
+                }
+
+                # Convierte el resultado a una cadena JSON
+                serialized_result = json.dumps(serialized_employee_labor_data)
+
+                return serialized_result
+            else:
+                return "No se encontraron datos para el campo especificado."
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

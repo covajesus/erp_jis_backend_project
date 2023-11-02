@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import EmployeeBankAccount, UpdateEmployeeBankAccount, UserLogin
+from app.backend.schemas import EmployeeBankAccount, UpdateEmployeeBankAccount, UserLogin, StoreEmployeeBankAccount
 from app.backend.classes.employee_bank_account_class import EmployeeBankAccountClass
 from app.backend.auth.auth_user import get_current_active_user
 
@@ -17,7 +17,7 @@ def index(session_user: UserLogin = Depends(get_current_active_user), db: Sessio
     return {"message": data}
 
 @employee_bank_accounts.post("/store")
-def store(bank:EmployeeBankAccount, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def store(bank:StoreEmployeeBankAccount, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     bank_inputs = bank.dict()
     data = EmployeeBankAccountClass(db).store(bank_inputs)
 

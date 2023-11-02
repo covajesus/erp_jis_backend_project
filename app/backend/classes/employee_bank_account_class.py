@@ -24,15 +24,34 @@ class EmployeeBankAccountClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
-    def store(self, EmployeeBankAccount_inputs):
+    def store(self, employee_bank_account_inputs):
+        employee_bank_account =  EmployeeBankAccountModel()
+
+        if 'bank_id' in employee_bank_account_inputs and employee_bank_account_inputs['bank_id'] is not None:
+            employee_bank_account.bank_id = employee_bank_account_inputs['bank_id']
+        
+        if 'account_type_id' in employee_bank_account_inputs and employee_bank_account_inputs['account_type_id'] is not None:
+            employee_bank_account.account_type_id = employee_bank_account_inputs['account_type_id']
+        
+        if 'status_id' in employee_bank_account_inputs and employee_bank_account_inputs['status_id'] is not None:
+            employee_bank_account.status_id = employee_bank_account_inputs['status_id']
+        
+        if 'rut' in employee_bank_account_inputs and employee_bank_account_inputs['rut'] is not None:
+            employee_bank_account.rut = employee_bank_account_inputs['rut']
+
+        if 'account_number' in employee_bank_account_inputs and employee_bank_account_inputs['account_number'] is not None:
+            employee_bank_account.account_number = employee_bank_account_inputs['account_number']
+
+        employee_bank_account.added_time = datetime.now()
+
+        self.db.add(employee_bank_account)
+
         try:
-            data = EmployeeBankAccountModel(**EmployeeBankAccount_inputs)
-            self.db.add(data)
             self.db.commit()
+
             return 1
         except Exception as e:
-            error_message = str(e)
-            return f"Error: {error_message}"
+            return 0
         
     def delete(self, id):
         try:

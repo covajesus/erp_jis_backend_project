@@ -17,7 +17,7 @@ old_medical_licenses = APIRouter(
 
 @old_medical_licenses.post("/transfer/{rut}")
 def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    medical_licenses = db.query(MedicalLicenseModel).filter(MedicalLicenseModel.rut == rut).all()
+    medical_licenses = MedicalLicenseClass(db).get(rut)
 
     for medical_license in medical_licenses:
         old_medical_license_inputs = {
