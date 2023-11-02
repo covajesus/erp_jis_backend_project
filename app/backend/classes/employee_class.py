@@ -152,7 +152,7 @@ class EmployeeClass:
                 "data": data
             }
 
-    def validate(self, rut):
+    def validate_rut(self, rut):
         try:
             data = self.db.query(EmployeeModel).filter(EmployeeModel.rut == rut).count()
 
