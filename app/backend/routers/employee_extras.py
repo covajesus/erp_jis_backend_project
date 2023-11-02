@@ -41,16 +41,8 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     return {"message": data}
 
 @employee_extras.patch("/update/{rut}")
-def update(rut:int, employee:UpdateEmployeeExtra, session_user: UserLogin = Depends(get_current_active_user),  db: Session = Depends(get_db)):
-    existing_employee = db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut).one_or_none()
+def update(rut:int, inputs:UpdateEmployeeExtra, session_user: UserLogin = Depends(get_current_active_user),  db: Session = Depends(get_db)):
+    employee_extra_inputs = inputs.dict()
+    data = EmployeeExtraDatumClass(db).update(rut, employee_extra_inputs)
 
-    if not existing_employee:
-        return {"message": "Empleado no encontrado!"}
-
-    existing_employee_data = employee.dict(exclude_unset=True)
-    for key, value in existing_employee_data.items():
-        setattr(existing_employee, key, value)
-
-    db.commit()
-
-    return {"message": "Empleado actualizado", "data": existing_employee}
+    return {"message": data}
