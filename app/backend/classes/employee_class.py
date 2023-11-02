@@ -151,7 +151,19 @@ class EmployeeClass:
                 "items_per_page": items_per_page,
                 "data": data
             }
-        
+
+    def validate(self, rut):
+        try:
+            data = self.db.query(EmployeeModel).filter(EmployeeModel.rut == rut).count()
+
+            if data != 0:
+                return 1
+            else
+                return 0
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+           
     def get(self, field, value):
         try:
             data = self.db.query(EmployeeModel, ClockUserModel.privilege). \

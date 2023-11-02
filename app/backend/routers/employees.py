@@ -69,6 +69,12 @@ def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db:
 
     return {"message": data}
 
+@employees.get("/validate/{id}")
+def edit(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = EmployeeClass(db).validate(rut)
+
+    return {"message": data}
+
 @employees.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = EmployeeClass(db).delete(id)
