@@ -158,7 +158,7 @@ class EmployeeClass:
 
             if data != 0:
                 return 1
-            else
+            else:
                 return 0
         except Exception as e:
             error_message = str(e)
