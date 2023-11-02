@@ -62,6 +62,12 @@ class EmployeeExtraDatumClass:
         if 'be_paid_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['be_paid_id'] is not None:
             employee_extra.be_paid_id = employee_extra_datum_inputs['be_paid_id']
 
+        if 'pensioner_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['pensioner_id'] is not None:
+            employee_extra.pensioner_id = employee_extra_datum_inputs['pensioner_id']
+
+        if 'disability_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['disability_id'] is not None:
+            employee_extra.disability_id = employee_extra_datum_inputs['disability_id']
+
         if 'suplemental_health_insurance_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['suplemental_health_insurance_id'] is not None:
             employee_extra.suplemental_health_insurance_id = employee_extra_datum_inputs['suplemental_health_insurance_id']
 
