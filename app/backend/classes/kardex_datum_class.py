@@ -2,6 +2,7 @@ from app.backend.db.models import DocumentEmployeeModel, DocumentTypeModel
 from sqlalchemy import desc
 from datetime import datetime
 from app.backend.classes.dropbox_class import DropboxClass
+import json
 
 class KardexDatumClass:
     def __init__(self, db):
@@ -18,23 +19,50 @@ class KardexDatumClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
-    def get(self, field, value, type = 1):
+    def get(self, field, value, query_type=1):
         try:
-            if type == 1:
+            if query_type == 1:
                 data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == value).first()
             else:
-                data = self.db.query(DocumentEmployeeModel.id, DocumentEmployeeModel.rut, DocumentTypeModel.document_type, DocumentEmployeeModel.added_date).\
-                    outerjoin(DocumentTypeModel, DocumentEmployeeModel.document_type_id == DocumentTypeModel.id).\
-                    filter(getattr(DocumentEmployeeModel, field) == value).\
-                    filter(DocumentTypeModel.document_group_id == 1).\
-                    order_by(desc(DocumentEmployeeModel.added_date)).\
+                data = self.db.query(DocumentEmployeeModel.id, DocumentEmployeeModel.rut, DocumentTypeModel.document_type, DocumentEmployeeModel.added_date). \
+                    outerjoin(DocumentTypeModel, DocumentEmployeeModel.document_type_id == DocumentTypeModel.id). \
+                    filter(getattr(DocumentEmployeeModel, field) == value). \
+                    filter(DocumentTypeModel.document_group_id == 1). \
+                    order_by(desc(DocumentEmployeeModel.added_date)). \
                     all()
-            
-            
-            return data
+
+            if data:
+                if query_type == 1:
+                    # Serializar un solo objeto DocumentEmployeeModel
+                    serialized_data = {
+                        "id": data.id,
+                        "rut": data.rut,
+                        "document_type": data.document_type,
+                        "added_date": data.added_date.strftime('%Y-%m-%d %H:%M:%S') if data.added_date else None,
+                    }
+                else:
+                    # Serializar una lista de objetos DocumentEmployeeModel
+                    serialized_data = []
+                    for item in data:
+                        serialized_item = {
+                            "id": item.id,
+                            "rut": item.rut,
+                            "document_type": item.document_type,
+                            "added_date": item.added_date.strftime('%Y-%m-%d %H:%M:%S') if item.added_date else None,
+                        }
+                        serialized_data.append(serialized_item)
+
+                    # Convierte el resultado a una cadena JSON
+                    serialized_result = json.dumps(serialized_data)
+
+                return serialized_result
+            else:
+                return "No se encontraron datos para el campo especificado."
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
 
     def download(self, id):
         try:
