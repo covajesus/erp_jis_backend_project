@@ -298,7 +298,7 @@ class UpdateEmployeeExtra(BaseModel):
     progressive_vacation_level_id: int = None
     recognized_years: Union[int, None]
     progressive_vacation_status_id: int = None
-    progressive_vacation_date: str = None
+    progressive_vacation_date: Union[str, None]
     updated_date: Union[datetime, None]
 
 class AlertType(BaseModel):

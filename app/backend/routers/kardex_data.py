@@ -45,8 +45,8 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     response = KardexDatumClass(db).delete(id)
 
     if response == 1:
-        if kardex_datum.support != None or kardex_datum.support != '':
-            response = DropboxClass(db).delete('/employee_documents/', kardex_datum.support)
+        if kardex_datum['support'] != None or kardex_datum['support'] != '':
+            response = DropboxClass(db).delete('/employee_documents/', kardex_datum['support'])
 
         if response == 1:
             data = 1

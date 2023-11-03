@@ -19,6 +19,8 @@ class KardexDatumClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    import json
+
     def get(self, field, value, query_type=1):
         try:
             if query_type == 1:
@@ -36,32 +38,43 @@ class KardexDatumClass:
                     # Serializar un solo objeto DocumentEmployeeModel
                     serialized_data = {
                         "id": data.id,
+                        "status_id": data.status_id,
+                        "document_type_id": data.document_type_id,
+                        "old_document_status_id": data.old_document_status_id,
                         "rut": data.rut,
-                        "document_type": data.document_type,
+                        "support": data.support,
                         "added_date": data.added_date.strftime('%Y-%m-%d %H:%M:%S') if data.added_date else None,
+                        "updated_date": data.updated_date.strftime('%Y-%m-%d %H:%M:%S') if data.updated_date else None,
                     }
+
+                    return serialized_data
                 else:
                     # Serializar una lista de objetos DocumentEmployeeModel
                     serialized_data = []
                     for item in data:
                         serialized_item = {
                             "id": item.id,
+                            "status_id": item.status_id,
+                            "document_type_id": item.document_type_id,
+                            "old_document_status_id": item.old_document_status_id,
                             "rut": item.rut,
-                            "document_type": item.document_type,
+                            "support": item.support,
                             "added_date": item.added_date.strftime('%Y-%m-%d %H:%M:%S') if item.added_date else None,
+                            "updated_date": item.updated_date.strftime('%Y-%m-%d %H:%M:%S') if item.updated_date else None,
                         }
                         serialized_data.append(serialized_item)
 
                     # Convierte el resultado a una cadena JSON
                     serialized_result = json.dumps(serialized_data)
 
-                return serialized_result
+                    return serialized_result
             else:
-                return "No se encontraron datos para el campo especificado."
+                return json.dumps("No se encontraron datos para el campo especificado.")
 
         except Exception as e:
             error_message = str(e)
-            return f"Error: {error_message}"
+            return json.dumps(f"Error: {error_message}")
+
 
 
     def download(self, id):
