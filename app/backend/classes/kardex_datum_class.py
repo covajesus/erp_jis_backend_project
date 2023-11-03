@@ -69,13 +69,11 @@ class KardexDatumClass:
 
                     return serialized_result
             else:
-                return json.dumps("No se encontraron datos para el campo especificado.")
+                return 0
 
         except Exception as e:
             error_message = str(e)
             return json.dumps(f"Error: {error_message}")
-
-
 
     def download(self, id):
         try:
