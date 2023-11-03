@@ -26,7 +26,7 @@ class KardexDatumClass:
             if query_type == 1:
                 data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == value).first()
             else:
-                data = self.db.query(DocumentEmployeeModel.id, DocumentEmployeeModel.rut, DocumentTypeModel.document_type, DocumentEmployeeModel.added_date). \
+                data = self.db.query(DocumentEmployeeModel.id, DocumentEmployeeModel.status_id, DocumentEmployeeModel.added_date, DocumentEmployeeModel.updated_date, DocumentEmployeeModel.document_type_id, DocumentEmployeeModel.old_document_status_id, DocumentEmployeeModel.support, DocumentEmployeeModel.rut, DocumentTypeModel.document_type, DocumentEmployeeModel.added_date). \
                     outerjoin(DocumentTypeModel, DocumentEmployeeModel.document_type_id == DocumentTypeModel.id). \
                     filter(getattr(DocumentEmployeeModel, field) == value). \
                     filter(DocumentTypeModel.document_group_id == 1). \
