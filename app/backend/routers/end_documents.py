@@ -16,7 +16,7 @@ end_documents = APIRouter(
 
 @end_documents.post("/")
 def index(select_document_employee: SelectDocumentEmployee, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = DocumentEmployeeClass(db).get_all(select_document_employee.rut)
+    data = EndDocumentClass(db).get_all(select_document_employee.rut)
 
     return {"message": data}
 
@@ -90,7 +90,7 @@ def fertility_proportional(inputs:FertilityProportional, session_user: UserLogin
     return {"message": data, 'total': total}
 
 @end_documents.get("/edit/{rut}")
-def index(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = DocumentEmployeeClass(db).get_all_rut_where(rut, 22)
+def edit(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = EndDocumentClass(db).get_all(rut)
 
     return {"message": data}

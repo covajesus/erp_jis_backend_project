@@ -3,11 +3,41 @@ from app.backend.classes.hr_setting_class import HrSettingClass
 from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.classes.helper_class import HelperClass
 import json
+from sqlalchemy import desc
 
 
 class EndDocumentClass:
     def __init__(self, db):
         self.db = db
+
+    def get_all(self, rut):
+        try:
+            data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.added_date, DocumentEmployeeModel.support, DocumentEmployeeModel.rut, DocumentEmployeeModel.id). \
+                        filter(DocumentEmployeeModel.rut == rut). \
+                        filter(DocumentEmployeeModel.document_type_id == 22). \
+                        order_by(desc(DocumentEmployeeModel.id)). \
+                        all()
+            
+            if not data:
+                return 0
+            
+            # Convertir los resultados a una lista de diccionarios
+            serialized_data = []
+            for row in data:
+                serialized_row = {
+                    "status_id": row.status_id,
+                    "added_date": row.added_date.strftime('%Y-%m-%d'),  # Convierte la fecha a formato string
+                    "support": row.support,
+                    "rut": row.rut,
+                    "id": row.id,
+                }
+                serialized_data.append(serialized_row)
+            
+            return json.dumps(serialized_data)
+        except Exception as e:
+            error_message = str(e)
+            return json.dumps(f"Error: {error_message}")
+
 
     def indemnity_years(self, indemnity_year_inputs):
         try:
