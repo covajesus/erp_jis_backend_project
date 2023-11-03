@@ -197,8 +197,11 @@ class ProgressiveVacationClass:
     
     def legal(self, rut):
         employee_labor_data = EmployeeLaborDatumClass(self.db).get("rut", rut)
+        employee_labor_data = json.loads(employee_labor_data)
+        employee_labor_data_decoded = employee_labor_data["EmployeeLaborDatumModel"]["entrance_company"]
+
         employee_extra_data = EmployeeExtraDatumClass(self.db).get("rut", rut)
-        months = HelperClass().months(employee_labor_data.EmployeeLaborDatumModel.entrance_company, date.today())
+        months = HelperClass().months(employee_labor_data_decoded, date.today())
         years = HelperClass().months_to_years(months)
 
         if employee_extra_data.recognized_years != None:
