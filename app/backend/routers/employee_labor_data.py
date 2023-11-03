@@ -35,9 +35,9 @@ def store(employee_labor_datum:EmployeeLaborDatum, session_user: UserLogin = Dep
 
     return {"message": data}
 
-@employee_labor_data.get("/edit/{id}")
-def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = EmployeeLaborDatumClass(db).get("rut", id)
+@employee_labor_data.get("/edit/{rut}")
+def edit(rut:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = EmployeeLaborDatumClass(db).get("rut", rut)
     return {"message": data}
 
 @employee_labor_data.delete("/delete/{id}")

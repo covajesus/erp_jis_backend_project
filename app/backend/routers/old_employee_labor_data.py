@@ -3,7 +3,6 @@ from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import OldEmployeeLaborDatum, UserLogin
 from app.backend.classes.old_employee_labor_datum_class import OldEmployeeLaborDatumClass
-from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.auth.auth_user import get_current_active_user
 
 old_employee_labor_data = APIRouter(
