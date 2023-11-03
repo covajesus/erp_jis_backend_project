@@ -47,7 +47,6 @@ class EmployeeExtraDatumClass:
             return f"Error: {error_message}"
         
     def update(self, rut, employee_extra_datum_inputs):
-        print(employee_extra_datum_inputs)
         employee_extra =  self.db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == rut).first()
         
         if 'extreme_zone_id' in employee_extra_datum_inputs and employee_extra_datum_inputs['extreme_zone_id'] is not None:
