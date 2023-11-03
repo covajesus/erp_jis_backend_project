@@ -56,6 +56,7 @@ class KardexDatumClass:
                             "id": item.id,
                             "status_id": item.status_id,
                             "document_type_id": item.document_type_id,
+                            "document_type": item.document_type,
                             "old_document_status_id": item.old_document_status_id,
                             "rut": item.rut,
                             "support": item.support,
