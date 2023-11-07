@@ -20,6 +20,29 @@ class HonoraryClass:
                     outerjoin(SupervisorModel, SupervisorModel.branch_office_id == BranchOfficeModel.id). \
                     filter(SupervisorModel.rut == rut). \
                     order_by(EmployeeModel.rut)
+                
+                data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
+
+                total_items = data_query.count()
+                total_pages = (total_items + items_per_page - 1) // items_per_page
+
+                if page < 1 or page > total_pages:
+                    return "Invalid page number"
+
+                if not data:
+                    return "No data found"
+
+                # Serializar los datos
+                serialized_data = [{
+                    "status_id": honorary.status_id,
+                    "id": honorary.id,
+                    "rut": honorary.rut,
+                    "full_name": honorary.full_name,
+                    "nickname": honorary.nickname,
+                    "reason": honorary.reason,
+                    "start_date": honorary.start_date
+                } for honorary, labor_datum, branch_office, supervisor in data]
+
             else:
                 data_query = self.db.query(HonoraryModel) \
                                 .join(BankModel, BankModel.id == HonoraryModel.bank_id) \
@@ -40,6 +63,7 @@ class HonoraryClass:
                                 ) \
                                 .order_by(desc(HonoraryModel.added_date))
 
+                data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
 
                 total_items = data_query.count()
                 total_pages = (total_items + items_per_page - 1) // items_per_page
@@ -47,22 +71,32 @@ class HonoraryClass:
                 if page < 1 or page > total_pages:
                     return "Invalid page number"
 
-                data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
-
                 if not data:
                     return "No data found"
-                
+
+                # Serializar los datos
+                serialized_data = [{
+                    "status_id": honorary.status_id,
+                    "id": honorary.id,
+                    "rut": honorary.rut,
+                    "full_name": honorary.full_name,
+                    "nickname": honorary.nickname,
+                    "reason": honorary.reason,
+                    "start_date": honorary.start_date
+                } for honorary in data]
+
             return {
-                    "total_items": total_items,
-                    "total_pages": total_pages,
-                    "current_page": page,
-                    "items_per_page": items_per_page,
-                    "data": data
-                }
-        
+                "total_items": total_items,
+                "total_pages": total_pages,
+                "current_page": page,
+                "items_per_page": items_per_page,
+                "data": serialized_data
+            }
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
     
     def get(self, field, value):
         try:
