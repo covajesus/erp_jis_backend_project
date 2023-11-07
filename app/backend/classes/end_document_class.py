@@ -1,6 +1,8 @@
+from datetime import datetime
 from app.backend.db.models import DocumentEmployeeModel
 from app.backend.classes.hr_setting_class import HrSettingClass
 from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
+from app.backend.db.models import EndDocumentModel
 from app.backend.classes.helper_class import HelperClass
 import json
 from sqlalchemy import desc
@@ -12,31 +14,53 @@ class EndDocumentClass:
 
     def get_all(self, rut):
         try:
-            data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.added_date, DocumentEmployeeModel.support, DocumentEmployeeModel.rut, DocumentEmployeeModel.id). \
-                        filter(DocumentEmployeeModel.rut == rut). \
-                        filter(DocumentEmployeeModel.document_type_id == 22). \
-                        order_by(desc(DocumentEmployeeModel.id)). \
-                        all()
-            
+            data = self.db.query(
+                DocumentEmployeeModel.status_id,
+                EndDocumentModel.causal_id,
+                EndDocumentModel.fertility_proportional_days,
+                EndDocumentModel.fertility_proportional,
+                EndDocumentModel.indemnity_years_service,
+                EndDocumentModel.voluntary_indemnity,
+                EndDocumentModel.substitute_compensation,
+                EndDocumentModel.total,
+                DocumentEmployeeModel.added_date,
+                DocumentEmployeeModel.support,
+                DocumentEmployeeModel.rut,
+                DocumentEmployeeModel.id). \
+            outerjoin(
+                EndDocumentModel, EndDocumentModel.document_employee_id == DocumentEmployeeModel.id). \
+            filter(
+                DocumentEmployeeModel.rut == rut,
+                DocumentEmployeeModel.document_type_id == 22
+            ).order_by(desc(DocumentEmployeeModel.id)).all()
+
             if not data:
                 return 0
-            
+
             # Convertir los resultados a una lista de diccionarios
             serialized_data = []
             for row in data:
                 serialized_row = {
                     "status_id": row.status_id,
-                    "added_date": row.added_date.strftime('%Y-%m-%d'),  # Convierte la fecha a formato string
+                    "causal_id": row.causal_id,
+                    "fertility_proportional_days": row.fertility_proportional_days,
+                    "fertility_proportional": row.fertility_proportional,
+                    "indemnity_years_service": row.indemnity_years_service,
+                    "voluntary_indemnity": row.voluntary_indemnity,
+                    "substitute_compensation": row.substitute_compensation,
+                    "total": row.total,
+                    "added_date": row.added_date.strftime('%Y-%m-%d') if row.added_date else None,
                     "support": row.support,
                     "rut": row.rut,
                     "id": row.id,
                 }
                 serialized_data.append(serialized_row)
-            
+
+
             return json.dumps(serialized_data)
         except Exception as e:
             error_message = str(e)
-            return json.dumps(f"Error: {error_message}")
+            return json.dumps({"error": f"Error: {error_message}"})
 
 
     def indemnity_years(self, indemnity_year_inputs):
@@ -114,4 +138,27 @@ class EndDocumentClass:
             result = 0
 
         return result
+    
+    def store(self, end_documents_inputs, document_id):
+        try:
+            end_document = EndDocumentModel()
+            end_document.document_employee_id = document_id
+            end_document.causal_id = end_documents_inputs['causal_id']
+            end_document.rut = end_documents_inputs['rut']
+            end_document.fertility_proportional_days = end_documents_inputs['fertility_proportional_days']
+            end_document.voluntary_indemnity = end_documents_inputs['voluntary_indemnity']
+            end_document.indemnity_years_service = end_documents_inputs['indemnity_years_service']
+            end_document.substitute_compensation = end_documents_inputs['substitute_compensation']
+            end_document.fertility_proportional = end_documents_inputs['fertility_proportional']
+            end_document.total = end_documents_inputs['total']
+            end_document.added_date = datetime.now()
+
+
+            self.db.add(end_document)
+            self.db.commit()
+            
+            return end_document.id
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
 

@@ -491,6 +491,21 @@ class DocumentTypeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class EndDocumentModel(Base):
+    __tablename__ = 'end_documents'
+    id = Column(Integer, primary_key=True)
+    document_employee_id = Column(Integer) 
+    causal_id = Column(Integer) 
+    rut = Column(Integer) 
+    fertility_proportional_days = Column(Integer) 
+    voluntary_indemnity = Column(Integer) 
+    indemnity_years_service= Column(Integer) 
+    substitute_compensation = Column(Integer) 
+    fertility_proportional = Column(Integer) 
+    total = Column(Integer) 
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class FamilyTypeModel(Base):
     __tablename__ = 'family_types'
 

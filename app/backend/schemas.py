@@ -399,6 +399,19 @@ class DocumentType(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class EndDocument(BaseModel):
+    causal_id: int
+    document_type_id: int
+    status_id:int 
+    rut: int
+    fertility_proportional_days: int
+    voluntary_indemnity: int
+    indemnity_years_service: int
+    substitute_compensation: int
+    fertility_proportional: int
+    total: int
+    
+
 class UpdateDocumentType(BaseModel):
     document_type: str = None
     document_group_id: int = None

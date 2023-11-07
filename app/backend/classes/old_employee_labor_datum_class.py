@@ -98,6 +98,8 @@ class OldEmployeeLaborDatumClass:
 
                 entrance_company = old_employee_labor_data.entrance_company
 
+                exit_company = old_employee_labor_data.exit_company
+
                 entrance_health = old_employee_labor_data.entrance_health
 
                 if entrance_pention:
@@ -113,6 +115,13 @@ class OldEmployeeLaborDatumClass:
                 else:
                     formatted_entrance_company = None
                     formatted_entrance_company_str = None
+
+                if exit_company:
+                    formatted_exit_company = datetime.strptime(exit_company, '%Y-%m-%d').date()
+                    formatted_exit_company_str = formatted_exit_company.strftime('%Y-%m-%d')
+                else:
+                    formatted_exit_company = None
+                    formatted_exit_company_str = None
 
                 if entrance_health:
                     formatted_entrance_health = datetime.strptime(entrance_health, '%Y-%m-%d').date()
@@ -147,6 +156,7 @@ class OldEmployeeLaborDatumClass:
                     "health_payment_id": old_employee_labor_data.health_payment_id,
                     "entrance_pention": formatted_entrance_pention_str,
                     "entrance_company": formatted_entrance_company_str,
+                    "exit_company": formatted_exit_company_str,
                     "entrance_health": formatted_entrance_health_str,
                     "salary": old_employee_labor_data.salary,
                     "collation": old_employee_labor_data.collation,
