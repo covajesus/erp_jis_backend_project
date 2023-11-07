@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee, IndemnityYear, SubstituteCompensation, FertilityProportional
+from app.backend.schemas import EndDocument,ContractDatum, UploadContract, UserLogin, SelectDocumentEmployee, IndemnityYear, SubstituteCompensation, FertilityProportional
 from app.backend.classes.document_employee_class import DocumentEmployeeClass
 from app.backend.classes.end_document_class import EndDocumentClass 
 from app.backend.classes.dropbox_class import DropboxClass
@@ -21,11 +21,12 @@ def index(select_document_employee: SelectDocumentEmployee, session_user: UserLo
     return {"message": data}
 
 @end_documents.post("/store")
-def store(contract_datum:ContractDatum, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    contract_datum_inputs = contract_datum.dict()
-    document_id = DocumentEmployeeClass(db).store(contract_datum_inputs)
+def store(inputs:EndDocument, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    end_document_inputs = inputs.dict()
+    document_id = DocumentEmployeeClass(db).store(end_document_inputs)
+    data = EndDocumentClass(db).store(end_document_inputs, document_id)
 
-    return {"document_message": document_id}
+    return {"message": data}
 
 @end_documents.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

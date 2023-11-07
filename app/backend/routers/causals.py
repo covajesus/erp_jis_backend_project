@@ -18,3 +18,9 @@ def index(id: int, session_user: UserLogin = Depends(get_current_active_user), d
         data = CausalClass(db).get_all()
 
     return {"message": data}
+
+@causals.get("/")
+def  index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = CausalClass(db).get()
+
+    return {'message': data}

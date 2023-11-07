@@ -13,3 +13,11 @@ class CausalClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    def get(self):
+        try:
+            data = self.db.query(CausalModel).all()
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
