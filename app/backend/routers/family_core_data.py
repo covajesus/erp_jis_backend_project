@@ -44,7 +44,7 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     response = FamilyCoreDatumClass(db).delete(id)
 
     if response == 1:
-        if family_core_data.support != None or family_core_data.support != '':
+        if family_core_data['support'] != None or family_core_data['support'] != '':
 
             response = DropboxClass(db).delete('/birth_certificates/', family_core_data.support)
 
