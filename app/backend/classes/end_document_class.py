@@ -10,13 +10,13 @@ class EndDocumentClass:
     def __init__(self, db):
         self.db = db
 
-    def get_all(self, rut):
+    def get(self, rut):
         try:
             data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.added_date, DocumentEmployeeModel.support, DocumentEmployeeModel.rut, DocumentEmployeeModel.id). \
                         filter(DocumentEmployeeModel.rut == rut). \
                         filter(DocumentEmployeeModel.document_type_id == 22). \
                         order_by(desc(DocumentEmployeeModel.id)). \
-                        all()
+                        first()
             
             if not data:
                 return 0

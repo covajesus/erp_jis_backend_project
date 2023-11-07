@@ -41,7 +41,7 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
 def store(form_data: SalarySettlement = Depends(SalarySettlement.as_form), support: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     dropbox_client = DropboxClass(db)
 
-    filename = dropbox_client.upload(name=str(form_data.employee_rut) + "_" + str(form_data.rut), description='liquidacion', data=support,
+    filename = dropbox_client.upload(name=str(form_data.rut), description='liquidacion', data=support,
                                  dropbox_path='/salary_settlements/', computer_path=os.path.join(os.path.dirname(__file__)))
 
     data = SalarySettlementClass(db).store(form_data, filename)

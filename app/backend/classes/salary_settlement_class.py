@@ -146,9 +146,9 @@ class SalarySettlementClass:
     def store(self, salary_settlement_inputs, support):
         try:
             salary_settlement = DocumentEmployeeModel()
-            salary_settlement.status_id = salary_settlement_inputs['status_id']
-            salary_settlement.rut = salary_settlement_inputs['rut']
-            salary_settlement.document_type_id = salary_settlement_inputs['document_type_id']
+            salary_settlement.status_id = salary_settlement_inputs.status_id
+            salary_settlement.rut = salary_settlement_inputs.rut
+            salary_settlement.document_type_id = salary_settlement_inputs.document_type_id
             salary_settlement.support = support
             salary_settlement.added_date = datetime.now()
             salary_settlement.updated_date = datetime.now()

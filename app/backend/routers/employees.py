@@ -137,3 +137,9 @@ def delete(rut:int, session_user: UserLogin = Depends(get_current_active_user), 
     dropbox_client.delete('/pictures/', employee.picture)
 
     return {"message": rut}
+
+@employees.get("/select_inputs")
+def select_inputs(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    employees = EmployeeClass(db).get_all_with_no_paginator()
+
+    return {"message": employees}

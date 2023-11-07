@@ -9,6 +9,35 @@ class EmployeeClass:
     def __init__(self, db):
         self.db = db
 
+    def get_all_with_no_paginator(self):
+        query = self.db.query(EmployeeModel).order_by(EmployeeModel.names).all()
+
+        # Serializar los resultados a una lista de diccionarios
+        serialized_data = []
+        for employee in query:
+            employee_dict = {
+                "id": employee.id,
+                "rut": employee.rut,
+                "visual_rut": employee.visual_rut,
+                "names": employee.names,
+                "father_lastname": employee.father_lastname,
+                "mother_lastname": employee.mother_lastname,
+                "gender_id": employee.gender_id,
+                "nationality_id": employee.nationality_id,
+                "signature_type_id": employee.signature_type_id,
+                "personal_email": employee.personal_email,
+                "cellphone": employee.cellphone,
+                "born_date": str(employee.born_date),
+                "picture": employee.picture,
+                "signature": employee.signature,
+                "added_date": str(employee.added_date),
+                "updated_date": str(employee.updated_date)
+            }
+            serialized_data.append(employee_dict)
+
+        # Devolver la lista serializada
+        return json.dumps(serialized_data)
+
     def get_all(self, rut=None, rol_id=None, page=0, items_per_page=10):
         try:
             if page != 0:
