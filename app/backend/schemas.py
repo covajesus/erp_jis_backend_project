@@ -536,6 +536,19 @@ class MedicalLicense(BaseModel):
                 ):
         return cls(medical_license_type_id=medical_license_type_id,document_type_id=document_type_id,patology_type_id=patology_type_id, rut=rut, folio=folio, since=since, until=until, status_id=status_id)
 
+class SalarySettlement(BaseModel):
+    status_id: int
+    document_type_id: int
+    rut: int
+
+    @classmethod
+    def as_form(cls, 
+                status_id: int = Form(),
+                document_type_id: int = Form(),
+                rut: int = Form(),
+                ):
+        return cls(status_id=status_id,document_type_id=document_type_id,rut=rut)
+
 class UpdateMedicalLicense(BaseModel):
     document_employee_id: int = None
     medical_license_type_id: int = None

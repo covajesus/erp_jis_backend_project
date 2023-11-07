@@ -9,7 +9,7 @@ class EmployeeClass:
     def __init__(self, db):
         self.db = db
 
-    def get_all(self, rut=None, rol_id=None, page=1, items_per_page=10):
+    def get_all(self, rut=None, rol_id=None, page=0, items_per_page=10):
         try:
             if page != 0:
                 if rol_id == 3:
@@ -58,99 +58,71 @@ class EmployeeClass:
             search_mother_lastname = search_inputs['mother_lastname']
             search_status_id = search_inputs['status_id']
             search_branch_office_id = search_inputs['branch_office_id']
-        
-        if search_status_id == '2':
-            data_query = self.db.query(OldEmployeeModel).join(OldEmployeeLaborDatumModel, OldEmployeeLaborDatumModel.rut == OldEmployeeModel.rut).add_columns(OldEmployeeModel.id, OldEmployeeModel.rut, OldEmployeeModel.visual_rut, OldEmployeeModel.nickname, OldEmployeeModel.names, OldEmployeeModel.father_lastname, OldEmployeeModel.mother_lastname).order_by('rut')
 
-            if len(search_inputs) > 0:
-                if search_rut:
-                    data_query = data_query.filter(OldEmployeeModel.visual_rut.like(f"%{search_rut}%"))
-                if search_names:
-                    data_query = data_query.filter(OldEmployeeModel.nickname.like(f"%{search_names}%"))
-                if search_father_lastname:
-                    data_query = data_query.filter(OldEmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
-                if search_mother_lastname:
-                    data_query = data_query.filter(OldEmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
-                if search_branch_office_id:
-                    data_query = data_query.filter(OldEmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
-                if search_status_id:
-                    data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
-            
-            total_items = data_query.count()
-            total_pages = (total_items + items_per_page - 1) // items_per_page
-
-            if page < 1 or page > total_pages:
-                return "Invalid page number"
-
-            data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
-
-            if not data:
-                return "No data found"
-        elif search_status_id == '3':
-            data_query = self.db.query(OldEmployeeModel).join(OldEmployeeLaborDatumModel, OldEmployeeLaborDatumModel.rut == OldEmployeeModel.rut).add_columns(OldEmployeeModel.id, OldEmployeeModel.rut, OldEmployeeModel.visual_rut, OldEmployeeModel.nickname, OldEmployeeModel.names, OldEmployeeModel.father_lastname, OldEmployeeModel.mother_lastname).order_by('rut')
-
-            if len(search_inputs) > 0:
-                if search_rut:
-                    data_query = data_query.filter(OldEmployeeModel.visual_rut.like(f"%{search_rut}%"))
-                if search_names:
-                    data_query = data_query.filter(OldEmployeeModel.names.like(f"%{search_names}%"))
-                if search_father_lastname:
-                    data_query = data_query.filter(OldEmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
-                if search_mother_lastname:
-                    data_query = data_query.filter(OldEmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
-                if search_branch_office_id:
-                    data_query = data_query.filter(OldEmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
-                if search_branch_office_id:
-                    data_query = data_query.filter(OldEmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
-                if search_status_id:
-                    data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
-            
-            total_items = data_query.count()
-            total_pages = (total_items + items_per_page - 1) // items_per_page
-
-            if page < 1 or page > total_pages:
-                return "Invalid page number"
-
-            data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
-
-            if not data:
-                return "No data found"
+        if search_status_id == '2' or search_status_id == '3':
+            # Query for OldEmployeeModel
+            data_query = self.db.query(OldEmployeeModel).join(OldEmployeeLaborDatumModel, OldEmployeeLaborDatumModel.rut == OldEmployeeModel.rut).add_columns(
+                OldEmployeeModel.id,
+                OldEmployeeModel.rut,
+                OldEmployeeModel.visual_rut,
+                OldEmployeeModel.nickname,
+                OldEmployeeModel.names,
+                OldEmployeeModel.father_lastname,
+                OldEmployeeModel.mother_lastname
+            ).order_by('rut')
         else:
-            data_query = self.db.query(EmployeeModel).join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).add_columns(EmployeeModel.id, EmployeeModel.rut, EmployeeModel.visual_rut, EmployeeModel.names, EmployeeModel.father_lastname, EmployeeModel.mother_lastname).order_by('rut')
+            # Query for EmployeeModel
+            data_query = self.db.query(EmployeeModel).join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).add_columns(
+                EmployeeModel.id,
+                EmployeeModel.rut,
+                EmployeeModel.visual_rut,
+                EmployeeModel.names,
+                EmployeeModel.father_lastname,
+                EmployeeModel.mother_lastname
+            ).order_by('rut')
 
-            if len(search_inputs) > 0:
-                if search_rut:
-                    data_query = data_query.filter(EmployeeModel.visual_rut.like(f"%{search_rut}%"))
-                if search_names:
-                    data_query = data_query.filter(EmployeeModel.names.like(f"%{search_names}%"))
-                if search_father_lastname:
-                    data_query = data_query.filter(EmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
-                if search_mother_lastname:
-                    data_query = data_query.filter(EmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
-                if search_branch_office_id:
-                    data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
-                if search_status_id:
-                    data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
+        if len(search_inputs) > 0:
+            if search_rut:
+                data_query = data_query.filter(EmployeeModel.visual_rut.like(f"%{search_rut}%"))
+            if search_names:
+                data_query = data_query.filter(EmployeeModel.names.like(f"%{search_names}%"))
+            if search_father_lastname:
+                data_query = data_query.filter(EmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
+            if search_mother_lastname:
+                data_query = data_query.filter(EmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
+            if search_branch_office_id:
+                data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
+            if search_status_id:
+                data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
 
+        total_items = data_query.count()
+        total_pages = (total_items + items_per_page - 1) // items_per_page
 
-            total_items = data_query.count()
-            total_pages = (total_items + items_per_page - 1) // items_per_page
+        if page < 1 or page > total_pages:
+            return "Invalid page number"
 
-            if page < 1 or page > total_pages:
-                return "Invalid page number"
+        data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
 
-            data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
+        if not data:
+            return "No data found"
 
-            if not data:
-                return "No data found"
-                            
+        # Serializar la lista de empleados directamente
+        serialized_data = [{
+            "id": employee.id,
+            "rut": employee.rut,
+            "visual_rut": employee.visual_rut,
+            "names": employee.names,
+            "father_lastname": employee.father_lastname,
+            "mother_lastname": employee.mother_lastname
+        } for employee in data]
+
         return {
-                "total_items": total_items,
-                "total_pages": total_pages,
-                "current_page": page,
-                "items_per_page": items_per_page,
-                "data": data
-            }
+            "total_items": total_items,
+            "total_pages": total_pages,
+            "current_page": page,
+            "items_per_page": items_per_page,
+            "data": serialized_data
+        }
 
     def validate_rut(self, rut):
         try:

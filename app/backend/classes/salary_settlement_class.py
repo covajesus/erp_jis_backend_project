@@ -26,8 +26,11 @@ class SalarySettlementClass:
                         DocumentEmployeeModel.document_type_id,
                         DocumentEmployeeModel.support,
                         DocumentEmployeeModel.status_id,
-                        DocumentEmployeeModel.id
-                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.id))
+                        DocumentEmployeeModel.id,
+                        EmployeeModel.names,
+                        EmployeeModel.father_lastname,
+                        EmployeeModel.mother_lastname
+                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
 
             total_items = data_query.count()
             total_pages = (total_items + items_per_page - 1) // items_per_page
@@ -52,7 +55,10 @@ class SalarySettlementClass:
                                 "document_type_id": item.document_type_id,
                                 "support": item.support,
                                 "status_id": item.status_id,
-                                "id": item.id
+                                "id": item.id,
+                                "names": item.names,
+                                "father_lastname": item.father_lastname,
+                                "mother_lastname": item.mother_lastname
                             }
                             for item in data
                         ]
@@ -133,6 +139,23 @@ class SalarySettlementClass:
             file = DropboxClass(self.db).get('/salary_settlements/', data.support)
 
             return file
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+    def store(self, salary_settlement_inputs, support):
+        try:
+            salary_settlement = DocumentEmployeeModel()
+            salary_settlement.status_id = salary_settlement_inputs['status_id']
+            salary_settlement.rut = salary_settlement_inputs['rut']
+            salary_settlement.document_type_id = salary_settlement_inputs['document_type_id']
+            salary_settlement.support = support
+            salary_settlement.added_date = datetime.now()
+            salary_settlement.updated_date = datetime.now()
+
+            self.db.add(salary_settlement)
+            self.db.commit()
+            return 1
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
