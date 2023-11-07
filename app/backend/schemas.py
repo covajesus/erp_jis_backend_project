@@ -249,21 +249,21 @@ class UpdateEmployeeLaborDatum(BaseModel):
     commune_id: int = None
     civil_state_id: int = None
     health_id: int = None
-    pention_id: int = None
+    pention_id: Union[int, None]
     job_position_id: int = None
     employee_type_id: int = None
     regime_id: int = None
     health_payment_id: int = None
     entrance_pention: Union[str, None]
     entrance_company: str = None
-    entrance_health: str = None
+    entrance_health: Union[str, None]
     salary: int = None
     collation: int = None
     locomotion: int = None
-    extra_health_payment_type_id: int = None
-    extra_health_amount: str = None
-    apv_payment_type_id: int = None
-    apv_amount: int = None
+    extra_health_payment_type_id: Union[int, None]
+    extra_health_amount: Union[str, None]
+    apv_payment_type_id: Union[int, None]
+    apv_amount: Union[int, None]
 
 class EmployeeExtra(BaseModel):
     rut: int
