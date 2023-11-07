@@ -19,7 +19,6 @@ class EmployeeClass:
                         outerjoin(SupervisorModel, SupervisorModel.branch_office_id == BranchOfficeModel.id). \
                         filter(SupervisorModel.rut == rut). \
                         order_by(EmployeeModel.rut)
-
                 else:
                     data_query = self.db.query(EmployeeModel).order_by(EmployeeModel.rut)
 
@@ -33,22 +32,53 @@ class EmployeeClass:
 
                 if not data:
                     return "No data found"
-                            
+
+                # Serializar los datos
+                if rol_id == 3:
+                    serialized_data = [{
+                        "id": employee.id,
+                        "rut": employee.rut,
+                        "visual_rut": employee.visual_rut,
+                        "names": employee.names,
+                        "father_lastname": employee.father_lastname,
+                        "mother_lastname": employee.mother_lastname
+                    } for employee, labor_datum, branch_office, supervisor in data]
+                else:
+                    serialized_data = [{
+                        "id": employee.id,
+                        "rut": employee.rut,
+                        "visual_rut": employee.visual_rut,
+                        "names": employee.names,
+                        "father_lastname": employee.father_lastname,
+                        "mother_lastname": employee.mother_lastname
+                    } for employee in data]
+
                 return {
                     "total_items": total_items,
                     "total_pages": total_pages,
                     "current_page": page,
                     "items_per_page": items_per_page,
-                    "data": data
+                    "data": serialized_data
                 }
             else:
                 data_query = self.db.query(EmployeeModel).order_by(EmployeeModel.rut).all()
 
-                return data_query
+                # Serializar los datos
+                serialized_data = [{
+                    "id": employee.id,
+                    "rut": employee.rut,
+                    "visual_rut": employee.visual_rut,
+                    "names": employee.names,
+                    "father_lastname": employee.father_lastname,
+                    "mother_lastname": employee.mother_lastname
+                } for employee in data_query]
+
+                return serialized_data
 
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
     
     def search(self, search_inputs, page=1, items_per_page=10):
         if len(search_inputs) > 0:
