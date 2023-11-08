@@ -12,14 +12,28 @@ class EndDocumentClass:
     def __init__(self, db):
         self.db = db
 
-    def get(self, rut):
+    def get_all(self, rut):
         try:
-            data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.added_date, DocumentEmployeeModel.support, DocumentEmployeeModel.rut, DocumentEmployeeModel.id). \
-                        filter(DocumentEmployeeModel.rut == rut). \
-                        filter(DocumentEmployeeModel.document_type_id == 22). \
-                        order_by(desc(DocumentEmployeeModel.id)). \
-                        first()
-            
+            data = self.db.query(
+                DocumentEmployeeModel.status_id,
+                EndDocumentModel.causal_id,
+                EndDocumentModel.fertility_proportional_days,
+                EndDocumentModel.fertility_proportional,
+                EndDocumentModel.indemnity_years_service,
+                EndDocumentModel.voluntary_indemnity,
+                EndDocumentModel.substitute_compensation,
+                EndDocumentModel.total,
+                DocumentEmployeeModel.added_date,
+                DocumentEmployeeModel.support,
+                DocumentEmployeeModel.rut,
+                DocumentEmployeeModel.id). \
+            outerjoin(
+                EndDocumentModel, EndDocumentModel.document_employee_id == DocumentEmployeeModel.id). \
+            filter(
+                DocumentEmployeeModel.rut == rut,
+                DocumentEmployeeModel.document_type_id == 22
+            ).order_by(desc(DocumentEmployeeModel.id)).all()
+
             if not data:
                 return 0
 
@@ -147,4 +161,3 @@ class EndDocumentClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-
