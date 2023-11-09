@@ -37,6 +37,13 @@ def edit(rut:int, get_type_id:int, session_user: UserLogin = Depends(get_current
 
     return {"message": data}
 
+@family_core_data.get("/family/edit/{id}")
+def edit(id:int, get_type_id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+
+    data = FamilyCoreDatumClass(db).get("id", id, get_type_id)
+
+    return {"message": data}
+
 @family_core_data.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     family_core_data = FamilyCoreDatumClass(db).get("id", id, 1)
