@@ -509,7 +509,6 @@ class UpdateFamilyCoreDatum(BaseModel):
     father_lastname: str = None
     mother_lastname: str = None
     born_date: str = None
-    updated_date: Union[datetime, None]
 
     @classmethod
     def as_form(cls, 
