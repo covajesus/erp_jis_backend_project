@@ -310,6 +310,29 @@ class UpdateAlertType(BaseModel):
     alert_type: str = None
     updated_date: Union[datetime, None]
 
+class GenerateHonorary(BaseModel):
+    reason_id: int
+    branch_office_id: int
+    foreigner_id: int
+    bank_id: int
+    schedule_id: int
+    region_id: int
+    commune_id: int
+    requested_by: int
+    status_id: int
+    accountability_status_id: int
+    employee_to_replace: int
+    rut: str
+    full_name: str
+    email: str
+    address: str
+    account_number: str
+    start_date: str
+    end_date: str
+    observation: str
+    amount: int
+    observation: str
+
 class Honorary(BaseModel):
     reason_id: int
     branch_office_id: int

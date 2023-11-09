@@ -159,3 +159,20 @@ class SalarySettlementClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    def store_multiple(self, salary_settlement_inputs, support):
+        try:
+            salary_settlement = DocumentEmployeeModel()
+            salary_settlement.status_id = 3
+            salary_settlement.rut = salary_settlement_inputs['rut']
+            salary_settlement.document_type_id = 5
+            salary_settlement.support = support
+            salary_settlement.added_date = datetime.now()
+            salary_settlement.updated_date = datetime.now()
+
+            self.db.add(salary_settlement)
+            self.db.commit()
+            return 1
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"

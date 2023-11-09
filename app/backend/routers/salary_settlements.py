@@ -7,6 +7,7 @@ from app.backend.auth.auth_user import get_current_active_user
 from fastapi import UploadFile, File
 import os
 from app.backend.classes.dropbox_class import DropboxClass
+from typing import List
 
 salary_settlements = APIRouter(
     prefix="/salary_settlements",
@@ -47,3 +48,22 @@ def store(form_data: SalarySettlement = Depends(SalarySettlement.as_form), suppo
     data = SalarySettlementClass(db).store(form_data, filename)
 
     return {"message": data}
+
+@salary_settlements.post("/multiple_store")
+def multiple_store(files: List[UploadFile] = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    dropbox_client = DropboxClass(db)
+
+    for file in files:
+        file_detail = file.filename.split('_')
+
+        form_data = {}
+        form_data['rut'] = file_detail[3]
+
+        print(form_data['rut'])
+
+        filename = dropbox_client.upload(name=str(form_data['rut']), description='liquidacion', data=file,
+                                 dropbox_path='/salary_settlements/', computer_path=os.path.join(os.path.dirname(__file__)))
+
+        data = SalarySettlementClass(db).store_multiple(form_data, filename)
+
+    return {"message": 1}
