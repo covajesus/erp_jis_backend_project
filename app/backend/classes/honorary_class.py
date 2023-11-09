@@ -101,7 +101,32 @@ class HonoraryClass:
     def get(self, field, value):
         try:
             data = self.db.query(HonoraryModel).filter(getattr(HonoraryModel, field) == value).first()
-            return data
+
+            serialized_data = {
+                "reason_id": data.reason_id,
+                "branch_office_id": data.branch_office_id,
+                "foreigner_id": data.foreigner_id,
+                "bank_id": data.bank_id,
+                "schedule_id": data.schedule_id,
+                "region_id": data.region_id,
+                "commune_id": data.commune_id,
+                "requested_by": data.requested_by,
+                "status_id": data.status_id,
+                "accountability_status_id": data.accountability_status_id,
+                "employee_to_replace": str(data.employee_to_replace),
+                "rut": str(data.rut),
+                "full_name": data.full_name,
+                "email": data.email,
+                "address": str(data.address),
+                "account_number": str(data.account_number),
+                "start_date": str(data.start_date),
+                "end_date": str(data.end_date),
+                "amount": str(data.amount),
+                "observation": str(data.observation),
+            }
+
+            return json.dumps(serialized_data)
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
@@ -127,6 +152,7 @@ class HonoraryClass:
             honorary.account_number = honorary_inputs['account_number']
             honorary.start_date = honorary_inputs['start_date']
             honorary.end_date = honorary_inputs['end_date']
+            honorary.observation = honorary_inputs['observation']
             honorary.added_date = datetime.now()
             honorary.updated_date = datetime.now()
 

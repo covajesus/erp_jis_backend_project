@@ -329,6 +329,7 @@ class Honorary(BaseModel):
     account_number: str
     start_date: str
     end_date: str
+    observation: str
     amount: int
     observation: str
 
