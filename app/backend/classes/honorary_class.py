@@ -163,6 +163,38 @@ class HonoraryClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
+    def generate(self, honorary_inputs):
+        try:
+            honorary = HonoraryModel()
+            honorary.reason_id = honorary_inputs['reason_id']
+            honorary.branch_office_id = honorary_inputs['branch_office_id']
+            honorary.foreigner_id = honorary_inputs['foreigner_id']
+            honorary.bank_id = honorary_inputs['bank_id']
+            honorary.schedule_id = honorary_inputs['schedule_id']
+            honorary.region_id = honorary_inputs['region_id']
+            honorary.commune_id = honorary_inputs['commune_id']
+            honorary.requested_by = honorary_inputs['requested_by']
+            honorary.status_id = honorary_inputs['status_id']
+            honorary.accountability_status_id = honorary_inputs['accountability_status_id']
+            honorary.employee_to_replace = honorary_inputs['employee_to_replace']
+            honorary.rut = honorary_inputs['rut']
+            honorary.full_name = honorary_inputs['full_name']
+            honorary.email = honorary_inputs['email']
+            honorary.address = honorary_inputs['address']
+            honorary.account_number = honorary_inputs['account_number']
+            honorary.start_date = honorary_inputs['start_date']
+            honorary.end_date = honorary_inputs['end_date']
+            honorary.observation = honorary_inputs['observation']
+            honorary.added_date = datetime.now()
+            honorary.updated_date = datetime.now()
+
+            self.db.add(honorary)
+            self.db.commit()
+            return 1
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
     def delete(self, id):
         try:
             data = self.db.query(HonoraryModel).filter(HonoraryModel.id == id).first()
