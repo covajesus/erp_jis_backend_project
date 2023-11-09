@@ -25,7 +25,10 @@ def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user
             'no_valid_days': vacation.no_valid_days,
             'support': vacation.support,
         }
-
+    # valida que las vacaiones tienen datos para transferir a la tabla de vacaciones antiguas (old_vacations)
+        if old_vacation_inputs['since'] is None or old_vacation_inputs['until'] is None or old_vacation_inputs['days'] is None or old_vacation_inputs['no_valid_days'] is None:
+            return {"message": f"Las vacaciones del RUT {rut} no tienen datos para transferir"}
+        
         OldVacationClass(db).store(old_vacation_inputs)
         # VacationClass(db).delete(vacation.document_employee_id)
 
