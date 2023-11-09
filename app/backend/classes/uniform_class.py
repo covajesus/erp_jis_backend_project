@@ -48,6 +48,7 @@ class UniformClass:
 
     def store(self, Uniform_inputs):
         try:
+            print(Uniform_inputs)
             data = UniformModel(**Uniform_inputs)
             self.db.add(data)
             self.db.commit()
