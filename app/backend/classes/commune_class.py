@@ -7,9 +7,9 @@ class CommuneClass:
     def get_all(self, region_id = ''):
         try:
             if region_id == '':
-                data = self.db.query(CommuneModel).order_by(CommuneModel.id).all()
+                data = self.db.query(CommuneModel).order_by(CommuneModel.commune).all()
             else :
-                data = self.db.query(CommuneModel).filter(CommuneModel.region_id == region_id).order_by(CommuneModel.id).all()
+                data = self.db.query(CommuneModel).filter(CommuneModel.region_id == region_id).order_by(CommuneModel.commune).all()
             if not data:
                 return "No data found"
             return data
@@ -19,7 +19,7 @@ class CommuneClass:
     
     def get(self, field, value):
         try:
-            data = self.db.query(CommuneModel).filter(getattr(CommuneModel, field) == value).first()
+            data = self.db.query(CommuneModel).filter(getattr(CommuneModel, field) == value).order_by(CommuneModel.commune).first()
             return data
         except Exception as e:
             error_message = str(e)
