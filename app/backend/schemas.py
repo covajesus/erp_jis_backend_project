@@ -195,6 +195,7 @@ class UpdateUser(BaseModel):
 class Uniform(BaseModel):
     uniform_type_id: int
     rut: int
+    size: str
     delivered_date: str
     added_date: datetime
     updated_date: Union[datetime, None]

@@ -205,6 +205,7 @@ class UniformModel(Base):
 
     id = Column(Integer, primary_key=True)
     uniform_type_id = Column(Integer, ForeignKey('uniform_types.id'))
+    size = Column(String(255))
     rut = Column(Integer)
     delivered_date = Column(Date())
     added_date = Column(DateTime())
