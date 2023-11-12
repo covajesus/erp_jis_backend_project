@@ -21,6 +21,7 @@ class UniformClass:
                 UniformModel.id,
                 UniformModel.uniform_type_id,
                 UniformModel.rut,
+                UniformModel.size,
                 UniformModel.delivered_date,
                 UniformTypeModel.uniform_type
             ).\
@@ -36,6 +37,7 @@ class UniformClass:
                     "id": record.id,
                     "uniform_type_id": record.uniform_type_id,
                     "rut": record.rut,
+                    "size": record.size,
                     "delivered_date": delivered_date_str,
                     "uniform_type": record.uniform_type
                 }
