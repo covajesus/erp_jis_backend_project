@@ -41,6 +41,5 @@ urllib3==2.0.4
 uvicorn==0.23.2
 Werkzeug==2.3.7
 beautifulsoup4==4.12.2
-httpx
+httpx==0.25.1
 Pandas==2.1.3
-```
