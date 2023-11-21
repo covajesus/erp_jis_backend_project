@@ -195,6 +195,7 @@ class UpdateUser(BaseModel):
 class Uniform(BaseModel):
     uniform_type_id: int
     rut: int
+    size: str
     delivered_date: str
     added_date: datetime
     updated_date: Union[datetime, None]
@@ -261,7 +262,7 @@ class UpdateEmployeeLaborDatum(BaseModel):
     collation: int = None
     locomotion: int = None
     extra_health_payment_type_id: Union[int, None]
-    extra_health_amount: Union[int, None]
+    extra_health_amount: Union[float, None]
     apv_payment_type_id: Union[int, None]
     apv_amount: Union[int, None]
 

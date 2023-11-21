@@ -1,14 +1,40 @@
-from app.backend.db.models import  OldVacationModel
+import json
+from sqlalchemy import desc
+from app.backend.db.models import  OldDocumentEmployeeModel, OldVacationModel
 from datetime import datetime
 
 class OldVacationClass:
     def __init__(self, db):
         self.db = db
 
-    def get(self, field, value):
+    def get_all(self, rut):
         try:
-            data = self.db.query(OldVacationModel).filter(getattr(OldVacationModel, field) == value).first()
-            return data
+            # Query para obtener todas las vacaciones
+            data_query = self.db.query(OldVacationModel).filter(OldVacationModel.rut == rut)
+
+            # Ejecuta la consulta y obtén todos los resultados
+            data = data_query.all()
+
+            if not data:
+                return "No data found"
+
+            # Serializa los datos en una estructura de diccionario
+            serialized_data = [
+                {
+                    "rut": item.rut,
+                    "id": item.id,
+                    "since": item.since.strftime('%Y-%m-%d') if item.since else None,
+                    "until": item.until.strftime('%Y-%m-%d') if item.until else None,
+                    "days": item.days,
+                    "no_valid_days": item.no_valid_days
+                }
+                for item in data
+            ]
+
+            # Convierte el resultado a una cadena JSON
+            serialized_result = json.dumps(serialized_data)
+
+            return serialized_result
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
