@@ -15,12 +15,19 @@ class FamilyCoreDatumClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-    
+
+    def get_by_id(self, id):
+        data = self.db.query(FamilyCoreDatumModel).filter(FamilyCoreDatumModel.id == id).first()
+        if not data:
+            return "No data found"
+        return data
+
+
     def get(self, field, value, one=1):
         try:
             if one == 1:
                 data = self.db.query(FamilyCoreDatumModel).filter(getattr(FamilyCoreDatumModel, field) == value).first()
-
+                print(F'FamilyCoreDatumModel: {data}')
                 # Serializar los datos de un solo objeto FamilyCoreDatumModel
                 serialized_data = {
                     "id": data.id,

@@ -4,6 +4,7 @@ import random
 from datetime import datetime, timedelta
 from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
 import calendar
+import pandas 
 
 class HelperClass:
 
@@ -28,7 +29,7 @@ class HelperClass:
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
-        if end_date.weekday() == 5:  # Si es viernes (0=Lunes, 6=Domingo)
+        if end_date.weekday() == 4:  # Si es viernes (0=Lunes, 6=Domingo)
             end_date += timedelta(days=2)  # Suma 2 dias
         weekend_count = 0
         delta = timedelta(days=1)
@@ -54,16 +55,13 @@ class HelperClass:
 
         delta = date2 - date1
 
-        years = delta.days/365
-        months = self.split(end_year,'-')
+        years = delta.days // 365  # Use floor division to get whole number of years
+        remaining_months = (delta.days % 365) // 30  # Get the remaining months
 
-        if years >= 1:
-            if int(months[1]) >=6:
-                years = years + 1
-        else:
-            years = 0
+        if remaining_months >= 6:
+            years += 1  # If remaining months are 6 or more, consider it as an additional year
 
-        return math.ceil(years)
+        return years
 
     def months_to_years(self, months):
         years = int(months/12)
@@ -222,79 +220,27 @@ class HelperClass:
         start_obj = datetime.strptime(since, format)
         end_obj = datetime.strptime(until, format)
 
-        # Calcula la diferencia entre las dos fechas
-        diference = end_obj - start_obj
+        periods = []
 
-        # Obtiene la cantidad de días
-        days = diference.days
+        while start_obj <= end_obj:
+            if start_obj.month == end_obj.month:
+                # Si estamos en el mismo mes, el periodo termina en la fecha de fin
+                period_end = end_obj
+            else:
+                # Si estamos en diferentes meses, el periodo termina al final del mes actual
+                next_month = start_obj.replace(day=28) + timedelta(days=4)  # Este será el próximo mes, para cualquier mes
+                period_end = next_month - timedelta(days=next_month.day)  # Restamos la cantidad de días que ya pasaron en el próximo mes
 
-        # Si las fechas están en el mismo mes, no suma 1, de lo contrario, suma 1
-        if start_obj.month != end_obj.month:
-            days += 1
+            # Calculamos la cantidad de días en este periodo
+            days = (period_end - start_obj).days + 1
 
-        splited_since = since.split("-")
-        splited_until = until.split("-")
-        how_many_months = HelperClass.count_months(since, until)
+            # Agregamos este periodo a la lista
+            periods.append([start_obj.strftime(format), period_end.strftime(format), days])
 
-        if how_many_months == 1:
-            first_since = since
-            first_until = until
-            d1 = datetime.strptime(first_since, "%Y-%m-%d")
-            d2 = datetime.strptime(first_until, "%Y-%m-%d")
-            first_days = abs((d2 - d1).days)
-            first_days = first_days + 1
+            # El próximo periodo comienza al día siguiente
+            start_obj = period_end + timedelta(days=1)
 
-            data = [[first_since, first_until, first_days]]
-        elif how_many_months == 2:
-            final_day = self.final_day_month(str(splited_since[1]))
-            final_day = final_day['end_day']
-            first_since = since
-            first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
-            d1 = datetime.strptime(first_since, "%Y-%m-%d")
-            d2 = datetime.strptime(first_until, "%Y-%m-%d")
-            first_days = abs((d2 - d1).days)
-            first_days = first_days + 1
-
-            second_since = splited_until[0] +'-'+ splited_until[1] + '-01'
-            second_until = until
-            d1 = datetime.strptime(second_since, "%Y-%m-%d")
-            d2 = datetime.strptime(second_until, "%Y-%m-%d")
-            second_days = abs((d2 - d1).days)
-            second_days = second_days + 1
-
-            data = [[first_since, first_until, first_days], [second_since, second_until, second_days]]
-        else:
-            final_day = self.final_day_month(str(splited_since[1]))
-            final_day = final_day['end_day']
-            first_since = since
-            first_until = splited_since[0] +'-'+ splited_since[1] + '-' + str(final_day)
-            d1 = datetime.strptime(first_since, "%Y-%m-%d")
-            d2 = datetime.strptime(first_until, "%Y-%m-%d")
-            first_days = abs((d2 - d1).days)
-            first_days = first_days + 1
-            
-            middle_month = int(splited_since[1]) + 1
-            final_day = self.final_day_month(str(middle_month))
-            final_day = final_day['end_day']
-            second_since = str(splited_until[0]) +'-'+ str(middle_month) + '-01'
-            second_until = str(splited_until[0]) +'-'+ str(middle_month) + '-' + str(final_day)
-            d1 = datetime.strptime(second_since, "%Y-%m-%d")
-            d2 = datetime.strptime(second_until, "%Y-%m-%d")
-            second_days = abs((d2 - d1).days)
-            second_days = second_days + 1
-
-            splited_since = second_since.split("-")
-            splited_until = second_until.split("-")
-
-            middle_month = int(splited_since[1]) + 1
-            third_since = splited_until[0] +'-'+ str(middle_month) + '-01'
-            third_until = until
-            d1 = datetime.strptime(third_since, "%Y-%m-%d")
-            d2 = datetime.strptime(third_until, "%Y-%m-%d")
-            third_days = abs((d2 - d1).days)
-            third_days = third_days + 1
-
-        return data
+        return periods
 
     def progressive_vacation_days(self, years, level):
         total = 0
@@ -359,17 +305,8 @@ class HelperClass:
         # Convertir la fecha de entrada a un objeto datetime
         date_dt = datetime.strptime(date, "%Y-%m-%d")
         
-        # Calcular el mes siguiente
-        year = date_dt.year
-        month = date_dt.month
-        if month == 12:
-            year += 1
-            month = 1
-        else:
-            month += 1
-        
-        # Crear una nueva fecha con el mes siguiente
-        next_month_date = datetime(year, month, date_dt.day)
+        # Calcular el último día hábil del mes siguiente
+        next_month_end = pandas.date_range(start=date_dt, periods=2, freq='M')[1]
         
         # Formatear la fecha como "YYYY-MM-DD"
-        return next_month_date.strftime("%Y-%m-%d")
+        return next_month_end.strftime("%Y-%m-%d")

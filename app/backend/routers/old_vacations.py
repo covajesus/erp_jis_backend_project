@@ -11,6 +11,12 @@ old_vacations = APIRouter(
     tags=["Old_Vacations"]
 )
 
+@old_vacations.get("/all/{rut}")
+def index(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = OldVacationClass(db).get_all(rut)
+
+    return {"message": data}
+
 @old_vacations.post("/transfer/{rut}")
 def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     vacations = VacationClass(db).get_all_with_no_pagination(rut)

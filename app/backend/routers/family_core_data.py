@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends, File, UploadFile
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
@@ -37,6 +38,13 @@ def edit(rut:int, get_type_id:int, session_user: UserLogin = Depends(get_current
 
     return {"message": data}
 
+@family_core_data.get("/edit/{id}")
+def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+
+    data = FamilyCoreDatumClass(db).get_by_id(id)
+
+    return {"message": data}
+
 @family_core_data.get("/family/edit/{id}")
 def edit(id:int, get_type_id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
 
@@ -73,9 +81,10 @@ def update(id: int, form_data: UpdateFamilyCoreDatum = Depends(UpdateFamilyCoreD
 
         filename = dropbox_client.upload(name=str(form_data.employee_rut) + "_" + str(form_data.rut), description='partida_nacimiento', data=support,
                                  dropbox_path='/birth_certificates/', computer_path=os.path.join(os.path.dirname(__file__)))
+        family_core_data_dict = json.loads(family_core_data)
 
-        if family_core_data.support != None or family_core_data.support != '': 
-            response = DropboxClass(db).delete('/birth_certificates/', str(family_core_data.support))
+        if family_core_data_dict['support'] != None and family_core_data_dict['support'] != '': 
+            response = DropboxClass(db).delete('/birth_certificates/', str(family_core_data_dict['support']))
 
         data = FamilyCoreDatumClass(db).update(id, form_data, filename)
     else:
