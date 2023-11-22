@@ -586,6 +586,16 @@ class ProgressiveVacationModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+
+class PayrollItemModel(Base):
+    __tablename__ = 'payroll_items'
+
+    id = Column(Integer, primary_key=True)
+    item_type_id = Column(Integer)
+    item = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class MedicalLicenseModel(Base):
     __tablename__ = 'medical_licenses'
 
