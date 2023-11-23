@@ -24,6 +24,9 @@ class PentionClass:
     
     def store(self, pention_inputs):
         try:
+            last_id = self.db.query(PentionModel).order_by(PentionModel.id.desc()).first()
+            new_id = last_id.id + 1
+            pention_inputs['id'] = new_id
             data = PentionModel(**pention_inputs)
             self.db.add(data)
             self.db.commit()

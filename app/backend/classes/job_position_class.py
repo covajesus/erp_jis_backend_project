@@ -47,7 +47,7 @@ class JobPositionClass:
         
     def update(self, id, jobPosition):
         existing_job_position = self.db.query(JobPositionModel).filter(JobPositionModel.id == id).one_or_none()
-
+        print(jobPosition)
         if not existing_job_position:
             return "No data found"
 

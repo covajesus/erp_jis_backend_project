@@ -237,8 +237,8 @@ class OldEmployeeLaborDatum(BaseModel):
     salary: int = None
     collation: int = None
     locomotion: int = None
-    extra_health_amount: int = None
-    apv_amount: int = None
+    extra_health_amount: str = None
+    apv_amount: str = None
 
 class UpdateEmployeeLaborDatum(BaseModel):
     rut: str = None
