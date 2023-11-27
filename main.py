@@ -27,6 +27,7 @@ from app.backend.routers.medical_licenses import medical_licenses
 from app.backend.routers.rols import rols
 from app.backend.routers.news import news
 from app.backend.routers.principals import principals
+from app.backend.routers.zones import zones
 from app.backend.routers.communes import communes
 from app.backend.routers.healths import healths
 from app.backend.routers.employee_bank_accounts import employee_bank_accounts
@@ -109,6 +110,7 @@ app.include_router(medical_licenses)
 app.include_router(rols)
 app.include_router(news)
 app.include_router(principals)
+app.include_router(zones)
 app.include_router(communes)
 app.include_router(healths)
 app.include_router(employee_bank_accounts)

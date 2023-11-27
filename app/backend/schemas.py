@@ -649,8 +649,18 @@ class Principal(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class Zone(BaseModel):
+    zone: str
+    added_date: datetime
+    updated_date: Union[datetime, None]
+    
+
 class UpdatePrincipal(BaseModel):
     principal: str = None
+    updated_date: Union[datetime, None]
+
+class UpdateZone(BaseModel):
+    zone: str = None
     updated_date: Union[datetime, None]
 
 class Commune(BaseModel):

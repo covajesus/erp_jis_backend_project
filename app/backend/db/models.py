@@ -19,6 +19,15 @@ class BranchOfficeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+
+class ZoneModel(Base):
+    __tablename__ = 'zones'
+
+    id = Column(Integer, primary_key=True)
+    zone = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class GenderModel(Base):
     __tablename__ = 'genders'
 
