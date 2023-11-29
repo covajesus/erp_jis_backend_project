@@ -178,6 +178,27 @@ class EmployeeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class TurnModel(Base):
+    __tablename__ = 'turns'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(Integer)
+    visual_rut = Column(String(20))
+    names = Column(String(255))
+    father_lastname = Column(String(255))
+    mother_lastname = Column(String(255))
+    gender_id = Column(Integer)
+    nationality_id = Column(Integer)
+    signature_type_id = Column(Integer)
+    personal_email = Column(String(255))
+    cellphone = Column(String(100))
+    born_date = Column(Date())
+    picture = Column(String(255))
+    signature = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+
 class UserModel(Base):
     __tablename__ = 'users'
 

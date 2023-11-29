@@ -40,6 +40,11 @@ def edit(rut:int, session_user: UserLogin = Depends(get_current_active_user), db
     data = EmployeeLaborDatumClass(db).get("rut", rut)
     return {"message": data}
 
+@employee_labor_data.get("/edit/branch/{branch_office}")
+def get_by_Branch_office(branch_office:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = EmployeeLaborDatumClass(db).get_all_by_branch_office(branch_office)
+    return {"message": data}
+
 @employee_labor_data.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = EmployeeLaborDatumClass(db).delete(id)
