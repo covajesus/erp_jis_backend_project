@@ -27,6 +27,7 @@ from app.backend.routers.medical_licenses import medical_licenses
 from app.backend.routers.rols import rols
 from app.backend.routers.news import news
 from app.backend.routers.principals import principals
+from app.backend.routers.zones import zones
 from app.backend.routers.communes import communes
 from app.backend.routers.healths import healths
 from app.backend.routers.employee_bank_accounts import employee_bank_accounts
@@ -63,6 +64,7 @@ from app.backend.routers.old_medical_licenses import old_medical_licenses
 from app.backend.routers.provisional_indicators import provisional_indicators
 from app.backend.routers.payrolls import payrolls
 from app.backend.routers.payroll_periods import payroll_periods
+from app.backend.routers.payroll_items import payroll_items
 app = FastAPI()
 
 os.environ['SECRET_KEY'] = '7de4c36b48fce8dcb3a4bb527ba62d789ebf3d3a7582472ee49d430b01a7f868'
@@ -110,6 +112,7 @@ app.include_router(medical_licenses)
 app.include_router(rols)
 app.include_router(news)
 app.include_router(principals)
+app.include_router(zones)
 app.include_router(communes)
 app.include_router(healths)
 app.include_router(employee_bank_accounts)
@@ -145,6 +148,7 @@ app.include_router(old_medical_licenses)
 app.include_router(provisional_indicators)
 app.include_router(payrolls)
 app.include_router(payroll_periods)
+app.include_router(payroll_items)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

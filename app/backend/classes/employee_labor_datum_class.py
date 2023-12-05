@@ -17,6 +17,24 @@ class EmployeeLaborDatumClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+    
+    def get_all_by_branch_office(self, branch_office_id):
+        try:
+            results = self.db.query(EmployeeModel, EmployeeLaborDatumModel.employee_type_id).\
+                outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).\
+                filter(EmployeeLaborDatumModel.branch_office_id == branch_office_id).\
+                order_by(EmployeeModel.id).all()
+            if not results:
+                return "No data found"
+            
+            data = []
+            for employee, employee_type_id in results:
+                employee.employee_type_id = employee_type_id
+                data.append(employee)
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
 
     def get(self, field, value):
         try:

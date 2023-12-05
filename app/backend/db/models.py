@@ -19,6 +19,15 @@ class BranchOfficeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+
+class ZoneModel(Base):
+    __tablename__ = 'zones'
+
+    id = Column(Integer, primary_key=True)
+    zone = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class GenderModel(Base):
     __tablename__ = 'genders'
 
@@ -168,6 +177,27 @@ class EmployeeModel(Base):
     signature = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
+
+class TurnModel(Base):
+    __tablename__ = 'turns'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(Integer)
+    visual_rut = Column(String(20))
+    names = Column(String(255))
+    father_lastname = Column(String(255))
+    mother_lastname = Column(String(255))
+    gender_id = Column(Integer)
+    nationality_id = Column(Integer)
+    signature_type_id = Column(Integer)
+    personal_email = Column(String(255))
+    cellphone = Column(String(100))
+    born_date = Column(Date())
+    picture = Column(String(255))
+    signature = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 
 class UserModel(Base):
     __tablename__ = 'users'
@@ -744,6 +774,16 @@ class ProgressiveVacationModel(Base):
     days = Column(Integer)
     no_valid_days = Column(Integer)
     support = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+
+class PayrollItemModel(Base):
+    __tablename__ = 'payroll_items'
+
+    id = Column(Integer, primary_key=True)
+    item_type_id = Column(Integer)
+    item = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

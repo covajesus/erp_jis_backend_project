@@ -115,7 +115,6 @@ class Bank(BaseModel):
 class UpdateBank(BaseModel):
     visibility_id: int = None
     bank: str = None
-    updated_date: str = None
 
 class Segment(BaseModel):
     segment: str
@@ -238,8 +237,8 @@ class OldEmployeeLaborDatum(BaseModel):
     salary: int = None
     collation: int = None
     locomotion: int = None
-    extra_health_amount: int = None
-    apv_amount: int = None
+    extra_health_amount: str = None
+    apv_amount: str = None
 
 class UpdateEmployeeLaborDatum(BaseModel):
     rut: str = None
@@ -391,6 +390,13 @@ class UpdateUniformType(BaseModel):
 class JobPosition(BaseModel):
     job_position: str
     functions: str
+    added_date: datetime
+    updated_date: Union[datetime, None]
+
+
+class PayrollItem(BaseModel):
+    item_type_id: int
+    item: str
     added_date: datetime
     updated_date: Union[datetime, None]
 
@@ -711,8 +717,18 @@ class Principal(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class Zone(BaseModel):
+    zone: str
+    added_date: datetime
+    updated_date: Union[datetime, None]
+    
+
 class UpdatePrincipal(BaseModel):
     principal: str = None
+    updated_date: Union[datetime, None]
+
+class UpdateZone(BaseModel):
+    zone: str = None
     updated_date: Union[datetime, None]
 
 class Commune(BaseModel):
@@ -982,6 +998,9 @@ class ForgotPassword(BaseModel):
 class EmployeeList(BaseModel):
     rut: int
     rol_id: int
+    page: int
+
+class PayrollItemList(BaseModel):
     page: int
 
 class AlertList(BaseModel):
