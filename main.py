@@ -6,6 +6,7 @@ from app.backend.routers.genders import genders
 from app.backend.routers.nationalities import nationalities
 from app.backend.routers.pentions import pentions
 from app.backend.routers.banks import banks
+from app.backend.routers.turns import turns
 from app.backend.routers.account_types import account_types
 from app.backend.routers.regions import regions
 from app.backend.routers.employees import employees
@@ -74,7 +75,7 @@ os.environ['ALGORITHM'] = 'HS256'
 origins = [
     "*",
     "http://localhost:5173",  # Replace with your frontend's URL
-    "https://apijis.com",
+    "http://localhost:8000",
 ]
 
 # Agrega el middleware de CORS a la aplicación
@@ -91,6 +92,7 @@ app.include_router(genders)
 app.include_router(nationalities)
 app.include_router(pentions)
 app.include_router(banks)
+app.include_router(turns)
 app.include_router(account_types)
 app.include_router(regions)
 app.include_router(employees)

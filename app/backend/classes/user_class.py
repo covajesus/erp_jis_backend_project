@@ -24,6 +24,15 @@ class UserClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+
+    def get_supervisor(self):
+        try:
+            data = self.db.query(UserModel).order_by(UserModel.nickname).filter(UserModel.rol_id == 3).all()
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"  
     
     def store(self, user_inputs):
         numeric_rut = HelperClass().numeric_rut(user_inputs['rut'])
