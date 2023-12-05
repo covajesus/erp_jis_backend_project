@@ -424,6 +424,9 @@ class DocumentType(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class OpenPeriodPayroll(BaseModel):
+    period: str = None
+
 class EndDocument(BaseModel):
     causal_id: int = None
     document_type_id: int = None
@@ -436,7 +439,6 @@ class EndDocument(BaseModel):
     fertility_proportional: int = None
     total: int = None
     
-
 class UpdateDocumentType(BaseModel):
     document_type: str = None
     document_group_id: int = None
@@ -500,6 +502,72 @@ class OldFamilyCoreDatum(BaseModel):
     father_lastname: str
     mother_lastname: str
     born_date: str
+
+class ProvisionalIndicator(BaseModel):
+    period: str
+    uf_value_current_month: str
+    uf_value_last_month: str
+    utm_value_current_month: str
+    uta_value_current_month: str
+    cap_income_tax_afp: str
+    cap_income_tax_ips: str
+    cap_income_tax_unemployment: str
+    minimun_income_tax_dependent_independet: str
+    minimun_income_tax_under_18_over_65: str
+    minimun_income_tax_domestic_worker: str
+    minimun_income_tax_non_remunerational: str
+    voluntary_pension_savings_monthly: str
+    voluntary_pension_savings_annual: str
+    agreed_deposit_annual: str
+    indefinite_term_worker: str
+    fixed_term_worker: str
+    indefinite_term_worker_11_years: str
+    domestic_worker: str
+    indefinite_term_employeer: str
+    fixed_term_employeer: str
+    indefinite_term_employeer_11_years: str
+    domestic_employeer: str
+    capital_dependent_rate_afp: str
+    capital_dependent_sis: str
+    capital_independent_rate_afp: str
+    cuprum_dependent_rate_afp: str
+    cuprum_dependent_sis: str
+    cuprum_independent_rate_afp: str
+    habitat_dependent_rate_afp: str
+    habitat_dependent_sis: str
+    habitat_independent_rate_afp: str
+    planvital_dependent_rate_afp: str
+    planvital_dependent_sis: str
+    planvital_independent_rate_afp: str
+    provida_dependent_rate_afp: str
+    provida_dependent_sis: str
+    provida_independent_rate_afp: str
+    modelo_dependent_rate_afp: str
+    modelo_dependent_sis: str
+    modelo_independent_rate_afp: str
+    uno_dependent_rate_afp: str
+    uno_dependent_sis_input: str
+    uno_independent_rate_afp: str
+    a_family_assignment_amount: str
+    a_family_assignment_rent_requirement_input_minimum_value: str
+    a_family_assignment_rent_requirement_input_top_value: str
+    b_family_assignment_amount: str
+    b_family_assignment_rent_requirement_input_minimum_value: str
+    b_family_assignment_rent_requirement_input_top_value: str
+    c_family_assignment_amount: str
+    c_family_assignment_rent_requirement_input_minimum_value: str
+    c_family_assignment_rent_requirement_input_top_value: str
+    d_family_assignment_amount: str
+    d_family_assignment_rent_requirement_input_minimum_value: str
+    d_family_assignment_rent_requirement_input_top_value: str
+    hard_work_porcentage: str
+    hard_work_employeer: str
+    hard_work_worker: str
+    less_hard_work_porcentage: str
+    less_hard_work_employeer: str
+    less_hard_work_worker: str
+    distribution_7_percent_health_employeer_ccaf: str
+    distribution_7_percent_health_employeer_fonasa: str
 
 class UpdateFamilyCoreDatum(BaseModel):
     family_type_id: int = None

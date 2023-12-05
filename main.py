@@ -61,6 +61,8 @@ from app.backend.routers.old_family_core_data import old_family_core_data
 from app.backend.routers.old_vacations import old_vacations
 from app.backend.routers.old_medical_licenses import old_medical_licenses
 from app.backend.routers.provisional_indicators import provisional_indicators
+from app.backend.routers.payrolls import payrolls
+from app.backend.routers.payroll_periods import payroll_periods
 app = FastAPI()
 
 os.environ['SECRET_KEY'] = '7de4c36b48fce8dcb3a4bb527ba62d789ebf3d3a7582472ee49d430b01a7f868'
@@ -141,7 +143,8 @@ app.include_router(old_family_core_data)
 app.include_router(old_vacations)
 app.include_router(old_medical_licenses)
 app.include_router(provisional_indicators)
-
+app.include_router(payrolls)
+app.include_router(payroll_periods)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

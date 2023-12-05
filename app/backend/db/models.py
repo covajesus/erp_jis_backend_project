@@ -403,6 +403,168 @@ class AlertModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class IndicatorType(Base):
+    __tablename__ = 'indicator_types'
+
+    id = Column(Integer, primary_key=True)
+    indicator_type = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollIndicatorModel(Base):
+    __tablename__ = 'payroll_indicators'
+
+    id = Column(Integer, primary_key=True)
+    indicator_id = Column(Integer)
+    indicator_type_id = Column(Integer)
+    period = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollUfIndicatorModel(Base):
+    __tablename__ = 'payroll_uf_indicators'
+
+    id = Column(Integer, primary_key=True)
+    uf_value_current_month = Column(Float)
+    uf_value_last_month = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollUtmUtaIndicatorModel(Base):
+    __tablename__ = 'payroll_utm_uta_indicators'
+
+    id = Column(Integer, primary_key=True)
+    utm_value_current_month = Column(Float)
+    uta_value_current_month = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollTaxableIncomeCapIndicatorModel(Base):
+    __tablename__ = 'payroll_taxable_income_cap_indicators'
+
+    id = Column(Integer, primary_key=True)
+    afp = Column(Float)
+    ips = Column(Float)
+    unemployment = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollMiniumTaxableIncomeIndicatorModel(Base):
+    __tablename__ = 'payroll_minium_taxable_income_indicators'
+
+    id = Column(Integer, primary_key=True)
+    dependent_independent_workers = Column(Float)
+    under_18_over_65 = Column(Float)
+    particular_home = Column(Float)
+    no_remunerations = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollVoluntaryPrevitionalIndicatorModel(Base):
+    __tablename__ = 'payroll_voluntary_previtional_indicators'
+
+    id = Column(Integer, primary_key=True)
+    voluntary_pension_savings_monthly = Column(Float)
+    voluntary_pension_savings_annual = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollAgreedDepositIndicatorModel(Base):
+    __tablename__ = 'payroll_agreed_deposit_indicators'
+
+    id = Column(Integer, primary_key=True)
+    agreed_deposit = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollUmploymentInsuranceIndicatorModel(Base):
+    __tablename__ = 'payroll_umployment_insurance_indicators'
+
+    id = Column(Integer, primary_key=True)
+    contract_type_id = Column(Integer)
+    worker = Column(Float)
+    employer = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollAfpQuoteIndicatorModel(Base):
+    __tablename__ = 'payroll_afp_quote_indicators'
+
+    id = Column(Integer, primary_key=True)
+    pention_id = Column(Integer)
+    dependent_rate_afp = Column(Float)
+    dependent_sis = Column(Float)
+    independent_rate_afp = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollPeriodModel(Base):
+    __tablename__ = 'payroll_periods'
+
+    id = Column(Integer, primary_key=True)
+    period = Column(String(255))
+    opened = Column(DateTime())
+    closed = Column(DateTime())
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollEmployeeModel(Base):
+    __tablename__ = 'payroll_employees'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(Integer)
+    visual_rut = Column(String(255))
+    period = Column(String(255))
+    contract_type_id = Column(Integer)
+    branch_office_id = Column(Integer)
+    health_id = Column(Integer)
+    pention_id = Column(Integer)
+    employee_type_id = Column(Integer)
+    regime_id = Column(Integer)
+    health_payment_id = Column(Integer)
+    extra_health_payment_type_id = Column(Integer)
+    apv_payment_type_id = Column(Integer)
+    names = Column(String(255))
+    father_lastname = Column(String(255))
+    mother_lastname = Column(String(255))
+    salary = Column(Integer)
+    collation = Column(Integer)
+    locomotion = Column(Integer)
+    extra_health_amount = Column(String(255))
+    apv_amount = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollFamilyAsignationIndicatorModel(Base):
+    __tablename__ = 'payroll_family_asignation_indicators'
+
+    id = Column(Integer, primary_key=True)
+    section_id = Column(Integer)
+    amount = Column(Float)
+    minimum_value_rate = Column(Integer)
+    top_value_rate = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollHeavyDutyQuoteIndicatorModel(Base):
+    __tablename__ = 'payroll_heavy_duty_quote_indicators'
+
+    id = Column(Integer, primary_key=True)
+    duty_type_id = Column(Integer)
+    job_position = Column(Float)
+    employer = Column(Float)
+    worker = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollCcafIndicatorModel(Base):
+    __tablename__ = 'payroll_ccaf_indicators'
+
+    id = Column(Integer, primary_key=True)
+    ccaf = Column(Float)
+    fonasa = Column(Float)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
 
 class HrSettingModel(Base):
     __tablename__ = 'hr_settings'
@@ -420,7 +582,6 @@ class HrFinalDayMonthModel(Base):
     id = Column(Integer, primary_key=True)
     end_day = Column(Integer)
     adjustment_day = Column(Integer)
-
 
 class HonoraryModel(Base):
     __tablename__ = 'honoraries'

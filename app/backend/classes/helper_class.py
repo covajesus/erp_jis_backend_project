@@ -122,6 +122,11 @@ class HelperClass:
 
         return string
     
+    def replace(self, value_to_replace, replace_value, string):
+        string = string.replace(value_to_replace, replace_value)
+
+        return string
+    
     def add_zero(self, number):
         if number < 10:
             result = "0" + str(number)
@@ -169,6 +174,12 @@ class HelperClass:
         rut = rut.split('-')
 
         return rut[0]
+    
+    def return_zero_empty_input(self, value):
+        if value == None:
+            value = 0
+
+        return value
     
     def final_day_month(self, month):
         if month == '1':
