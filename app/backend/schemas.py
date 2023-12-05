@@ -25,6 +25,7 @@ class BranchOffice(BaseModel):
     visibility_id: int
     opening_date: str
     dte_code: int
+    principal_supervisor: int
     added_date: datetime
     updated_date: Union[datetime, None]
 
@@ -67,6 +68,7 @@ class UpdateBranchOffice(BaseModel):
     visibility_id: int = None
     opening_date: str = None
     dte_code: int = None
+    principal_supervisor: int = None
     updated_date: Union[datetime, None]
 
 class Gender(BaseModel):
