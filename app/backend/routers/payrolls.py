@@ -16,7 +16,7 @@ payrolls = APIRouter(
 @payrolls.post("/open")
 def open(open_period_payroll_inputs:OpenPeriodPayroll, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     open_period_payroll_inputs = open_period_payroll_inputs.dict()
-
+    
     data = PayrollClass(db).open(open_period_payroll_inputs)
 
     return {"message": data}

@@ -1,5 +1,5 @@
 from app.backend.db.models import DocumentEmployeeModel, EmployeeModel
-from sqlalchemy import desc
+from sqlalchemy import asc
 from app.backend.classes.dropbox_class import DropboxClass
 import json
 
@@ -13,7 +13,7 @@ class EmployeeContractClass:
                         outerjoin(EmployeeModel, EmployeeModel.id == DocumentEmployeeModel.rut). \
                         filter(DocumentEmployeeModel.rut == rut). \
                         filter(DocumentEmployeeModel.document_type_id == 21). \
-                        order_by(desc(DocumentEmployeeModel.id)). \
+                        order_by(asc(DocumentEmployeeModel.id)). \
                         all()
             
             if not data:

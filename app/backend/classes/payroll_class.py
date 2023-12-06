@@ -67,7 +67,8 @@ class PayrollClass:
             period = open_period_payroll_inputs['period']
 
             payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).all()
-            if payroll_employees:
+            payroll_employee_quantity = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).count()
+            if payroll_employee_quantity > 0:
                 for payroll_employee in payroll_employees:
                     self.db.delete(payroll_employee)
                     self.db.commit()

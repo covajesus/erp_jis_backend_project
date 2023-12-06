@@ -435,6 +435,9 @@ class DocumentType(BaseModel):
 class OpenPeriodPayroll(BaseModel):
     period: str = None
 
+class ClosePeriodPayroll(BaseModel):
+    period: str = None
+
 class EndDocument(BaseModel):
     causal_id: int = None
     document_type_id: int = None

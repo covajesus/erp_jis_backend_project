@@ -463,6 +463,7 @@ class PayrollUfIndicatorModel(Base):
     id = Column(Integer, primary_key=True)
     uf_value_current_month = Column(Float)
     uf_value_last_month = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
