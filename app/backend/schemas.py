@@ -989,6 +989,12 @@ class MeshDatum(BaseModel):
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class Mesh(BaseModel):
+    turn_id: int
+    week_id: int
+    rut: str
+    added_date: datetime
+
 class LoginTest(BaseModel):
     username: str
     password: str

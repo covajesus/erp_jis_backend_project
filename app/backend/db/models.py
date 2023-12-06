@@ -54,6 +54,15 @@ class MeshDatumModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class MeshModel(Base):
+    __tablename__ = 'meshes'
+
+    id = Column(Integer, primary_key=True)
+    turn_id = Column(Integer)
+    week_id = Column(Integer)
+    rut = Column(Integer)
+    added_date = Column(DateTime())
+
 class PreEmployeeTurnModel(Base):
     __tablename__ = 'pre_employees_turns'
 
