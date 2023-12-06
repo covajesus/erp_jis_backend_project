@@ -28,12 +28,6 @@ provisional_indicators = APIRouter(
     tags=["Provisional_Indicators"]
 )
 
-@provisional_indicators.get("/{period}")
-def index(period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    payroll_indicators = PayrollIndicatorClass.get_all(period)
-
-    return {"message": payroll_indicators}
-
 @provisional_indicators.post("/store")
 def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     provisional_indicator_inputs = provisional_indicator.dict()
@@ -177,34 +171,54 @@ def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = 
 
     return {"message": 1}
 
-@provisional_indicators.get("/scrape")
-async def scrape():
+@provisional_indicators.get("/scrape/{period}")
+async def scrape(period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     try:
-        url = 'https://www.previred.com/indicadores-previsionales/'
+        period_indicator_existence = PayrollIndicatorClass(db).count(period)
 
-        response = requests.get(url)
+        if period_indicator_existence == 0:
+            url = 'https://www.previred.com/indicadores-previsionales/'
 
-        soup = BeautifulSoup(response.text, 'html.parser')
+            response = requests.get(url)
 
-        td_elements = soup.find_all('td')
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Crea una lista vacía para almacenar los datos
-        data = []
+            td_elements = soup.find_all('td')
 
-        for td in td_elements:
-            datum = HelperClass().remove_from_string("$", td.text)
-            datum = HelperClass().remove_from_string("RI", datum)
-            datum = HelperClass().remove_from_string("R.I.", datum)
-            datum = HelperClass().remove_from_string("%", datum)
-            datum = HelperClass().replace("–", "0", datum)
+            # Crea una lista vacía para almacenar los datos
+            data = []
 
-            data.append(datum)
+            for td in td_elements:
+                datum = HelperClass().remove_from_string("$", td.text)
+                datum = HelperClass().remove_from_string("RI", datum)
+                datum = HelperClass().remove_from_string("R.I.", datum)
+                datum = HelperClass().remove_from_string("%", datum)
+                datum = HelperClass().replace("–", "0", datum)
 
-        # Devuelve la lista 'data'
-        print(data)
-        print(data[50])
-        return data
+                data.append(datum)
+
+            period_title = data[0]
+
+            period_title = HelperClass().split(" ", period_title)
+
+            data[1] = 0
+
+            print(data)
+
+            return data
+        else:
+            payroll_uf_indicators = PayrollUfIndicatorClass(db).get_all(period)
+            
+            data = [None] * 125  # Inicializa la lista con seis elementos None
+            
+            uf_value_current_month = payroll_uf_indicators.uf_value_current_month
+            data[4] = uf_value_current_month
+            
+            uf_value_last_month = payroll_uf_indicators.uf_value_last_month
+            data[6] = uf_value_last_month
+            
+            return data
+        
     except Exception as e:
         print(f"Error: {str(e)}")
         return {"error": "Error en el servidor"}
-
