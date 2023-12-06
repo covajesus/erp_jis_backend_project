@@ -6,6 +6,7 @@ from app.backend.routers.genders import genders
 from app.backend.routers.nationalities import nationalities
 from app.backend.routers.pentions import pentions
 from app.backend.routers.banks import banks
+from app.backend.routers.meshes import meshes
 from app.backend.routers.turns import turns
 from app.backend.routers.account_types import account_types
 from app.backend.routers.regions import regions
@@ -75,7 +76,7 @@ os.environ['ALGORITHM'] = 'HS256'
 origins = [
     "*",
     "http://localhost:5173",  # Replace with your frontend's URL
-    "http://localhost:8000",
+    "https://apijis.com",
 ]
 
 # Agrega el middleware de CORS a la aplicación
@@ -151,6 +152,7 @@ app.include_router(provisional_indicators)
 app.include_router(payrolls)
 app.include_router(payroll_periods)
 app.include_router(payroll_items)
+app.include_router(meshes)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
