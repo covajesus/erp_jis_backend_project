@@ -49,7 +49,6 @@ class EmployeeLaborDatumClass:
                 filter(getattr(EmployeeLaborDatumModel, field) == value).first()
 
             if data:
-                # Acceder a los datos directamente por índice
                 employee_labor_data = data[0]
                 region = data[1]
                 health = data[2]
@@ -182,6 +181,7 @@ class EmployeeLaborDatumClass:
                     "apv_payment_type_id": employee_labor_data.apv_payment_type_id,
                     "apv_amount": employee_labor_data.apv_amount
                 }
+
 
                 # Convierte el resultado a una cadena JSON
                 serialized_result = json.dumps({
