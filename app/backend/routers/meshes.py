@@ -26,11 +26,11 @@ def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db:
 
     return {"message": data}
 
-@meshes.get("/last_week_working_days/{rut}/{added_date}")
-def last_week_working_days(rut:int, added_date:str , session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    date = HelperClass().split(str(added_date),'-' )
-    data = MeshClass(db).last_week_working_days(rut, date[0], date[1])
-    data = MeshClass(db).quantity_last_week_working_days(rut, date[0], date[1], data)
+@meshes.get("/last_week_working_days/{rut}/{date}")
+def last_week_working_days(rut:int, date:str , session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    dateSplit = HelperClass().split(str(date),'-' )
+    data = MeshClass(db).last_week_working_days(rut, dateSplit[0], dateSplit[1])
+    data = MeshClass(db).quantity_last_week_working_days(rut, dateSplit[0], dateSplit[1], data)
     
 
     return {"message": data}

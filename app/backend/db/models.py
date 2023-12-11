@@ -61,6 +61,7 @@ class MeshModel(Base):
     turn_id = Column(Integer)
     week_id = Column(Integer)
     rut = Column(Integer)
+    date = Column(DateTime())
     added_date = Column(DateTime())
 
 class PreEmployeeTurnModel(Base):
