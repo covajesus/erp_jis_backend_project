@@ -43,7 +43,7 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     if document_employee_response ==  1 and medical_license_response == 1:
 
         if medical_license['support'] != None or medical_license['support'] != '':
-            response = DropboxClass(db).delete('/medical_licenses/', medical_license['support'])
+            response = DropboxClass(db).delete('/employee_documents/', medical_license['support'])
 
         if response == 1:
             data = 1
@@ -77,7 +77,7 @@ def upload(form_data: UploadMedicalLicense = Depends(UploadMedicalLicense.as_for
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=form_data.rut, description='contrato', data=support,
-                                 dropbox_path='/medical_licenses/', computer_path=os.path.join(os.path.dirname(__file__)))
+                                 dropbox_path='/employee_documents/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     medical_license = MedicalLicenseClass(db).get("id", form_data.medical_license_id)
     data = DocumentEmployeeClass(db).update_file(medical_license.document_employee_id, filename)

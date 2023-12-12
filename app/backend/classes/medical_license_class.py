@@ -159,7 +159,7 @@ class MedicalLicenseClass:
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()
 
-            file = DropboxClass(self.db).get('/medical_licenses/', data.support)
+            file = DropboxClass(self.db).get('/employee_documents/', data.support)
 
             return file
         except Exception as e:
