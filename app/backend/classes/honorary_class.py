@@ -61,7 +61,7 @@ class HonoraryClass:
                                     HonoraryReasonModel.reason,
                                     HonoraryModel.start_date
                                 ) \
-                                .order_by(desc(HonoraryModel.added_date))
+                                .order_by(HonoraryModel.start_date.desc())
 
                 data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
 
