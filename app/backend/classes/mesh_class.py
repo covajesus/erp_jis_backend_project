@@ -10,27 +10,25 @@ class MeshClass:
 
     
     def quantity_last_week_working_days(self, rut, year, month, dataLastWeek):
-        data_dict = json.loads(dataLastWeek)
-        print(data_dict)
-        try:
-            data = self.db.query(MeshModel)\
-                .filter(MeshModel.rut == rut)\
-                .filter(extract('year', MeshModel.added_date) == year)\
-                .filter(extract('month', MeshModel.added_date) == month)\
-                .filter(MeshModel.week_id == data_dict['week_id'] )\
-                .count()      
-            print(data)
-            return data
-        except Exception as e:
-            error_message = str(e)
-            return f"Error: {error_message}"
+                data_dict = json.loads(dataLastWeek)
+                try:
+                    data = self.db.query(MeshModel)\
+                        .filter(MeshModel.rut == rut)\
+                        .filter(extract('year', MeshModel.date) == year)\
+                        .filter(extract('month', MeshModel.date) == month)\
+                        .filter(MeshModel.week_id == data_dict['week_id'] )\
+                        .count()      
+                    return data
+                except Exception as e:
+                    error_message = str(e)
+                    return f"Error: {error_message}"
+      
     def last_week_working_days(self, rut, year, month):
-
         try:
             data = self.db.query(MeshModel)\
                 .filter(MeshModel.rut == rut)\
-                .filter(extract('year', MeshModel.added_date) == year)\
-                .filter(extract('month', MeshModel.added_date) == month)\
+                .filter(extract('year', MeshModel.date) == year)\
+                .filter(extract('month', MeshModel.date) == month)\
                 .order_by(desc(MeshModel.week_id))\
                 .first()      
             
@@ -41,6 +39,7 @@ class MeshClass:
                     'turn_id': data.turn_id,
                     'week_id': data.week_id,
                     'rut': data.rut,
+                    'date': data.date.strftime("%Y-%m-%d"),
                     'added_date': data.added_date.strftime("%Y-%m-%d"),  # Convert the datetime object to a string format
                 }
 

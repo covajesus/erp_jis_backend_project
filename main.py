@@ -76,7 +76,7 @@ os.environ['ALGORITHM'] = 'HS256'
 origins = [
     "*",
     "http://localhost:5173",  # Replace with your frontend's URL
-    "https://apijis.com",
+    "http://localhost:8000",
 ]
 
 # Agrega el middleware de CORS a la aplicación
