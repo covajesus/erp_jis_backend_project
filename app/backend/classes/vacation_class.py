@@ -224,6 +224,7 @@ class VacationClass:
         employee_extra_data = EmployeeExtraDatumClass(self.db).get("rut", rut)
         months = HelperClass().months(employee_labor_data_decoded, date.today())
         vacation_days = HelperClass().vacation_days(months, employee_extra_data.extreme_zone_id)
+        
 
         return vacation_days
     

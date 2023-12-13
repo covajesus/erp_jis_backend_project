@@ -69,11 +69,13 @@ class HelperClass:
         return years
 
     def vacation_days(self, months, extreme_zone_status_id):
+        print(months)
+
         if months > 0:
             if extreme_zone_status_id == 1:
-                total = math.ceil(float((months+1))*float(1.66))
+                total = int(months) * float(1.66)
             else:
-                total = math.ceil((float(months+1)) * float(1.25))
+                total = int(months) * float(1.25)
         else:
             total = 0
             
@@ -106,17 +108,17 @@ class HelperClass:
         return value
     
     def months(self, since, until):
-        since_array = self.split(str(since), "-")
-        until_array = self.split(str(until), "-")
+        since_array = str(since).split("-")
+        until_array = str(until).split("-")
 
-        if since != None and until != None:
+        if since is not None and until is not None:
             if until_array[0] != '' and since_array[0] != '':
                 return (int(until_array[0]) - int(since_array[0])) * 12 + int(until_array[1]) - int(since_array[1])
             else:
                 return 0
         else:
             return 0
-        
+            
     def remove_from_string(self, value_to_remove, string):
         string = string.replace(value_to_remove, "")
 
@@ -213,7 +215,7 @@ class HelperClass:
     def count_months(since_date, until_date):
         since_date = datetime.strptime(since_date, '%Y-%m-%d')
         until_date = datetime.strptime(until_date, '%Y-%m-%d')
-        
+
         months = 0
         
         while since_date <= until_date:
