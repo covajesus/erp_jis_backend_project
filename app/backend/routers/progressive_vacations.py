@@ -88,8 +88,9 @@ def upload(form_data: UploadProgressiveVacation = Depends(UploadProgressiveVacat
                                  dropbox_path='/employee_documents/', computer_path=os.path.join(os.path.dirname(__file__)))
     
     vacation = ProgressiveVacationClass(db).get("id", form_data.progressive_vacation_id)
+    DocumentEmployeeClass(db).sign(vacation.document_employee_id)
     data = DocumentEmployeeClass(db).update_file(vacation.document_employee_id, filename)
-
+    
     return {"message": data}
 
 @progressive_vacations.get("/download/{id}")
