@@ -63,6 +63,14 @@ class MeshModel(Base):
     rut = Column(Integer)
     date = Column(DateTime())
     added_date = Column(DateTime())
+class HolidayModel(Base):
+    __tablename__ = 'holidays'
+
+    id = Column(Integer, primary_key=True)
+    holiday_type_id = Column(Integer)
+    inalienable_id = Column(Integer)
+    holiday = Column(String(255))
+    date = Column(DateTime())
 
 class PreEmployeeTurnModel(Base):
     __tablename__ = 'pre_employees_turns'
