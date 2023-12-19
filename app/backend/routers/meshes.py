@@ -12,6 +12,11 @@ meshes = APIRouter(
     tags=["Mesh"]
 )
 
+@meshes.get("/")
+def get_all(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).get_all()
+
+    return {"message": data}
 
 @meshes.post("/store")
 def store(mesh:Mesh, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

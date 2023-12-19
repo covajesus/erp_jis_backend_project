@@ -58,6 +58,14 @@ class MeshModel(Base):
     __tablename__ = 'meshes'
 
     id = Column(Integer, primary_key=True)
+    rut = Column(Integer)
+    period = Column(String(255))
+    added_date = Column(DateTime())
+class MeshDetailModel(Base):
+    __tablename__ = 'mesh_details'
+
+    id = Column(Integer, primary_key=True)
+    mesh_id = Column(Integer)
     turn_id = Column(Integer)
     week_id = Column(Integer)
     rut = Column(Integer)
