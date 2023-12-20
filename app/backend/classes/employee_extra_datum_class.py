@@ -17,7 +17,8 @@ class EmployeeExtraDatumClass:
     
     def get(self, field, value):
         try:
-            data = self.db.query(EmployeeExtraModel).filter(getattr(EmployeeExtraModel, field) == value).first()
+            data = self.db.query(EmployeeExtraModel).filter(EmployeeExtraModel.rut == value).first()
+       
             return data
         except Exception as e:
             error_message = str(e)

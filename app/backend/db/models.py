@@ -241,7 +241,7 @@ class UserModel(Base):
     rut = Column(Integer)
     visual_rut = Column(String(20))
     nickname = Column(String(255))
-    hashed_password = Column(String(255))
+    hashed_password = Column(Text())
     disabled = Column(Integer)
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
@@ -321,8 +321,6 @@ class EmployeeLaborDatumModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
-
-
 class EmployeeExtraModel(Base):
     __tablename__ = 'employee_extras'
 
@@ -342,7 +340,6 @@ class EmployeeExtraModel(Base):
     progressive_vacation_date = Column(Date())
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
-
 
 class OldEmployeeExtraModel(Base):
     __tablename__ = 'old_employee_extras'

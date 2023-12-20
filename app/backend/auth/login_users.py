@@ -17,7 +17,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     user = AuthenticationClass(db).authenticate_user(form_data.username, form_data.password)
     access_token_expires = timedelta(minutes=30)
     access_token_jwt = AuthenticationClass(db).create_token({'sub': str(user.rut)}, access_token_expires)
-
     signature = DropboxClass(db).get('/signatures/', str(user.signature))
 
     return {

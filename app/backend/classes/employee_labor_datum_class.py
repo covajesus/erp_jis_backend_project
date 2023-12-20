@@ -126,28 +126,27 @@ class EmployeeLaborDatumClass:
 
                 entrance_health = employee_labor_data.entrance_health
 
-                if entrance_pention:
+                if entrance_pention and entrance_pention != '0000-00-00' and entrance_pention != None:
                     formatted_entrance_pention = datetime.strptime(entrance_pention, '%Y-%m-%d').date()
                     formatted_entrance_pention_str = formatted_entrance_pention.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_pention = None
                     formatted_entrance_pention_str = None
 
-                if entrance_company:
+                if entrance_company and entrance_company != '0000-00-00':
                     formatted_entrance_company = datetime.strptime(entrance_company, '%Y-%m-%d').date()
                     formatted_entrance_company_str = formatted_entrance_company.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_company = None
                     formatted_entrance_company_str = None
 
-                if entrance_health:
+                if entrance_health and entrance_health != '0000-00-00':
                     formatted_entrance_health = datetime.strptime(entrance_health, '%Y-%m-%d').date()
                     formatted_entrance_health_str = formatted_entrance_health.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_health = None
                     formatted_entrance_health_str = None
 
-                # Serializar los datos del empleado
                 serialized_employee_labor_data = {
                     "id": employee_labor_data.id,
                     "rut": employee_labor_data.rut,

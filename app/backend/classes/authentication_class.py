@@ -15,6 +15,7 @@ class AuthenticationClass:
 
     def authenticate_user(self, rut, password):
         user = get_user(rut)
+
         if not user:
             raise HTTPException(status_code=401, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
 
