@@ -1,12 +1,20 @@
-from app.backend.db.models import MeshModel
+from app.backend.db.models import MeshModel, EmployeeModel
 from sqlalchemy import desc, asc
 from sqlalchemy import extract
 import json
-from app.backend.db.models import MeshModel
+from fastapi.encoders import jsonable_encoder
 
 class MeshClass:
     def __init__(self, db):
         self.db = db
+
+    def get_all(self):
+        try:
+            data = self.db.query(MeshModel, EmployeeModel).outerjoin(EmployeeModel, MeshModel.rut == EmployeeModel.rut).order_by(desc(MeshModel.id)).all()
+            return [row._asdict() for row in data]
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
 
     
     def quantity_last_week_working_days(self, rut, year, month, dataLastWeek):

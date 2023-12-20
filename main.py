@@ -68,6 +68,7 @@ from app.backend.routers.payrolls import payrolls
 from app.backend.routers.payroll_periods import payroll_periods
 from app.backend.routers.payroll_items import payroll_items
 from app.backend.routers.payroll_employees import payroll_employees
+from app.backend.routers.holidays import holidays
 app = FastAPI()
 
 os.environ['SECRET_KEY'] = '7de4c36b48fce8dcb3a4bb527ba62d789ebf3d3a7582472ee49d430b01a7f868'
@@ -154,7 +155,11 @@ app.include_router(payrolls)
 app.include_router(payroll_periods)
 app.include_router(payroll_items)
 app.include_router(meshes)
+<<<<<<< HEAD
 app.include_router(payroll_employees)
+=======
+app.include_router(holidays)
+>>>>>>> feature-schedule-008
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
