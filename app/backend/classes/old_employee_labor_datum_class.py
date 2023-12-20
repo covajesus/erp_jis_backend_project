@@ -149,7 +149,6 @@ class OldEmployeeLaborDatumClass:
                     "pention_name": pention.pention if pention else None,
                     "job_position_id": job_position.id if job_position else None,
                     "job_position_name": job_position.job_position if job_position else None,
-                    "extra_health_payment_type_id": old_employee_labor_data.extra_health_payment_type_id,
                     "employee_type_id": old_employee_labor_data.employee_type_id,
                     "regime_id": old_employee_labor_data.regime_id,
                     "status_id": old_employee_labor_data.status_id,
@@ -204,7 +203,6 @@ class OldEmployeeLaborDatumClass:
         employee_labor_datum.regime_id = old_employee_labor_datum_inputs['regime_id']
         employee_labor_datum.status_id = old_employee_labor_datum_inputs['status_id']
         employee_labor_datum.health_payment_id = old_employee_labor_datum_inputs['health_payment_id']
-        employee_labor_datum.extra_health_payment_type_id = old_employee_labor_datum_inputs['extra_health_payment_type_id']
         employee_labor_datum.apv_payment_type_id = old_employee_labor_datum_inputs['apv_payment_type_id']
         employee_labor_datum.entrance_pention = old_employee_labor_datum_inputs['entrance_pention']
         employee_labor_datum.entrance_company = old_employee_labor_datum_inputs['entrance_company']

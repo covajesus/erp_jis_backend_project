@@ -24,7 +24,6 @@ class EmployeeContractClass:
             for row in data:
                 serialized_row = {
                     "status_id": row.status_id,
-                    "added_date": row.added_date.strftime('%Y-%m-%d'),  # Convierte la fecha a formato string
                     "support": row.support,
                     "rut": row.rut,
                     "id": row.id,
