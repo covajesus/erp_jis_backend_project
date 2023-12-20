@@ -968,7 +968,6 @@ class OldEmployeeLaborDatumModel(Base):
     regime_id = Column(Integer)
     status_id = Column(Integer)
     health_payment_id = Column(Integer)
-    extra_health_payment_type_id = Column(Integer)
     apv_payment_type_id = Column(Integer)
     entrance_pention  = Column(Date())
     entrance_company  = Column(Date())
