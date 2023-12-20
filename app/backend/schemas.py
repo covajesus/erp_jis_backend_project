@@ -443,11 +443,11 @@ class EndDocument(BaseModel):
     document_type_id: int = None
     status_id:int  = None
     rut: str  = None
-    fertility_proportional_days: int = None
+    fertility_proportional_days: str = None
     voluntary_indemnity: int = None
     indemnity_years_service: int = None
     substitute_compensation: int = None
-    fertility_proportional: str = None
+    fertility_proportional: int = None
     total: int = None
     
 class UpdateDocumentType(BaseModel):
