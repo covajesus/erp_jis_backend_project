@@ -73,9 +73,9 @@ class HelperClass:
 
         if months > 0:
             if extreme_zone_status_id == 1:
-                total = int(months) * float(1.66)
+                total = int(months+1) * float(1.66)
             else:
-                total = int(months) * float(1.25)
+                total = int(months+1) * float(1.25)
         else:
             total = 0
             
