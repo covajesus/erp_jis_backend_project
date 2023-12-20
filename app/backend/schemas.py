@@ -447,7 +447,7 @@ class EndDocument(BaseModel):
     voluntary_indemnity: int = None
     indemnity_years_service: int = None
     substitute_compensation: int = None
-    fertility_proportional: int = None
+    fertility_proportional: str = None
     total: int = None
     
 class UpdateDocumentType(BaseModel):
