@@ -117,9 +117,10 @@ class EndDocumentClass:
         end_date_split = HelperClass().split(str(end_date), " ")
         weekends_between_dates = HelperClass.count_weekends(start_date, end_date_split[0])
         total = float(fertility_proportional_inputs['balance']) + float(weekends_between_dates) + float(fertility_proportional_inputs['number_holidays'])
+
         vacation_day_value = HelperClass.vacation_day_value(employee_labor_datum["EmployeeLaborDatumModel"]["salary"])
 
-        result = int(vacation_day_value) * int(total)
+        result = round(int(vacation_day_value) * round(total, 2))
 
         if result < 0:
             result = 0
