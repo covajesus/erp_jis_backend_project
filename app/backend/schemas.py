@@ -858,7 +858,7 @@ class SubstituteCompensation(BaseModel):
 class FertilityProportional(BaseModel):
     rut: int 
     exit_company: str
-    balance:str
+    balance: float
     number_holidays:int
 
 class ContractType(BaseModel):
