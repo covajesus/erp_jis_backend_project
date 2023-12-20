@@ -25,7 +25,8 @@ class PayrollClass:
     
     def open(self, open_period_payroll_inputs):
         try:
-            if self.verifiy_existence(open_period_payroll_inputs['period'] == 0):
+            if self.verifiy_existence(open_period_payroll_inputs['period']) == 0:
+                print(5555555555)
                 employees = self.db.query(EmployeeModel.rut, EmployeeModel.visual_rut, EmployeeModel.names, 
                                     EmployeeModel.father_lastname, EmployeeModel.mother_lastname, EmployeeLaborDatumModel.contract_type_id,
                                     EmployeeLaborDatumModel.branch_office_id, EmployeeLaborDatumModel.health_id, EmployeeLaborDatumModel.pention_id,

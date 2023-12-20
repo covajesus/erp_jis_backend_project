@@ -116,7 +116,7 @@ class EndDocumentClass:
         end_date = HelperClass.add_business_days(start_date, fertility_proportional_inputs['balance'], fertility_proportional_inputs['number_holidays'])
         end_date_split = HelperClass().split(str(end_date), " ")
         weekends_between_dates = HelperClass.count_weekends(start_date, end_date_split[0])
-        total = int(fertility_proportional_inputs['balance']) + int(weekends_between_dates) + int(fertility_proportional_inputs['number_holidays'])
+        total = float(fertility_proportional_inputs['balance']) + float(weekends_between_dates) + float(fertility_proportional_inputs['number_holidays'])
         vacation_day_value = HelperClass.vacation_day_value(employee_labor_datum["EmployeeLaborDatumModel"]["salary"])
 
         result = int(vacation_day_value) * int(total)
@@ -131,9 +131,9 @@ class EndDocumentClass:
         end_date = HelperClass.add_business_days(start_date, fertility_proportional_inputs['balance'], fertility_proportional_inputs['number_holidays'])
         end_date_split = HelperClass().split(str(end_date), " ")
         weekends_between_dates = HelperClass.count_weekends(start_date, end_date_split[0])
-        total = int(fertility_proportional_inputs['balance']) + int(weekends_between_dates) + int(fertility_proportional_inputs['number_holidays'])
+        total = float(fertility_proportional_inputs['balance']) + float(weekends_between_dates) + float(fertility_proportional_inputs['number_holidays'])
         
-        result = int(total)
+        result = float(total)
 
         if result < 0:
             result = 0
@@ -153,7 +153,6 @@ class EndDocumentClass:
             end_document.fertility_proportional = end_documents_inputs['fertility_proportional']
             end_document.total = end_documents_inputs['total']
             end_document.added_date = datetime.now()
-
 
             self.db.add(end_document)
             self.db.commit()

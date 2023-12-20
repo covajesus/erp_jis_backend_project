@@ -12,7 +12,7 @@ class HelperClass:
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
         current_date = start_date
         added_days = 0
-        while added_days < int(num_days):
+        while added_days < float(num_days):
             # sumamos un día a la fecha actual
             current_date += timedelta(days=1)
             # verificamos si la fecha actual es hábil/laboral

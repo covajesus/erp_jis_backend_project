@@ -824,6 +824,10 @@ class SearchEmployee(BaseModel):
     rol_id: int
     page: int
 
+class SearchPayrollEmployee(BaseModel):
+    rut: Union[str, None]
+    father_lastname: Union[str, None]
+
 class ClockUser(BaseModel):
     rut: str
     names: str
@@ -854,7 +858,7 @@ class SubstituteCompensation(BaseModel):
 class FertilityProportional(BaseModel):
     rut: int 
     exit_company: str
-    balance:int
+    balance:str
     number_holidays:int
 
 class ContractType(BaseModel):
