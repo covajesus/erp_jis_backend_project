@@ -4,6 +4,7 @@ from typing import Union
 from datetime import datetime
 from decimal import Decimal
 from fastapi import Form
+from typing import List
 
 class Alert(BaseModel):
     alert_type_id: int
@@ -997,10 +998,14 @@ class MeshDatum(BaseModel):
     updated_date: Union[datetime, None]
 
 class Mesh(BaseModel):
-    turn_id: int
     week_id: int
-    rut: str
+    turn_id: int
+    rut: int
+    datesInRange: List[str] 
     added_date: datetime
+
+class MeshList(BaseModel):
+    meshes: List[Mesh]
 
 class LoginTest(BaseModel):
     username: str

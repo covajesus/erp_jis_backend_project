@@ -155,11 +155,8 @@ app.include_router(payrolls)
 app.include_router(payroll_periods)
 app.include_router(payroll_items)
 app.include_router(meshes)
-<<<<<<< HEAD
 app.include_router(payroll_employees)
-=======
 app.include_router(holidays)
->>>>>>> feature-schedule-008
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

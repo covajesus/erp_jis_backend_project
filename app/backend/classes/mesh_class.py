@@ -1,8 +1,10 @@
-from app.backend.db.models import MeshModel, EmployeeModel
+from app.backend.db.models import MeshModel, EmployeeModel, MeshDetailModel
 from sqlalchemy import desc, asc
 from sqlalchemy import extract
 import json
 from fastapi.encoders import jsonable_encoder
+from datetime import datetime
+
 
 class MeshClass:
     def __init__(self, db):
@@ -89,10 +91,33 @@ class MeshClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
-    def store(self, Mesh_inputs):
+  
+    def store(self, inputs):
         try:
-            data = MeshModel(**Mesh_inputs)
-            self.db.add(data)
+            # Crear y guardar la instancia de MeshModel
+            first_date = datetime.fromisoformat(inputs['datesInRange'][0])
+            period = f"{first_date.year}-{first_date.month}"
+            mesh_data = {key: inputs[key] for key in ('rut', 'added_date')}
+            mesh_data['period'] = period
+            mesh = MeshModel(**mesh_data)
+            self.db.add(mesh)
+            self.db.commit()
+
+            # Crear y guardar las instancias de MeshDetailModel
+            for date in inputs['datesInRange']:
+                date_obj = datetime.fromisoformat(date)
+                formatted_date = date_obj.strftime('%Y-%m-%d %H:%M:%S')
+                detail_data = {
+                    'mesh_id': mesh.id,
+                    'turn_id': inputs['turn_id'],
+                    'week_id': inputs['week_id'],
+                    'rut': inputs['rut'],
+                    'date': formatted_date,
+                    'added_date': inputs['added_date'],
+                }
+                detail = MeshDetailModel(**detail_data)
+                self.db.add(detail)
+
             self.db.commit()
             return 1
         except Exception as e:
