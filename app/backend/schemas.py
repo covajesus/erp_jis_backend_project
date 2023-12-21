@@ -819,7 +819,7 @@ class SearchEmployee(BaseModel):
     father_lastname: Union[str, None]
     mother_lastname: Union[str, None]
     status_id: Union[str, None]
-    branch_office_id: Union[str, None]
+    branch_office_id: Union[int, None]
     user_rut: str
     rol_id: int
     page: int
