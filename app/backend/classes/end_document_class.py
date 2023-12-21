@@ -72,10 +72,16 @@ class EndDocumentClass:
             if gratification > hr_settings.top_gratification:
                 gratification = hr_settings.top_gratification
             years = HelperClass().get_end_document_total_years(employee_labor_datum["EmployeeLaborDatumModel"]["entrance_company"], indemnity_year_inputs['exit_company'] )
+            print(years)
             print(employee_labor_datum["EmployeeLaborDatumModel"]["entrance_company"], indemnity_year_inputs['exit_company'])
             
             if years > 11:
                 years = 11
+
+            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["salary"]))
+            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["collation"]))
+            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["locomotion"]))
+            print(int(gratification))
 
             result = (int(employee_labor_datum["EmployeeLaborDatumModel"]["salary"]) + 
                     int(employee_labor_datum["EmployeeLaborDatumModel"]["collation"]) + 
