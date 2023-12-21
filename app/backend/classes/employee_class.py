@@ -119,18 +119,15 @@ class EmployeeClass:
             search_branch_office_id = search_inputs['branch_office_id']
 
         if search_status_id == '2' or search_status_id == '3':
-            # Query for OldEmployeeModel
             data_query = self.db.query(OldEmployeeModel).join(OldEmployeeLaborDatumModel, OldEmployeeLaborDatumModel.rut == OldEmployeeModel.rut).add_columns(
                 OldEmployeeModel.id,
                 OldEmployeeModel.rut,
                 OldEmployeeModel.visual_rut,
-                OldEmployeeModel.nickname,
                 OldEmployeeModel.names,
                 OldEmployeeModel.father_lastname,
                 OldEmployeeModel.mother_lastname
             ).order_by('rut')
         else:
-            # Query for EmployeeModel
             data_query = self.db.query(EmployeeModel).join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).add_columns(
                 EmployeeModel.id,
                 EmployeeModel.rut,
@@ -152,7 +149,7 @@ class EmployeeClass:
             if search_branch_office_id:
                 data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
             if search_status_id:
-                data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
+                data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
 
         total_items = data_query.count()
         total_pages = (total_items + items_per_page - 1) // items_per_page

@@ -818,8 +818,8 @@ class SearchEmployee(BaseModel):
     names: Union[str, None]
     father_lastname: Union[str, None]
     mother_lastname: Union[str, None]
-    status_id: Union[str, None]
-    branch_office_id: Union[int, None]
+    status_id: str = None
+    branch_office_id: str = None
     user_rut: str
     rol_id: int
     page: int

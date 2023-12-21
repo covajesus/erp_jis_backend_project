@@ -954,7 +954,6 @@ class OldEmployeeModel(Base):
     mother_lastname = Column(String(255))
     gender_id = Column(Integer)
     nationality_id = Column(Integer)
-    signature_type_id = Column(Integer)
     personal_email = Column(String(255))
     cellphone = Column(String(100))
     born_date = Column(Date())
