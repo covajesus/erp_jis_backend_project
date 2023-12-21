@@ -72,14 +72,9 @@ class EndDocumentClass:
             if gratification > hr_settings.top_gratification:
                 gratification = hr_settings.top_gratification
             years = HelperClass().get_end_document_total_years(employee_labor_datum["EmployeeLaborDatumModel"]["entrance_company"], indemnity_year_inputs['exit_company'] )
-            
+
             if years > 11:
                 years = 11
-
-            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["salary"]))
-            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["collation"]))
-            print(int(employee_labor_datum["EmployeeLaborDatumModel"]["locomotion"]))
-            print(int(gratification))
 
             result = (int(employee_labor_datum["EmployeeLaborDatumModel"]["salary"]) + 
                     int(employee_labor_datum["EmployeeLaborDatumModel"]["collation"]) + 
@@ -135,10 +130,12 @@ class EndDocumentClass:
     def total_vacations(self, fertility_proportional_inputs):
         start_date = fertility_proportional_inputs['exit_company']
         end_date = HelperClass.add_business_days(start_date, fertility_proportional_inputs['balance'], fertility_proportional_inputs['number_holidays'])
+
         end_date_split = HelperClass().split(str(end_date), " ")
         weekends_between_dates = HelperClass.count_weekends(start_date, end_date_split[0])
+
         total = float(fertility_proportional_inputs['balance']) + float(weekends_between_dates) + float(fertility_proportional_inputs['number_holidays'])
-        
+
         result = float(total)
 
         if result < 0:

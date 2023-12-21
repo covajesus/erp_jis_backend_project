@@ -13,15 +13,9 @@ class HelperClass:
         current_date = start_date
         added_days = 0
         while added_days < float(num_days):
-            # sumamos un día a la fecha actual
             current_date += timedelta(days=1)
-            # verificamos si la fecha actual es hábil/laboral
             if calendar.weekday(current_date.year, current_date.month, current_date.day) < 5:
                 added_days += 1
-
-        # sumamos los días feriados al resultado si la lista no está vacía
-        if holidays > 0:
-            current_date += timedelta(days=holidays)
 
         return current_date
     
@@ -34,11 +28,12 @@ class HelperClass:
         weekend_count = 0
         delta = timedelta(days=1)
         current_date = start_date
+
         while current_date <= end_date:
             if current_date.weekday() >= 5:  # Si es sábado o domingo
                 weekend_count += 1
             current_date += delta
-
+        print(weekend_count)
         return weekend_count
     
     def vacation_day_value(amount):
@@ -55,11 +50,11 @@ class HelperClass:
 
         delta = date2 - date1
 
-        years = delta.days // 365  # Use floor division to get whole number of years
-        remaining_months = (delta.days % 365) // 30  # Get the remaining months
+        years = delta.days // 365
+        remaining_months = (delta.days % 365)
 
         if remaining_months >= 6:
-            years += 1  # If remaining months are 6 or more, consider it as an additional year
+            years += 1
 
         return years
 
@@ -69,8 +64,6 @@ class HelperClass:
         return years
 
     def vacation_days(self, months, extreme_zone_status_id):
-        print(months)
-
         if months > 0:
             if extreme_zone_status_id == 1:
                 total = int(months+1) * float(1.66)
