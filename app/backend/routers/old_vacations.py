@@ -17,8 +17,8 @@ def index(rut: int, session_user: UserLogin = Depends(get_current_active_user), 
 
     return {"message": data}
 
-@old_vacations.post("/transfer/{rut}")
-def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+@old_vacations.post("/transfer/{rut}/{end_document_type_id}")
+def transfer(rut: int, end_document_type_id: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     vacations = VacationClass(db).get_all_with_no_pagination(rut)
 
     for vacation in vacations:
@@ -31,11 +31,11 @@ def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user
             'no_valid_days': vacation.no_valid_days,
             'support': vacation.support,
         }
-    # valida que las vacaiones tienen datos para transferir a la tabla de vacaciones antiguas (old_vacations)
         if old_vacation_inputs['since'] is None or old_vacation_inputs['until'] is None or old_vacation_inputs['days'] is None or old_vacation_inputs['no_valid_days'] is None:
             return {"message": f"Las vacaciones del RUT {rut} no tienen datos para transferir"}
         
         OldVacationClass(db).store(old_vacation_inputs)
-        # VacationClass(db).delete(vacation.document_employee_id)
+        if end_document_type_id == 1:
+            VacationClass(db).delete(vacation.document_employee_id)
 
     return {"message": f"Datos de vacaciones transferidos para el RUT {rut}"}

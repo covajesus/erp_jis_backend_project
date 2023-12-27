@@ -15,8 +15,8 @@ old_documents_employees = APIRouter(
     tags=["OldDocumentsEmployees"]
 )
 
-@old_documents_employees.post("/transfer/{rut}")
-def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+@old_documents_employees.post("/transfer/{rut}/{end_document_type_id}")
+def transfer(rut: int, end_document_type_id: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     document_data = db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut == rut).all()
 
     for docucment_datum in document_data:
@@ -28,7 +28,8 @@ def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user
         }
 
         OldDocumentEmployeeClass(db).store(old_document_datum_inputs)
-        # DocumentEmployeeClass(db).delete(docucment_datum.id)
+        if end_document_type_id == 1:
+            DocumentEmployeeClass(db).delete(docucment_datum.id)
 
     return {"message": f"Documentos transferidos para el RUT {rut}"}
 

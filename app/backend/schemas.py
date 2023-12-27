@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from fastapi import UploadFile, File
-from typing import Union
+from typing import Union, List
 from datetime import datetime
 from decimal import Decimal
 from fastapi import Form
@@ -45,6 +45,7 @@ class Employee(BaseModel):
     updated_date: Union[datetime, None]
 
 class OldEmployee(BaseModel):
+    end_document_type_id: int
     rut: int
     visual_rut:str
     names: str
@@ -217,6 +218,7 @@ class expirationDatum(BaseModel):
     rut: str
 
 class OldEmployeeLaborDatum(BaseModel):
+    end_document_type_id: int
     rut: str = None
     contract_type_id: int = None
     branch_office_id: int = None
@@ -813,6 +815,15 @@ class UploadDocumentEmployee(BaseModel):
     dropbox_path: str
     support: UploadFile
     updated_date: str = None
+
+class PayrollManualInputItem(BaseModel):
+    payroll_item_id: Union[int, None]
+    rut: Union[int, None]
+    amount_input: Union[int, None]
+    period: Union[str, None]
+
+class PayrollManualInput(BaseModel):
+    payroll_items: List[PayrollManualInputItem]
 
 class SearchEmployee(BaseModel):
     rut: Union[str, None]

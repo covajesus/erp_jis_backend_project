@@ -51,6 +51,7 @@ class HonoraryClass:
                                 .join(CommuneModel, CommuneModel.id == HonoraryModel.commune_id) \
                                 .join(EmployeeModel, EmployeeModel.rut == HonoraryModel.requested_by) \
                                 .join(HonoraryReasonModel, HonoraryReasonModel.id == HonoraryModel.reason_id) \
+                                .filter(HonoraryModel.rut == rut) \
                                 .add_columns(
                                     HonoraryModel.status_id,
                                     HonoraryModel.id,

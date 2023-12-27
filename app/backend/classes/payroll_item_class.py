@@ -9,7 +9,7 @@ class PayrollItemClass:
     def get_all(self, page = 0, items_per_page=10):
         if page == 0:
             try:
-                data = self.db.query(PayrollItemModel).all()
+                data = self.db.query(PayrollItemModel).order_by(PayrollItemModel.item.asc()).all()
                 if not data:
                     return "No data found"
                 serialized_data = []
