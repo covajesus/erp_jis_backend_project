@@ -36,6 +36,11 @@ def last_week_working_days(rut:int, date:str , session_user: UserLogin = Depends
     dateSplit = HelperClass().split(str(date),'-' )
     data = MeshClass(db).last_week_working_days(rut, dateSplit[0], dateSplit[1])
     data = MeshClass(db).quantity_last_week_working_days(rut, dateSplit[0], dateSplit[1], data)
-    
+
+    return {"message": data}
+
+@meshes.get("/get_mesh_by_rut_week_period/{rut}/{period}")
+def getMeshByrutWeekPeriod(rut:int, period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).getMeshByrutWeekPeriod(rut, period)
 
     return {"message": data}
