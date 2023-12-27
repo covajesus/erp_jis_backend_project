@@ -12,7 +12,6 @@ class EmployeeClass:
     def get_all_with_no_paginator(self):
         query = self.db.query(EmployeeModel).order_by(EmployeeModel.names).all()
 
-        # Serializar los resultados a una lista de diccionarios
         serialized_data = []
         for employee in query:
             employee_dict = {

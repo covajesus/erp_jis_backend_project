@@ -636,6 +636,16 @@ class HrSettingModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class PayrollManualInputModel(Base):
+    __tablename__ = 'payroll_manual_inputs'
+
+    id = Column(Integer, primary_key=True)
+    payroll_item_id = Column(Integer)
+    rut = Column(Integer)
+    amount = Column(Integer)
+    period = Column(String(255))
+    added_date = Column(DateTime())
+
 class HrFinalDayMonthModel(Base):
     __tablename__ = 'hr_final_day_months'
 

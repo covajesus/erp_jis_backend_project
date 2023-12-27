@@ -15,8 +15,8 @@ old_medical_licenses = APIRouter(
     tags=["OldMedicalLicenses"]
 )
 
-@old_medical_licenses.post("/transfer/{rut}")
-def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+@old_medical_licenses.post("/transfer/{rut}/{end_document_type_id}")
+def transfer(rut: int, end_document_type_id: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     medical_licenses = db.query(MedicalLicenseModel).filter(MedicalLicenseModel.rut == rut).all()
 
     for medical_license in medical_licenses:
@@ -33,7 +33,8 @@ def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user
         }
 
         OldMedicalLicenseClass(db).store(old_medical_license_inputs)
-        # MedicalLicenseClass(db).delete(medical_license.id)
+        if end_document_type_id == 1:
+            MedicalLicenseClass(db).delete(medical_license.id)
 
     return {"message": f"Datos de licencias médicas transferidos para el RUT {rut}"}
 

@@ -6,9 +6,13 @@ class PayrollEmployeeClass:
     def __init__(self, db):
         self.db = db
 
-    def get_all(self):
+    def get_all(self, period = None):
         try:
-            data = self.db.query(PayrollEmployeeModel).order_by('rut').all()
+            if period == None:
+                data = self.db.query(PayrollEmployeeModel).order_by('rut').all()
+            else:
+                data = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).order_by('rut').all()
+                
             if not data:
                 return "No data found"
             serialized_data = []

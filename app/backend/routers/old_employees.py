@@ -17,7 +17,8 @@ def transfer(old_employee: OldEmployee, session_user: UserLogin = Depends(get_cu
 
     data = OldEmployeeClass(db).store(old_employee_inputs)
 
-    # EmployeeClass(db).delete(old_employee_inputs["rut"])
+    if old_employee_inputs['end_document_type_id'] == 1:
+        EmployeeClass(db).delete(old_employee_inputs["rut"])
 
     return {"message": data}
 

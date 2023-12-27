@@ -3,6 +3,7 @@ from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import OldEmployeeLaborDatum, UserLogin
 from app.backend.classes.old_employee_labor_datum_class import OldEmployeeLaborDatumClass
+from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.auth.auth_user import get_current_active_user
 
 old_employee_labor_data = APIRouter(
@@ -16,7 +17,8 @@ def transfer(old_employee_labor_datum: OldEmployeeLaborDatum, session_user: User
 
     data = OldEmployeeLaborDatumClass(db).store(old_employee_labor_datum_inputs)
 
-    # EmployeeLaborDatumClass(db).delete(old_employee_labor_datum_inputs["rut"])
+    if old_employee_labor_datum_inputs['end_document_type_id'] == 1:
+        EmployeeLaborDatumClass(db).delete(old_employee_labor_datum_inputs["rut"])
 
     return {"message": data}
 

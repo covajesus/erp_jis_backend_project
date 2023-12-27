@@ -12,8 +12,8 @@ old_family_core_data = APIRouter(
     tags=["OldFamilyCoreDatum"]
 )
 
-@old_family_core_data.post("/transfer/{rut}")
-def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+@old_family_core_data.post("/transfer/{rut}/{end_document_type_id}")
+def transfer(rut: int, end_document_type_id: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     family_data = FamilyCoreDatumClass(db).get('employee_rut', rut, 2)
     family_data = json.loads(family_data)
 
@@ -31,7 +31,8 @@ def transfer(rut: int, session_user: UserLogin = Depends(get_current_active_user
         }
 
         OldFamilyCoreDatumClass(db).store(old_family_inputs)
-        # FamilyCoreDatumModel(db).delete(family_datum.id)
+        if end_document_type_id == 1:
+            FamilyCoreDatumClass(db).delete(family_datum.id)
 
     return {"message": f"Datos del núcleo familiar transferidos para el RUT {rut}"}
 
