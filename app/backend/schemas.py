@@ -1012,7 +1012,7 @@ class Mesh(BaseModel):
     week_id: int
     turn_id: int
     rut: int
-    datesInRange: List[str] 
+    dates_in_range: List[str] 
     added_date: datetime
 
 class MeshList(BaseModel):

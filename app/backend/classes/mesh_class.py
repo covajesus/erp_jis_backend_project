@@ -94,23 +94,26 @@ class MeshClass:
   
     def store(self, inputs):
         try:
-            # Crear y guardar la instancia de MeshModel
-            first_date = datetime.fromisoformat(inputs['datesInRange'][0])
+            # Crear la instancia de MeshModel solo si no existe una con el mismo rut y period
+            first_date = datetime.fromisoformat(inputs['dates_in_range'][0])
             period = f"{first_date.year}-{first_date.month}"
             mesh_data = {key: inputs[key] for key in ('rut', 'added_date')}
             mesh_data['period'] = period
-            mesh = MeshModel(**mesh_data)
-            self.db.add(mesh)
-            self.db.commit()
+
+            mesh = self.db.query(MeshModel).filter_by(rut=mesh_data['rut'], period=mesh_data['period']).first()
+            if not mesh:
+                mesh = MeshModel(**mesh_data)
+                self.db.add(mesh)
+                self.db.commit()
 
             # Crear y guardar las instancias de MeshDetailModel
-            for date in inputs['datesInRange']:
+            for date in inputs['dates_in_range']:
                 date_obj = datetime.fromisoformat(date)
                 formatted_date = date_obj.strftime('%Y-%m-%d %H:%M:%S')
                 detail_data = {
-                    'mesh_id': mesh.id,
-                    'turn_id': inputs['turn_id'],
                     'week_id': inputs['week_id'],
+                    'turn_id': inputs['turn_id'],
+                    'mesh_id': mesh.id,
                     'rut': inputs['rut'],
                     'date': formatted_date,
                     'added_date': inputs['added_date'],
