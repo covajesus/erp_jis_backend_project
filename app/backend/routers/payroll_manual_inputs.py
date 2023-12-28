@@ -30,8 +30,12 @@ async def upload(form_data: UploadPayrollManualInput = Depends(UploadPayrollManu
         raise HTTPException(status_code=400, detail=f"Error al leer el archivo: {str(e)}")
 
     for payroll_manual_input in payroll_manual_input_data:
-        print(1)
+        
         for key, value in payroll_manual_input.items():
-            print(f"Clave: {key}, Valor: {value}")
+            if key == 'Rut':
+                form_data.rut = value
+            if key == 'Monto':
+                form_data.amount = value
+        PayrollManualInputClass(db).multiple_store(form_data)
 
     return 1
