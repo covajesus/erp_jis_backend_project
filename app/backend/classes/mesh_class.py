@@ -1,6 +1,5 @@
-from app.backend.db.models import MeshModel, EmployeeModel, MeshDetailModel
-from sqlalchemy import desc, asc
-from sqlalchemy import extract
+from app.backend.db.models import MeshModel, EmployeeModel, MeshDetailModel, TurnModel
+from sqlalchemy import desc, asc,extract, select
 import json
 from fastapi.encoders import jsonable_encoder
 from datetime import datetime
@@ -9,7 +8,54 @@ from datetime import datetime
 class MeshClass:
     def __init__(self, db):
         self.db = db
+    def serialize_mesh(self,mesh):
+        return {
+            'turn': mesh.turn,
+            'working': mesh.working,
+            'start': str(mesh.start), 
+            'end': str(mesh.end),
+            'breaking': mesh.breaking,
+        }
 
+
+    def get_turn_by_id(self, id):
+        stmt = select(TurnModel.turn, TurnModel.working, TurnModel.start, TurnModel.end, TurnModel.breaking).where(TurnModel.id == id)
+        result = self.db.execute(stmt).first()
+        return self.serialize_mesh(result)
+        
+
+    def group_by_week(self, data):
+        grouped_data = {}
+        for item in data:
+            week_id = item['week_id']
+            if week_id not in grouped_data:
+                # Si la semana no está en el diccionario, la agregamos
+                grouped_data[week_id] = item
+                grouped_data[week_id]['date'] = [item['date']]
+
+                # Obtener los datos del turno
+                turn_data = self.get_turn_by_id(item['turn_id'])
+                grouped_data[week_id]['turn_data'] = turn_data
+            else:
+                # Si la semana ya está en el diccionario, agregamos la fecha a la lista
+                grouped_data[week_id]['date'].append(item['date'])
+
+        return list(grouped_data.values())
+    def getMeshByrutWeekPeriod(self, rut, period):
+        try:
+            periodYear = period.split('-')[0]
+            periodMonth = period.split('-')[1]
+            data = self.db.query(MeshDetailModel).filter(MeshDetailModel.rut == rut)\
+                        .filter(extract('year', MeshDetailModel.date) == periodYear)\
+                        .filter(extract('month', MeshDetailModel.date) == periodMonth).all()
+            data = [item.__dict__ for item in data]  # Convertir los objetos a diccionarios
+            grouped_data = self.group_by_week(data)
+            return grouped_data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+   
     def get_all(self):
         try:
             data = self.db.query(MeshModel, EmployeeModel).outerjoin(EmployeeModel, MeshModel.rut == EmployeeModel.rut).order_by(desc(MeshModel.id)).all()
