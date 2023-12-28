@@ -8,19 +8,23 @@ from datetime import datetime
 class MeshClass:
     def __init__(self, db):
         self.db = db
-    def serialize_mesh(self,mesh):
+    def serialize_mesh(self, mesh):
         return {
             'turn': mesh.turn,
             'working': mesh.working,
             'start': str(mesh.start), 
             'end': str(mesh.end),
             'breaking': mesh.breaking,
+            'group_day_id': mesh.group_day_id,
+            'free_day_group_id': mesh.free_day_group_id,
+            'total_week_hours': mesh.total_week_hours,
+            'scheduled': f'{mesh.group_day_id} x {mesh.free_day_group_id}',
         }
 
-
     def get_turn_by_id(self, id):
-        stmt = select(TurnModel.turn, TurnModel.working, TurnModel.start, TurnModel.end, TurnModel.breaking).where(TurnModel.id == id)
+        stmt = select(TurnModel.turn, TurnModel.working, TurnModel.start, TurnModel.end, TurnModel.breaking, TurnModel.group_day_id, TurnModel.free_day_group_id, TurnModel.total_week_hours).where(TurnModel.id == id)
         result = self.db.execute(stmt).first()
+        print(result)
         return self.serialize_mesh(result)
         
 
