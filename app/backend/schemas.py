@@ -816,14 +816,14 @@ class UploadDocumentEmployee(BaseModel):
     support: UploadFile
     updated_date: str = None
 
-class PayrollManualInputItem(BaseModel):
-    payroll_item_id: Union[int, None]
-    rut: Union[int, None]
-    amount_input: Union[int, None]
-    period: Union[str, None]
+class PayrollEmployeeInput(BaseModel):
+    rut: int
+    payroll_item_id: int
+    amount: int
+    period: str
 
-class PayrollManualInput(BaseModel):
-    payroll_items: List[PayrollManualInputItem]
+class PayrollDataInput(BaseModel):
+    payroll_employees: List[PayrollEmployeeInput]
 
 class SearchEmployee(BaseModel):
     rut: Union[str, None]
