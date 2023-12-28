@@ -24,3 +24,17 @@ class PayrollManualInputClass:
             self.db.commit()
 
         return 1
+    
+    def store(self, manual_inputs_list):
+        payroll_manual_input = PayrollManualInputModel()
+        payroll_manual_input.rut = rut
+        payroll_manual_input.payroll_item_id = payroll_item_id
+        payroll_manual_input.amount = amount
+        payroll_manual_input.period = period
+        payroll_manual_input.added_date = datetime.now()
+
+        self.db.add(payroll_manual_input)
+
+        self.db.commit()
+
+        return 1
