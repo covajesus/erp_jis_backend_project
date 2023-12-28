@@ -59,8 +59,6 @@ def multiple_store(files: List[UploadFile] = File(...), session_user: UserLogin 
         form_data = {}
         form_data['rut'] = file_detail[3]
 
-        print(form_data['rut'])
-
         filename = dropbox_client.upload(name=str(form_data['rut']), description='liquidacion', data=file,
                                  dropbox_path='/salary_settlements/', computer_path=os.path.join(os.path.dirname(__file__)))
 

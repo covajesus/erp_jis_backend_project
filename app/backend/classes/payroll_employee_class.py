@@ -49,8 +49,6 @@ class PayrollEmployeeClass:
         
     def search(self, search_inputs):
         try:
-            print(search_inputs['father_lastname'])
-            print(search_inputs['rut'])
             if len(search_inputs) > 0:
                 search_rut = search_inputs['rut']
                 search_father_lastname = search_inputs['father_lastname']

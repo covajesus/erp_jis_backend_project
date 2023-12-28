@@ -10,9 +10,9 @@ payroll_employees = APIRouter(
     tags=["PayrollEmployees"]
 )
 
-@payroll_employees.get("/")
-def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db), items_per_page: int = 10):
-    data = PayrollEmployeeClass(db).get_all()
+@payroll_employees.get("/{period}")
+def index(period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db), items_per_page: int = 10):
+    data = PayrollEmployeeClass(db).get_all(period)
 
     return {"message": data}
 
