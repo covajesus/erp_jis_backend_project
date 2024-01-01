@@ -40,6 +40,6 @@ def transfer(rut: int, end_document_type_id: int, session_user: UserLogin = Depe
 
 @old_medical_licenses.get("/edit/{rut}/{page}")
 def edit(rut:int, page:int = None, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = MedicalLicenseClass(db).get("rut", rut, 2, page)
+    data = OldMedicalLicenseClass(db).get("rut", rut, 2, page)
     
     return {"message": data}
