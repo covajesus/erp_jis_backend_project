@@ -27,15 +27,11 @@ class OldEmployeeClass:
                     "mother_lastname": data[0].mother_lastname,
                     "gender_id": data[0].gender_id,
                     "nationality_id": data[0].nationality_id,
-                    "signature_type_id": data[0].signature_type_id,
                     "personal_email": data[0].personal_email,
                     "cellphone": data[0].cellphone,
                     "born_date": data[0].born_date.strftime('%Y-%m-%d') if data[0].born_date else None,
                     "picture": data[0].picture,
-                    "signature": data[0].signature,
-                    "privilege": data[1],
-                    "added_date": data[0].added_date.strftime('%Y-%m-%d %H:%M:%S') if data[0].added_date else None,
-                    "updated_date": data[0].updated_date.strftime('%Y-%m-%d %H:%M:%S') if data[0].updated_date else None
+                    "privilege": data[1]
                 }
 
                 # Serializar la firma (signature) y la imagen (picture)
