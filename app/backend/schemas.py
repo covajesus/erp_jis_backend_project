@@ -846,7 +846,7 @@ class SearchEmployee(BaseModel):
     names: Union[str, None]
     father_lastname: Union[str, None]
     mother_lastname: Union[str, None]
-    status_id: str = None
+    status_id: int = None
     branch_office_id: str = None
     user_rut: str
     rol_id: int
