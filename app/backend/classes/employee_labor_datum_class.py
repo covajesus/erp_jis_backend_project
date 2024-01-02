@@ -58,14 +58,12 @@ class EmployeeLaborDatumClass:
                 branch_office = data[6]
                 pention = data[7]
 
-                # Serializar los datos de la región
                 serialized_region = {
                     "id": region.id,
                     "region": region.region,
                     "region_remuneration_code": region.region_remuneration_code,
                 }
 
-                # Serializar los datos de la salud
                 serialized_health = {
                     "id": health.id,
                     "health_remuneration_code": health.health_remuneration_code,
@@ -74,27 +72,23 @@ class EmployeeLaborDatumClass:
                     "previred_code": health.previred_code,
                 }
 
-                # Serializar los datos de la comuna
                 serialized_commune = {
                     "id": commune.id,
                     "region_id": commune.region_id,
                     "commune": commune.commune,
                 }
 
-                # Serializar los datos del estado civil
                 serialized_civil_state = {
                     "id": civil_state.id,
                     "civil_state": civil_state.civil_state,
                 }
 
-                # Serializar los datos del cargo
                 serialized_job_position = {
                     "id": job_position.id,
                     "job_position": job_position.job_position,
                     "functions": job_position.functions,
                 }
 
-                # Serializar los datos de la sucursal
                 serialized_branch_office = {
                     "id": branch_office.id,
                     "branch_office": branch_office.branch_office,
@@ -110,7 +104,6 @@ class EmployeeLaborDatumClass:
                     "dte_code": branch_office.dte_code,
                 }
 
-                # Serializar los datos de la pensión
                 serialized_pention = {
                     "id": pention.id,
                     "pention": pention.pention,

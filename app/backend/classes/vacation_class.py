@@ -218,6 +218,7 @@ class VacationClass:
             return 0
     
     def legal(self, rut):
+        print(rut)
         employee_labor_data = EmployeeLaborDatumClass(self.db).get("rut", rut)
         employee_labor_data = json.loads(employee_labor_data)
         employee_labor_data_decoded = employee_labor_data["EmployeeLaborDatumModel"]["entrance_company"]
