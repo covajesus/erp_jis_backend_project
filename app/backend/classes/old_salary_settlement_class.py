@@ -1,10 +1,8 @@
 from app.backend.db.models import OldDocumentEmployeeModel, OldEmployeeModel
-from datetime import datetime
 from sqlalchemy import desc
-from app.backend.classes.dropbox_class import DropboxClass
 import json
 
-class SalarySettlementClass:
+class OldSalarySettlementClass:
     def __init__(self, db):
         self.db = db
         
