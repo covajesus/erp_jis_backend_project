@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.backend.db.models import OldDocumentEmployeeModel
+from app.backend.db.models import DocumentEmployeeModel
 from app.backend.classes.hr_setting_class import HrSettingClass
 from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.db.models import EndDocumentModel
@@ -15,7 +15,7 @@ class EndDocumentClass:
     def get_all(self, rut):
         try:
             data = self.db.query(
-                OldDocumentEmployeeModel.status_id,
+                DocumentEmployeeModel.status_id,
                 EndDocumentModel.causal_id,
                 EndDocumentModel.fertility_proportional_days,
                 EndDocumentModel.fertility_proportional,
@@ -23,16 +23,16 @@ class EndDocumentClass:
                 EndDocumentModel.voluntary_indemnity,
                 EndDocumentModel.substitute_compensation,
                 EndDocumentModel.total,
-                OldDocumentEmployeeModel.added_date,
-                OldDocumentEmployeeModel.support,
-                OldDocumentEmployeeModel.rut,
-                OldDocumentEmployeeModel.id). \
+                DocumentEmployeeModel.added_date,
+                DocumentEmployeeModel.support,
+                DocumentEmployeeModel.rut,
+                DocumentEmployeeModel.id). \
             outerjoin(
-                EndDocumentModel, EndDocumentModel.document_employee_id == OldDocumentEmployeeModel.id). \
+                EndDocumentModel, EndDocumentModel.document_employee_id == DocumentEmployeeModel.id). \
             filter(
-                OldDocumentEmployeeModel.rut == rut,
-                OldDocumentEmployeeModel.document_type_id == 22
-            ).order_by(desc(OldDocumentEmployeeModel.id)).all()
+                DocumentEmployeeModel.rut == rut,
+                DocumentEmployeeModel.document_type_id == 22
+            ).order_by(desc(DocumentEmployeeModel.id)).all()
             print(str(data))
             if not data:
                 return 0
