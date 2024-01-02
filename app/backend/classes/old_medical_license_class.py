@@ -1,8 +1,6 @@
-from app.backend.db.models import OldMedicalLicenseModel, DocumentEmployeeModel, EmployeeModel
+from app.backend.db.models import OldMedicalLicenseModel, OldDocumentEmployeeModel, OldEmployeeModel
 from datetime import datetime
 from sqlalchemy import desc
-from app.backend.classes.dropbox_class import DropboxClass
-from app.backend.classes.helper_class import HelperClass
 import json
 
 class OldMedicalLicenseClass:
@@ -14,34 +12,19 @@ class OldMedicalLicenseClass:
             if type == 1:
                 data = self.db.query(OldMedicalLicenseModel).filter(getattr(OldMedicalLicenseModel, field) == value).first()
                 if data:
-                    # Serializar el objeto OldMedicalLicenseModel a un diccionario
                     serialized_data = {
                         "document_employee_id": data.document_employee_id,
-                        "document_type_id": data.document_type_id,
                         "folio": data.folio,
                         "since": data.since.strftime('%Y-%m-%d') if data.since else None,
                         "until": data.until.strftime('%Y-%m-%d') if data.until else None,
                         "days": data.days,
-                        "support": data.support,
-                        "status_id": data.status_id,
                         "id": data.id
                     }
                     return serialized_data
                 else:
                     return "No data found"
             else:
-                data_query = self.db.query(
-                    OldMedicalLicenseModel.document_employee_id,
-                    DocumentEmployeeModel.document_type_id,
-                    OldMedicalLicenseModel.folio,
-                    EmployeeModel.visual_rut,
-                    OldMedicalLicenseModel.since,
-                    OldMedicalLicenseModel.until,
-                    OldMedicalLicenseModel.days,
-                    DocumentEmployeeModel.support,
-                    DocumentEmployeeModel.status_id,
-                    OldMedicalLicenseModel.id
-                ).outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == OldMedicalLicenseModel.document_employee_id).outerjoin(EmployeeModel, EmployeeModel.rut == OldMedicalLicenseModel.rut).filter(getattr(OldMedicalLicenseModel, field) == value).filter(DocumentEmployeeModel.document_type_id == 35).order_by(desc(OldMedicalLicenseModel.since))
+                data_query = self.db.query(OldEmployeeModel.visual_rut, OldMedicalLicenseModel.folio, OldMedicalLicenseModel.since, OldMedicalLicenseModel.until, OldMedicalLicenseModel.days, OldMedicalLicenseModel.document_employee_id, OldDocumentEmployeeModel.status_id, OldDocumentEmployeeModel.document_type_id, OldDocumentEmployeeModel.support, OldDocumentEmployeeModel.id).outerjoin(OldDocumentEmployeeModel, OldDocumentEmployeeModel.id == OldMedicalLicenseModel.document_employee_id).outerjoin(OldEmployeeModel, OldEmployeeModel.rut == OldMedicalLicenseModel.rut).filter(getattr(OldMedicalLicenseModel, field) == value)
 
                 total_items = data_query.count()
                 total_pages = (total_items + items_per_page - 1) // items_per_page
@@ -54,7 +37,6 @@ class OldMedicalLicenseClass:
                 if not data:
                     return "No data found"
 
-                # Serializar la lista de objetos OldMedicalLicenseModel a una lista de diccionarios
                 serialized_data = {
                     "total_items": total_items,
                     "total_pages": total_pages,

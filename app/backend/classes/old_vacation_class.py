@@ -9,16 +9,13 @@ class OldVacationClass:
 
     def get_all(self, rut):
         try:
-            # Query para obtener todas las vacaciones
             data_query = self.db.query(OldVacationModel).filter(OldVacationModel.rut == rut)
 
-            # Ejecuta la consulta y obtén todos los resultados
             data = data_query.all()
 
             if not data:
                 return "No data found"
 
-            # Serializa los datos en una estructura de diccionario
             serialized_data = [
                 {
                     "rut": item.rut,
@@ -31,7 +28,6 @@ class OldVacationClass:
                 for item in data
             ]
 
-            # Convierte el resultado a una cadena JSON
             serialized_result = json.dumps(serialized_data)
 
             return serialized_result
