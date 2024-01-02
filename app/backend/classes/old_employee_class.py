@@ -63,7 +63,7 @@ class OldEmployeeClass:
         
         employee = OldEmployeeModel()
         employee.rut = numeric_rut
-        employee.visual_rut = old_employee_inputs['rut']
+        employee.visual_rut = old_employee_inputs['visual_rut']
         employee.names = old_employee_inputs['names']
         employee.father_lastname = old_employee_inputs['father_lastname']
         employee.mother_lastname = old_employee_inputs['mother_lastname']

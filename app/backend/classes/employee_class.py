@@ -48,7 +48,9 @@ class EmployeeClass:
                         filter(SupervisorModel.rut == rut). \
                         order_by(EmployeeModel.rut)
                 else:
-                    data_query = self.db.query(EmployeeModel).order_by(EmployeeModel.rut)
+                    data_query = self.db.query(EmployeeModel.id, EmployeeModel.rut, EmployeeModel.visual_rut, EmployeeModel.names, EmployeeModel.father_lastname, EmployeeModel.mother_lastname, EmployeeLaborDatumModel.status_id). \
+                        outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut). \
+                        order_by(EmployeeModel.rut)
 
                 total_items = data_query.count()
                 total_pages = (total_items + items_per_page - 1) // items_per_page
@@ -69,7 +71,8 @@ class EmployeeClass:
                         "visual_rut": employee.visual_rut,
                         "names": employee.names,
                         "father_lastname": employee.father_lastname,
-                        "mother_lastname": employee.mother_lastname
+                        "mother_lastname": employee.mother_lastname,
+                        "status_id": employee.status_id,
                     } for employee, labor_datum, branch_office, supervisor in data]
                 else:
                     serialized_data = [{
@@ -78,7 +81,8 @@ class EmployeeClass:
                         "visual_rut": employee.visual_rut,
                         "names": employee.names,
                         "father_lastname": employee.father_lastname,
-                        "mother_lastname": employee.mother_lastname
+                        "mother_lastname": employee.mother_lastname,
+                        "status_id": employee.status_id,
                     } for employee in data]
 
                 return {
@@ -89,16 +93,18 @@ class EmployeeClass:
                     "data": serialized_data
                 }
             else:
-                data_query = self.db.query(EmployeeModel).order_by(EmployeeModel.rut).all()
+                data_query = self.db.query(EmployeeModel.id, EmployeeModel.rut, EmployeeModel.visual_rut, EmployeeModel.names, EmployeeModel.father_lastname, EmployeeModel.mother_lastname, EmployeeLaborDatumModel.status_id). \
+                        outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut). \
+                        order_by(EmployeeModel.rut).all()
 
-                # Serializar los datos
                 serialized_data = [{
                     "id": employee.id,
                     "rut": employee.rut,
                     "visual_rut": employee.visual_rut,
                     "names": employee.names,
                     "father_lastname": employee.father_lastname,
-                    "mother_lastname": employee.mother_lastname
+                    "mother_lastname": employee.mother_lastname,
+                    "status_id": employee.status_id
                 } for employee in data_query]
 
                 return serialized_data
@@ -124,7 +130,8 @@ class EmployeeClass:
                 OldEmployeeModel.visual_rut,
                 OldEmployeeModel.names,
                 OldEmployeeModel.father_lastname,
-                OldEmployeeModel.mother_lastname
+                OldEmployeeModel.mother_lastname,
+                OldEmployeeLaborDatumModel.status_id
             ).order_by('rut')
 
             if len(search_inputs) > 0:
@@ -148,7 +155,8 @@ class EmployeeClass:
                 EmployeeModel.visual_rut,
                 EmployeeModel.names,
                 EmployeeModel.father_lastname,
-                EmployeeModel.mother_lastname
+                EmployeeModel.mother_lastname,
+                EmployeeLaborDatumModel.status_id
             ).order_by('rut')
 
             if len(search_inputs) > 0:
@@ -180,12 +188,13 @@ class EmployeeClass:
             "visual_rut": employee.visual_rut,
             "names": employee.names,
             "father_lastname": employee.father_lastname,
-            "mother_lastname": employee.mother_lastname
+            "mother_lastname": employee.mother_lastname,
+            "status_id": employee.status_id
         } for employee in data]
 
         return {
-            "total_items": 100,
-            "total_pages": 1,
+            "total_items": total_items,
+            "total_pages": total_pages,
             "current_page": page,
             "items_per_page": items_per_page,
             "data": serialized_data

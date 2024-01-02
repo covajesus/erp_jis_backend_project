@@ -220,6 +220,7 @@ class expirationDatum(BaseModel):
 class OldEmployeeLaborDatum(BaseModel):
     end_document_type_id: int
     rut: str = None
+    visual_rut: str = None
     contract_type_id: int = None
     branch_office_id: int = None
     address: str = None

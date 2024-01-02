@@ -190,6 +190,7 @@ class OldEmployeeLaborDatumClass:
 
         employee_labor_datum = OldEmployeeLaborDatumModel()
         employee_labor_datum.rut = numeric_rut
+        employee_labor_datum.visual_rut = old_employee_labor_datum_inputs['visual_rut']
         employee_labor_datum.contract_type_id = old_employee_labor_datum_inputs['contract_type_id']
         employee_labor_datum.branch_office_id = old_employee_labor_datum_inputs['branch_office_id']
         employee_labor_datum.address = old_employee_labor_datum_inputs['address']
