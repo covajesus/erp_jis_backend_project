@@ -123,7 +123,7 @@ class EmployeeClass:
             search_status_id = search_inputs['status_id']
             search_branch_office_id = search_inputs['branch_office_id']
 
-        if search_status_id == '2' or search_status_id == '3':
+        if search_status_id == 2 or search_status_id == 3:
             data_query = self.db.query(OldEmployeeModel).join(OldEmployeeLaborDatumModel, OldEmployeeLaborDatumModel.rut == OldEmployeeModel.rut).add_columns(
                 OldEmployeeModel.id,
                 OldEmployeeModel.rut,
@@ -147,7 +147,6 @@ class EmployeeClass:
                     data_query = data_query.filter(OldEmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
                 if search_status_id:
                     data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
-
         else:
             data_query = self.db.query(EmployeeModel).join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).add_columns(
                 EmployeeModel.id,
