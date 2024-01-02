@@ -165,6 +165,8 @@ class EmployeeClass:
                 if search_status_id:
                     data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
 
+        total_items = data_query.count()
+        total_pages = (total_items + items_per_page - 1)
 
         data = data_query.all()
 
@@ -182,7 +184,7 @@ class EmployeeClass:
         } for employee in data]
 
         return {
-            "total_items": 1,
+            "total_items": 100,
             "total_pages": 1,
             "current_page": page,
             "items_per_page": items_per_page,
