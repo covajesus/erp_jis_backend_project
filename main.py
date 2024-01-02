@@ -70,6 +70,7 @@ from app.backend.routers.payroll_items import payroll_items
 from app.backend.routers.payroll_employees import payroll_employees
 from app.backend.routers.holidays import holidays
 from app.backend.routers.payroll_manual_inputs import payroll_manual_inputs
+from app.backend.routers.old_salary_settlements import old_salary_settlements
 
 app = FastAPI()
 
@@ -160,6 +161,7 @@ app.include_router(meshes)
 app.include_router(payroll_employees)
 app.include_router(holidays)
 app.include_router(payroll_manual_inputs)
+app.include_router(old_salary_settlements)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
