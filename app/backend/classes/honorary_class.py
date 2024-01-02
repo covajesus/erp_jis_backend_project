@@ -19,7 +19,7 @@ class HonoraryClass:
                     outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
                     outerjoin(SupervisorModel, SupervisorModel.branch_office_id == BranchOfficeModel.id). \
                     filter(SupervisorModel.rut == rut). \
-                    order_by(EmployeeModel.rut)
+                    order_by(EmployeeModel.added_date.desc())
                 
                 data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
 

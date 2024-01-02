@@ -126,6 +126,21 @@ class EmployeeClass:
                 OldEmployeeModel.father_lastname,
                 OldEmployeeModel.mother_lastname
             ).order_by('rut')
+
+            if len(search_inputs) > 0:
+                if search_rut:
+                    data_query = data_query.filter(OldEmployeeModel.visual_rut.like(f"%{search_rut}%"))
+                if search_names:
+                    data_query = data_query.filter(OldEmployeeModel.names.like(f"%{search_names}%"))
+                if search_father_lastname:
+                    data_query = data_query.filter(OldEmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
+                if search_mother_lastname:
+                    data_query = data_query.filter(OldEmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
+                if search_branch_office_id:
+                    data_query = data_query.filter(OldEmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
+                if search_status_id:
+                    data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
+
         else:
             data_query = self.db.query(EmployeeModel).join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).add_columns(
                 EmployeeModel.id,
@@ -136,27 +151,22 @@ class EmployeeClass:
                 EmployeeModel.mother_lastname
             ).order_by('rut')
 
-        if len(search_inputs) > 0:
-            if search_rut:
-                data_query = data_query.filter(EmployeeModel.visual_rut.like(f"%{search_rut}%"))
-            if search_names:
-                data_query = data_query.filter(EmployeeModel.names.like(f"%{search_names}%"))
-            if search_father_lastname:
-                data_query = data_query.filter(EmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
-            if search_mother_lastname:
-                data_query = data_query.filter(EmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
-            if search_branch_office_id:
-                data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
-            if search_status_id:
-                data_query = data_query.filter(OldEmployeeLaborDatumModel.status_id == search_status_id)
+            if len(search_inputs) > 0:
+                if search_rut:
+                    data_query = data_query.filter(EmployeeModel.visual_rut.like(f"%{search_rut}%"))
+                if search_names:
+                    data_query = data_query.filter(EmployeeModel.names.like(f"%{search_names}%"))
+                if search_father_lastname:
+                    data_query = data_query.filter(EmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
+                if search_mother_lastname:
+                    data_query = data_query.filter(EmployeeModel.mother_lastname.like(f"%{search_mother_lastname}%"))
+                if search_branch_office_id:
+                    data_query = data_query.filter(EmployeeLaborDatumModel.branch_office_id == search_branch_office_id)
+                if search_status_id:
+                    data_query = data_query.filter(EmployeeLaborDatumModel.status_id == search_status_id)
 
-        total_items = data_query.count()
-        total_pages = (total_items + items_per_page - 1) // items_per_page
 
-        if page < 1 or page > total_pages:
-            return "Invalid page number"
-
-        data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
+        data = data_query.all()
 
         if not data:
             return "No data found"
@@ -172,8 +182,8 @@ class EmployeeClass:
         } for employee in data]
 
         return {
-            "total_items": total_items,
-            "total_pages": total_pages,
+            "total_items": 1,
+            "total_pages": 1,
             "current_page": page,
             "items_per_page": items_per_page,
             "data": serialized_data
