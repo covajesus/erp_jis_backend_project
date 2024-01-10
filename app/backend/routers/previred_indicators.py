@@ -23,23 +23,24 @@ previred_indicators = APIRouter(
 @previred_indicators.post("/{period}")
 def index(period:str, db: Session = Depends(get_db)):
 
-    payroll_indicator_data = PayrollIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollUfIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollUtmUtaIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollUtmUtaIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollMiniumTaxableIncomeIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollVoluntaryPrevitionalIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollUmploymentInsuranceIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollAfpQuoteIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollFamilyAsignationIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollHeavyDutyQuoteIndicatorClass(db).get_all(period)
-    payroll_indicator_data = PayrollCcafIndicator(db).get_all(period)
+    PayrollIndicatorClass(db).get_all(period)
+    PayrollUfIndicatorClass(db).get_all(period)
+    PayrollUtmUtaIndicatorClass(db).get_all(period)
+    PayrollUtmUtaIndicatorClass(db).get_all(period)
+    PayrollMiniumTaxableIncomeIndicatorClass(db).get_all(period)
+    PayrollVoluntaryPrevitionalIndicatorClass(db).get_all(period)
+    PayrollUmploymentInsuranceIndicatorClass(db).get_all(period)
+    PayrollAfpQuoteIndicatorClass(db).get_all(period)
+    PayrollFamilyAsignationIndicatorClass(db).get_all(period)
+    PayrollHeavyDutyQuoteIndicatorClass(db).get_all(period)
 
     return {"message": 1}
 
 @previred_indicators.post("/store")
 def store(previred_indicator:PreviredIndicator, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     previred_indicator_inputs = previred_indicator.dict()
+
+    print(previred_indicator_inputs)
 
     PayrollIndicatorClass(db).store(previred_indicator_inputs)
     PayrollUfIndicatorClass(db).store(previred_indicator_inputs)
@@ -51,6 +52,5 @@ def store(previred_indicator:PreviredIndicator, session_user: UserLogin = Depend
     PayrollAfpQuoteIndicatorClass(db).store(previred_indicator_inputs)
     PayrollFamilyAsignationIndicatorClass(db).store(previred_indicator_inputs)
     PayrollHeavyDutyQuoteIndicatorClass(db).store(previred_indicator_inputs)
-    PayrollCcafIndicator(db).store(previred_indicator_inputs)
 
     return {"message": 1}

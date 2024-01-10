@@ -54,7 +54,17 @@ class PayrollItemClass:
             except Exception as e:
                 error_message = str(e)
                 return f"Error: {error_message}"
-        
+            
+    def get_taxable_items(self):
+        data = self.db.query(PayrollItemModel).filter(PayrollItemModel.classification_id == 1).all()
+
+        return data
+    
+    def get_no_taxable_items(self):
+        data = self.db.query(PayrollItemModel).filter(PayrollItemModel.classification_id == 2).all()
+
+        return data
+    
     def store(self, payroll_item_inputs):
         try:
             data = PayrollItemModel(**payroll_item_inputs)

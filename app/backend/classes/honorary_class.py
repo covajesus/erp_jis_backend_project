@@ -32,7 +32,6 @@ class HonoraryClass:
                 if not data:
                     return "No data found"
 
-                # Serializar los datos
                 serialized_data = [{
                     "status_id": honorary.status_id,
                     "id": honorary.id,

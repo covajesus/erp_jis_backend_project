@@ -40,7 +40,6 @@ class OldSalarySettlementClass:
                     if not data:
                         return "No data found"
 
-                    # Serializar los datos en una estructura de diccionario
                     serialized_data = {
                         "total_items": total_items,
                         "total_pages": total_pages,
@@ -58,7 +57,6 @@ class OldSalarySettlementClass:
                         ]
                     }
 
-                    # Convierte el resultado a una cadena JSON
                     serialized_result = json.dumps(serialized_data)
 
                     return serialized_result

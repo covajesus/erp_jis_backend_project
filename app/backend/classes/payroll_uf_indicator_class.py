@@ -11,6 +11,11 @@ class PayrollUfIndicatorClass:
         data = self.db.query(PayrollUfIndicatorModel).filter(PayrollUfIndicatorModel.period == period).first()
 
         return data
+    
+    def get(self, period):
+        data = self.db.query(PayrollUfIndicatorModel).filter(PayrollUfIndicatorModel.period == period).first()
+
+        return data
 
     def store(self, payroll_indicator_inputs):
         try:

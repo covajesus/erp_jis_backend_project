@@ -1,4 +1,6 @@
 from app.backend.db.models import PayrollManualInputModel
+from app.backend.classes.payroll_class import PayrollClass
+from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.helper_class import HelperClass
 from datetime import datetime
 
@@ -13,16 +15,13 @@ class PayrollManualInputClass:
             amount = payroll_manual_input.amount
             period = payroll_manual_input.period
 
-            payroll_manual_input = PayrollManualInputModel()
-            payroll_manual_input.rut = rut
-            payroll_manual_input.payroll_item_id = payroll_item_id
-            payroll_manual_input.amount = amount
-            payroll_manual_input.period = period
-            payroll_manual_input.added_date = datetime.now()
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = payroll_item_id
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = amount
 
-            self.db.add(payroll_manual_input)
-
-            self.db.commit()
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1
     

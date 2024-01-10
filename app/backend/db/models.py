@@ -503,9 +503,9 @@ class PayrollTaxableIncomeCapIndicatorModel(Base):
     __tablename__ = 'payroll_taxable_income_cap_indicators'
 
     id = Column(Integer, primary_key=True)
-    afp = Column(Float)
-    ips = Column(Float)
-    unemployment = Column(Float)
+    afp = Column(Integer)
+    ips = Column(Integer)
+    unemployment = Column(Integer)
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -817,12 +817,24 @@ class ProgressiveVacationModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class PayrollItemValueModel(Base):
+    __tablename__ = 'payroll_item_values'
+
+    id = Column(Integer, primary_key=True)
+    item_id = Column(Integer)
+    rut = Column(Integer)
+    period = Column(String(255))
+    amount = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
 
 class PayrollItemModel(Base):
     __tablename__ = 'payroll_items'
 
     id = Column(Integer, primary_key=True)
     item_type_id = Column(Integer)
+    classification_id = Column(Integer)
+    order_id = Column(Integer)
     item = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())

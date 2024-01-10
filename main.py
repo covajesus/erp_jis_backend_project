@@ -71,20 +71,21 @@ from app.backend.routers.payroll_employees import payroll_employees
 from app.backend.routers.holidays import holidays
 from app.backend.routers.payroll_manual_inputs import payroll_manual_inputs
 from app.backend.routers.old_salary_settlements import old_salary_settlements
+from app.backend.routers.payroll_calculations import payroll_calculations
+from app.backend.routers.payroll_item_values import payroll_item_values
+from app.backend.routers.payroll_family_burdens import payroll_family_burdens
 
 app = FastAPI()
 
 os.environ['SECRET_KEY'] = '7de4c36b48fce8dcb3a4bb527ba62d789ebf3d3a7582472ee49d430b01a7f868'
 os.environ['ALGORITHM'] = 'HS256'
 
-# Configura las opciones de CORS
 origins = [
     "*",
-    "http://localhost:5173",  # Replace with your frontend's URL
+    "http://localhost:5173",
     "https://apijis.com",
 ]
 
-# Agrega el middleware de CORS a la aplicación
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -162,6 +163,9 @@ app.include_router(payroll_employees)
 app.include_router(holidays)
 app.include_router(payroll_manual_inputs)
 app.include_router(old_salary_settlements)
+app.include_router(payroll_calculations)
+app.include_router(payroll_item_values)
+app.include_router(payroll_family_burdens)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)

@@ -1,4 +1,5 @@
 from app.backend.db.models import EmployeeModel, EmployeeLaborDatumModel, PayrollEmployeeModel
+from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.helper_class import HelperClass
 from app.backend.classes.payroll_period_class import PayrollPeriodClass
 from datetime import datetime
@@ -26,7 +27,6 @@ class PayrollClass:
     def open(self, open_period_payroll_inputs):
         try:
             if self.verifiy_existence(open_period_payroll_inputs['period']) == 0:
-                print(5555555555)
                 employees = self.db.query(EmployeeModel.rut, EmployeeModel.visual_rut, EmployeeModel.names, 
                                     EmployeeModel.father_lastname, EmployeeModel.mother_lastname, EmployeeLaborDatumModel.contract_type_id,
                                     EmployeeLaborDatumModel.branch_office_id, EmployeeLaborDatumModel.health_id, EmployeeLaborDatumModel.pention_id,
@@ -65,6 +65,30 @@ class PayrollClass:
                     payroll_employee.updated_date = datetime.now()
                     self.db.add(payroll_employee)
                     self.db.commit()
+
+                    payroll_item_value_data = {}
+                    payroll_item_value_data['item_id'] = 35
+                    payroll_item_value_data['rut'] = employee.rut
+                    payroll_item_value_data['period'] = open_period_payroll_inputs['period']
+                    payroll_item_value_data['amount'] = employee.salary
+
+                    PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+                    payroll_item_value_data = {}
+                    payroll_item_value_data['item_id'] = 36
+                    payroll_item_value_data['rut'] = employee.rut
+                    payroll_item_value_data['period'] = open_period_payroll_inputs['period']
+                    payroll_item_value_data['amount'] = employee.collation
+
+                    PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+                    payroll_item_value_data = {}
+                    payroll_item_value_data['item_id'] = 37
+                    payroll_item_value_data['rut'] = employee.rut
+                    payroll_item_value_data['period'] = open_period_payroll_inputs['period']
+                    payroll_item_value_data['amount'] = employee.locomotion
+
+                    PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
             payroll_opening = PayrollPeriodClass(self.db).open(open_period_payroll_inputs)
             
