@@ -201,6 +201,7 @@ class EmployeeLaborDatumClass:
         employee_labor_datum = EmployeeLaborDatumModel()
         employee_labor_datum.rut = numeric_rut
         employee_labor_datum.visual_rut = employee_labor_datum_inputs['rut']
+        employee_labor_datum.status_id = 1
         employee_labor_datum.added_date = datetime.now()
 
         self.db.add(employee_labor_datum)

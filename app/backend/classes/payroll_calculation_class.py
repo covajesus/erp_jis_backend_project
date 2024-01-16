@@ -5,6 +5,7 @@ from app.backend.classes.payroll_item_class import PayrollItemClass
 from app.backend.classes.payroll_uf_indicator_class import PayrollUfIndicatorClass
 from app.backend.classes.payroll_minium_taxable_income_indicator_class import PayrollMiniumTaxableIncomeIndicatorClass
 from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuoteIndicatorClass
+from app.backend.classes.payroll_umployment_insurance_indicator_class import PayrollUmploymentInsuranceIndicatorClass
 
 class PayrollCalculationClass:
     def __init__(self, db):
@@ -15,11 +16,11 @@ class PayrollCalculationClass:
 
         for employee in employees:
             # 1
-            self.proportional(employee['rut'], 35, period)
+            self.proportional(employee['rut'], 35, period, 0, 1)
             # 2
-            self.proportional(employee['rut'], 36, period)
+            self.proportional(employee['rut'], 36, period, 0, 1)
             # 3
-            self.proportional(employee['rut'], 37, period)
+            self.proportional(employee['rut'], 37, period, 0, 1)
             # 4
             taxable_salary = self.taxable_salary(employee['rut'], period)
             # 5
@@ -37,7 +38,16 @@ class PayrollCalculationClass:
             self.health(employee['rut'], period, employee['extra_health_payment_type_id'], employee['extra_health_amount'], taxable_assets)
 
             # 10
-            self.health(employee['rut'], period, employee['pention_id'], taxable_assets)
+            self.pention(employee['rut'], period, employee['pention_id'], taxable_assets)
+
+            # 11
+            self.worker_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'], taxable_assets)
+
+            # 12
+            self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'], taxable_assets)
+
+            # 12
+            self.second_level_insurance(employee['rut'], period, taxable_assets)
 
     def taxable_salary(self, rut, period):
         taxable_items = PayrollItemClass(self.db).get_no_taxable_items()
@@ -65,12 +75,24 @@ class PayrollCalculationClass:
     def proportional(self, rut, item_id, period, amount = 0, manual_status_id = 0):
         if manual_status_id == 1:
             payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, item_id, period)
-
             days = PayrollItemValueClass(self.db).get_with_period(rut, 55, period)
 
             total = (payroll_item_value.amount / 30) * days.amount
 
-            PayrollItemValueClass(self.db).store(total)
+            if item_id == 35:
+                item_id = 52
+            elif item_id == 36:
+                item_id = 53
+            elif item_id == 37:
+                item_id = 54
+
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = item_id
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = total
+
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
         else:
             days = PayrollItemValueClass(self.db).get_with_period(rut, 55, period)
 
@@ -193,7 +215,6 @@ class PayrollCalculationClass:
 
             PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
-
     def pention(self, rut, period, pention_id, taxable_assets):
         payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
         payroll_afp_quote = PayrollAfpQuoteIndicatorClass(self.db).get(pention_id, period)
@@ -212,3 +233,92 @@ class PayrollCalculationClass:
         payroll_item_value_data['amount'] = amount
 
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+    def worker_unemployment_insurance(self, rut, period, regime_id, contract_type_id, taxable_assets):
+        payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
+
+        if regime_id == 2 or regime_id == 3:
+            amount = 0
+        else:
+            payroll_item_value_days = PayrollItemValueClass(self.db).get_with_period(rut, period, 55)
+
+            payroll_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(self.db).get(contract_type_id, period)
+
+            if payroll_item_value_days.amount > 0:
+                if taxable_assets > payroll_taxable_income_cap_indicator.afp:
+                    taxable_assets = payroll_taxable_income_cap_indicator.afp
+
+                if contract_type_id == 1:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+                elif contract_type_id == 2:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+                else:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+            else:
+                payroll_item_value_taxable_assets = PayrollItemValueClass(self.db).get(rut, 60)
+
+                if payroll_item_value_taxable_assets.amount > payroll_taxable_income_cap_indicator.afp:
+                    taxable_assets = payroll_taxable_income_cap_indicator.afp
+                else:
+                    taxable_assets = payroll_item_value_taxable_assets.amount
+
+                if contract_type_id == 1:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+                elif contract_type_id == 2:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+                else:
+                    amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 30
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+    def employer_unemployment_insurance(self, rut, period, regime_id, contract_type_id, taxable_assets):
+        payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
+
+        if regime_id == 2 or regime_id == 3:
+            amount = 0
+        else:
+            payroll_item_value_days = PayrollItemValueClass(self.db).get_with_period(rut, period, 55)
+
+            payroll_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(self.db).get(contract_type_id, period)
+
+            if payroll_item_value_days.amount > 0:
+                if taxable_assets > payroll_taxable_income_cap_indicator.afp:
+                    taxable_assets = payroll_taxable_income_cap_indicator.afp
+
+                if contract_type_id == 1:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+                elif contract_type_id == 2:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+                else:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+            else:
+                payroll_item_value_taxable_assets = PayrollItemValueClass(self.db).get(rut, 60)
+
+                if payroll_item_value_taxable_assets.amount > payroll_taxable_income_cap_indicator.afp:
+                    taxable_assets = payroll_taxable_income_cap_indicator.afp
+                else:
+                    taxable_assets = payroll_item_value_taxable_assets.amount
+
+                if contract_type_id == 1:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+                elif contract_type_id == 2:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+                else:
+                    amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 61
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+    def second_level_insurance(self, rut, period, taxable_assets):
+        payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period, taxable_assets)

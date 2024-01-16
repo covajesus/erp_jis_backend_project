@@ -7,6 +7,45 @@ import calendar
 import pandas 
 
 class HelperClass:
+    def calculate_last_period(current_period):
+        current_period = current_period.split("-")
+
+        current_period_year = int(current_period[0])
+        current_period_month = int(current_period[1])
+
+        if current_period_month == 1:
+            last_period_year = current_period_year - 1
+            last_period_month = 12
+        else:
+            last_period_year = current_period_year
+            last_period_month = current_period_month - 1
+
+        if last_period_month < 10:
+            last_period_month = "0" + str(last_period_month)
+
+        last_period = str(last_period_year) + "-" + str(last_period_month)
+
+        return last_period
+    
+    def calculate_last_two_periods(current_period):
+        current_period = current_period.split("-")
+
+        current_period_year = int(current_period[0])
+        current_period_month = int(current_period[1])
+
+        if current_period_month == 1:
+            last_period_year = current_period_year - 2
+            last_period_month = 12
+        else:
+            last_period_year = current_period_year
+            last_period_month = current_period_month - 2
+
+        if last_period_month < 10:
+            last_period_month = "0" + str(last_period_month)
+
+        last_period = str(last_period_year) + "-" + str(last_period_month)
+
+        return last_period
 
     def add_business_days(start_date, num_days, holidays):
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
@@ -63,12 +102,12 @@ class HelperClass:
 
         return years
 
-    def vacation_days(self, months, extreme_zone_status_id):
-        if months > 0:
+    def vacation_days(self, days, extreme_zone_status_id):
+        if days > 0:
             if extreme_zone_status_id == 1:
-                total = int(months+1) * float(1.66)
+                total = round(int(days) * float(0.0553333333), 2)
             else:
-                total = int(months+1) * float(1.25)
+                total = round(int(days) * float(0.0416666667), 2)
         else:
             total = 0
             
@@ -99,6 +138,16 @@ class HelperClass:
         value = value.split(separator)
 
         return value
+    
+    def legal_days(self, since, until):
+        if since is not None and until is not None:
+            since_date = datetime.strptime(str(since), "%Y-%m-%d")
+            until_date = datetime.strptime(str(until), "%Y-%m-%d")
+            delta = until_date - since_date
+            print(delta.days)
+            return delta.days
+        else:
+            return 0
     
     def months(self, since, until):
         since_array = str(since).split("-")

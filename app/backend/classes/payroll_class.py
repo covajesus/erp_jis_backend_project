@@ -90,6 +90,37 @@ class PayrollClass:
 
                     PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
+                    last_period = HelperClass.calculate_last_period(open_period_payroll_inputs['period'])
+                    last_two_periods = HelperClass.calculate_last_two_periods(open_period_payroll_inputs['period'])
+
+                    last_period_days = PayrollItemValueClass(self.db).get_with_period(employee.rut, 55, last_period)
+
+                    if last_period_days != None:
+                        if last_period_days.amount == 30:
+                            last_period_taxable_assets = PayrollItemValueClass(self.db).get_with_period(employee.rut, 57, last_period)
+
+                            amount = last_period_taxable_assets.amount
+                        else:
+                            last_two_periods_taxable_assets = PayrollItemValueClass(self.db).get_with_period(employee.rut, 57, last_two_periods)
+
+                            amount = last_two_periods_taxable_assets.amount
+
+                        payroll_item_value_data = {}
+                        payroll_item_value_data['item_id'] = 60
+                        payroll_item_value_data['rut'] = employee.rut
+                        payroll_item_value_data['period'] = open_period_payroll_inputs['period']
+                        payroll_item_value_data['amount'] = amount
+
+                        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+                    else:
+                        payroll_item_value_data = {}
+                        payroll_item_value_data['item_id'] = 60
+                        payroll_item_value_data['rut'] = employee.rut
+                        payroll_item_value_data['period'] = open_period_payroll_inputs['period']
+                        payroll_item_value_data['amount'] = 30
+
+                        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
             payroll_opening = PayrollPeriodClass(self.db).open(open_period_payroll_inputs)
             
             return payroll_opening.id

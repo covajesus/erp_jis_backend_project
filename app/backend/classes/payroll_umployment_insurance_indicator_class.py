@@ -1,10 +1,17 @@
-from app.backend.db.models import PayrollUmploymentInsuranceIndicatorModel
+from app.backend.db.models import PayrollUmploymentInsuranceIndicatorModel, PayrollIndicatorModel
 from app.backend.classes.helper_class import HelperClass
 from datetime import datetime
 
 class PayrollUmploymentInsuranceIndicatorClass:
     def __init__(self, db):
         self.db = db
+
+    def get(self, contract_type_id, period):
+        data = self.db.query(PayrollUmploymentInsuranceIndicatorModel.worker, PayrollUmploymentInsuranceIndicatorModel.employer). \
+                        outerjoin(PayrollIndicatorModel, PayrollIndicatorModel.indicator_id == PayrollUmploymentInsuranceIndicatorModel.id). \
+                        filter(PayrollUmploymentInsuranceIndicatorModel.contract_type_id == contract_type_id, PayrollUmploymentInsuranceIndicatorModel.period == period).first()
+        
+        return data
     
     def store(self, contract_type_id, payroll_indicator_inputs):
         try:
