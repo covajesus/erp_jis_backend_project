@@ -72,11 +72,11 @@ class MeshClass:
     def quantity_last_week_working_days(self, rut, year, month, dataLastWeek):
                 data_dict = json.loads(dataLastWeek)
                 try:
-                    data = self.db.query(MeshModel)\
-                        .filter(MeshModel.rut == rut)\
-                        .filter(extract('year', MeshModel.date) == year)\
-                        .filter(extract('month', MeshModel.date) == month)\
-                        .filter(MeshModel.week_id == data_dict['week_id'] )\
+                    data = self.db.query(MeshDetailModel)\
+                        .filter(MeshDetailModel.rut == rut)\
+                        .filter(extract('year', MeshDetailModel.date) == year)\
+                        .filter(extract('month', MeshDetailModel.date) == month)\
+                        .filter(MeshDetailModel.week_id == data_dict['week_id'] )\
                         .count()      
                     return data
                 except Exception as e:
@@ -85,11 +85,11 @@ class MeshClass:
       
     def last_week_working_days(self, rut, year, month):
         try:
-            data = self.db.query(MeshModel)\
-                .filter(MeshModel.rut == rut)\
-                .filter(extract('year', MeshModel.date) == year)\
-                .filter(extract('month', MeshModel.date) == month)\
-                .order_by(desc(MeshModel.week_id))\
+            data = self.db.query(MeshDetailModel)\
+                .filter(MeshDetailModel.rut == rut)\
+                .filter(extract('year', MeshDetailModel.date) == year)\
+                .filter(extract('month', MeshDetailModel.date) == month)\
+                .order_by(desc(MeshDetailModel.week_id))\
                 .first()      
             
             if data:
