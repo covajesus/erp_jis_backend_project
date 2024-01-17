@@ -18,7 +18,6 @@ class DocumentManagementClass:
                     DocumentEmployeeModel.id
                 ) \
                     .filter(DocumentEmployeeModel.rut == rut) \
-                    .filter(DocumentEmployeeModel.document_type_id == 4) \
                     .order_by(desc(DocumentEmployeeModel.id))
 
                 total_items = data_query.count()
