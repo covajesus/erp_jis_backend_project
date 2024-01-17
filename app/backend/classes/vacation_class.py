@@ -144,7 +144,7 @@ class VacationClass:
                 VacationModel.until,
                 VacationModel.days,
                 VacationModel.no_valid_days
-            ).outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id).filter(VacationModel.rut == rut).filter(DocumentEmployeeModel.document_type_id == 6).order_by(desc(VacationModel.since))
+            ).outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id).filter(VacationModel.rut == rut).filter(DocumentEmployeeModel.document_type_id == 6).filter(DocumentEmployeeModel.status_id > 2).order_by(desc(VacationModel.since))
 
             total_items = data_query.count()
             total_pages = (total_items + items_per_page - 1) // items_per_page
