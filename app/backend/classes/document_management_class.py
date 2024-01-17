@@ -18,6 +18,7 @@ class DocumentManagementClass:
                     DocumentEmployeeModel.id
                 ) \
                     .filter(DocumentEmployeeModel.rut == rut) \
+                    .filter(DocumentEmployeeModel.document_type_id == 4) \
                     .order_by(desc(DocumentEmployeeModel.id))
 
                 total_items = data_query.count()
@@ -68,7 +69,7 @@ class DocumentManagementClass:
                 ) \
                     .outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut) \
                     .outerjoin(DocumentTypeModel, DocumentTypeModel.id == DocumentEmployeeModel.document_type_id) \
-                    .filter(DocumentEmployeeModel.status_id == 2) \
+                    .filter(DocumentEmployeeModel.status_id <= 2) \
                     .filter(DocumentEmployeeModel.document_type_id == 6) \
                     .order_by(desc(DocumentEmployeeModel.id))
 

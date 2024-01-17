@@ -190,7 +190,10 @@ class VacationClass:
         
     def get(self, field, value):
         try:
-            data = self.db.query(VacationModel).filter(getattr(VacationModel, field) == value).first()
+            data = self.db.query(VacationModel.since, VacationModel.until, VacationModel.days, VacationModel.no_valid_days, VacationModel.support, VacationModel.document_employee_id, DocumentEmployeeModel.status_id). \
+                        outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id). \
+                        filter(getattr(VacationModel, field) == value).first()
+            
             return data
         except Exception as e:
             error_message = str(e)
