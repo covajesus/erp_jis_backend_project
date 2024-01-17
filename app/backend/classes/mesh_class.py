@@ -1,4 +1,4 @@
-from app.backend.db.models import MeshModel, EmployeeModel, MeshDetailModel, TurnModel
+from app.backend.db.models import MeshModel, EmployeeModel, MeshDetailModel, TurnModel, EmployeeLaborDatumModel
 from sqlalchemy import desc, asc,extract, select
 import json
 from fastapi.encoders import jsonable_encoder
@@ -63,6 +63,28 @@ class MeshClass:
     def get_all(self):
         try:
             data = self.db.query(MeshModel, EmployeeModel).outerjoin(EmployeeModel, MeshModel.rut == EmployeeModel.rut).order_by(desc(MeshModel.id)).all()
+            return [row._asdict() for row in data]
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+    def get_all_by_supervisor(self, supervisor_rut):
+        try:
+            # Obtener el branch_office_id del supervisor
+            supervisor = (self.db.query(EmployeeLaborDatumModel)
+                          .filter(EmployeeLaborDatumModel.rut == supervisor_rut)
+                          .first())
+            if supervisor is None:
+                return f"Error: No supervisor found with rut {supervisor_rut}"
+
+            supervisor_branch_office_id = supervisor.branch_office_id
+
+            # Obtener todos los empleados que tienen el mismo branch_office_id
+            data = (self.db.query(MeshModel, EmployeeModel, EmployeeLaborDatumModel)
+                    .outerjoin(EmployeeModel, MeshModel.rut == EmployeeModel.rut)
+                    .outerjoin(EmployeeLaborDatumModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut)
+                    .filter(EmployeeLaborDatumModel.branch_office_id == supervisor_branch_office_id)
+                    .order_by(desc(MeshModel.id))
+                    .all())
             return [row._asdict() for row in data]
         except Exception as e:
             error_message = str(e)
