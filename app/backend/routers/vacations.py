@@ -22,6 +22,12 @@ def index(rut: int, page: int, session_user: UserLogin = Depends(get_current_act
     return {"message": data}
 
 @vacations.get("/pdf_all/{rut}/{page}")
+def index(rut: int, page: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = VacationClass(db).get_pdf_all(rut, page)
+
+    return {"message": data}
+
+@vacations.get("/pdf_all/{rut}/{page}")
 def pdf_index(rut: int, page: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = VacationClass(db).pdf_get_all(rut, 1)
 
