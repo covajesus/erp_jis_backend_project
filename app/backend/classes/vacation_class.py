@@ -131,7 +131,7 @@ class VacationClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-    def pdf_get_all(self, rut, page=1, items_per_page=10):
+    def pdf_get_all(self, rut, page=1, items_per_page=5):
         try:
             data_query = self.db.query(
                 DocumentEmployeeModel.status_id,
