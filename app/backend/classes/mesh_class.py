@@ -196,7 +196,6 @@ class MeshClass:
                 validation_mesh_details = self.validate_mesh_detail(mesh.id, day.strftime('%Y-%m-%d %H:%M:%S'))
                 if validation_mesh_details == 0:
                     formatted_date = day.strftime('%Y-%m-%d %H:%M:%S')
-
                     detail_data = {
                         'week_id': inputs['week_id'],
                         'turn_id': inputs['turn_id'],
