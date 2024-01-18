@@ -68,6 +68,8 @@ class MeshDetailModel(Base):
     mesh_id = Column(Integer)
     turn_id = Column(Integer)
     week_id = Column(Integer)
+    is_working = Column(Integer)
+    is_sunday = Column(Integer)
     rut = Column(Integer)
     date = Column(DateTime())
     added_date = Column(DateTime())

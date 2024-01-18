@@ -20,6 +20,7 @@ def get_all(session_user: UserLogin = Depends(get_current_active_user), db: Sess
 
 @meshes.post("/store")
 def store(mesh_list: MeshList, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+
     for mesh in mesh_list.meshes:
         mesh_inputs = mesh.dict()
         data = MeshClass(db).store(mesh_inputs)

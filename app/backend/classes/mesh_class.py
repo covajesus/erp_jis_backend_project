@@ -3,6 +3,7 @@ from sqlalchemy import desc, asc,extract, select
 import json
 from fastapi.encoders import jsonable_encoder
 from datetime import datetime
+from calendar import monthrange
 
 
 class MeshClass:
@@ -164,37 +165,55 @@ class MeshClass:
             return f"Error: {error_message}"
     
   
+   
+    def validate(self, mesh_data):
+        mesh_data = self.db.query(MeshModel).filter_by(rut=mesh_data['rut'], period=mesh_data['period']).first()
+        return mesh_data
+    
+    def validate_mesh_detail(self, mesh_id, date):
+        mesh_detail = self.db.query(MeshDetailModel).filter_by(mesh_id=mesh_id, date=date).count()
+        return mesh_detail
+
     def store(self, inputs):
         try:
-            # Crear la instancia de MeshModel solo si no existe una con el mismo rut y period
             first_date = datetime.fromisoformat(inputs['dates_in_range'][0])
             period = f"{first_date.year}-{first_date.month}"
             mesh_data = {key: inputs[key] for key in ('rut', 'added_date')}
             mesh_data['period'] = period
 
-            mesh = self.db.query(MeshModel).filter_by(rut=mesh_data['rut'], period=mesh_data['period']).first()
-            if not mesh:
+            validation = self.validate(mesh_data)
+            if not validation:
                 mesh = MeshModel(**mesh_data)
                 self.db.add(mesh)
                 self.db.commit()
 
-            # Crear y guardar las instancias de MeshDetailModel
-            for date in inputs['dates_in_range']:
-                date_obj = datetime.fromisoformat(date)
-                formatted_date = date_obj.strftime('%Y-%m-%d %H:%M:%S')
-                detail_data = {
-                    'week_id': inputs['week_id'],
-                    'turn_id': inputs['turn_id'],
-                    'mesh_id': mesh.id,
-                    'rut': inputs['rut'],
-                    'date': formatted_date,
-                    'added_date': inputs['added_date'],
-                }
-                detail = MeshDetailModel(**detail_data)
-                self.db.add(detail)
+            _, num_days = monthrange(first_date.year, first_date.month)
+            all_days = [datetime(first_date.year, first_date.month, day) for day in range(1, num_days+1)]
+            
+            input_dates = [datetime.fromisoformat(date).date() for date in inputs['dates_in_range']]
+           
+            for day in all_days:
+                validation_mesh_details = self.validate_mesh_detail(mesh.id, day.strftime('%Y-%m-%d %H:%M:%S'))
+                if validation_mesh_details == 0:
+                    formatted_date = day.strftime('%Y-%m-%d %H:%M:%S')
 
-            self.db.commit()
-            return 1
+                    detail_data = {
+                        'week_id': inputs['week_id'],
+                        'turn_id': inputs['turn_id'],
+                        'mesh_id': mesh.id,
+                        'rut': inputs['rut'],
+                        'date': formatted_date,
+                        'added_date': inputs['added_date'],
+                        'is_working': day.date() in input_dates,
+                        'is_sunday': day.weekday() == 6,
+                    }
+
+                
+                    detail = MeshDetailModel(**detail_data)
+                    self.db.add(detail)
+
+                    self.db.commit()
+            
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
