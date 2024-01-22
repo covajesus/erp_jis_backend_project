@@ -175,6 +175,7 @@ class MeshClass:
         return mesh_detail
 
     def store(self, inputs):
+      
         try:
             first_date = datetime.fromisoformat(inputs['dates_in_range'][0])
             period = f"{first_date.year}-{first_date.month}"
@@ -190,14 +191,16 @@ class MeshClass:
             _, num_days = monthrange(first_date.year, first_date.month)
             all_days = [datetime(first_date.year, first_date.month, day) for day in range(1, num_days+1)]
             
+            week_id = 1
             input_dates = [datetime.fromisoformat(date).date() for date in inputs['dates_in_range']]
-           
+            print(input_dates)
+
             for day in all_days:
                 validation_mesh_details = self.validate_mesh_detail(mesh.id, day.strftime('%Y-%m-%d %H:%M:%S'))
                 if validation_mesh_details == 0:
                     formatted_date = day.strftime('%Y-%m-%d %H:%M:%S')
                     detail_data = {
-                        'week_id': inputs['week_id'],
+                        'week_id': week_id,
                         'turn_id': inputs['turn_id'],
                         'mesh_id': mesh.id,
                         'rut': inputs['rut'],
@@ -206,13 +209,16 @@ class MeshClass:
                         'is_working': day.date() in input_dates,
                         'is_sunday': day.weekday() == 6,
                     }
-
-                
+                    
                     detail = MeshDetailModel(**detail_data)
+                    
                     self.db.add(detail)
 
-                    self.db.commit()
-            
+                if day.weekday() == 6:  # Si el día es domingo
+                    week_id += 1  # Incrementa week_id
+
+            self.db.commit()
+        
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
