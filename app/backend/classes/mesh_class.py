@@ -175,7 +175,6 @@ class MeshClass:
         return mesh_detail
 
     def store(self, inputs):
-      
         try:
             first_date = datetime.fromisoformat(inputs['dates_in_range'][0])
             period = f"{first_date.year}-{first_date.month}"
@@ -193,8 +192,7 @@ class MeshClass:
             
             week_id = 1
             input_dates = [datetime.fromisoformat(date).date() for date in inputs['dates_in_range']]
-            print(input_dates)
-
+            
             for day in all_days:
                 validation_mesh_details = self.validate_mesh_detail(mesh.id, day.strftime('%Y-%m-%d %H:%M:%S'))
                 if validation_mesh_details == 0:
