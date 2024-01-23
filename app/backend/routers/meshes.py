@@ -46,8 +46,14 @@ def getMeshByrutWeekPeriod(rut:int, period:str, session_user: UserLogin = Depend
 
     return {"message": data}
 
-@meshes.get("/get_all_by_supervisor/{supervisor_rut}")
+@meshes.get("/get_all_meshes_by_supervisor/{supervisor_rut}")
 def get_all_by_supervisor(supervisor_rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = MeshClass(db).get_all_by_supervisor(supervisor_rut)
+    data = MeshClass(db).get_all_meshes_by_supervisor(supervisor_rut)
+
+    return {"message": data}
+
+@meshes.get("/get_all_employees_by_supervisor/{supervisor_rut}")
+def get_all_employees_by_supervisor(supervisor_rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).get_all_employees_by_supervisor(supervisor_rut)
 
     return {"message": data}

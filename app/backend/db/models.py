@@ -838,6 +838,7 @@ class PayrollItemModel(Base):
     classification_id = Column(Integer)
     order_id = Column(Integer)
     item = Column(String(255))
+    salary_settlement_name = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

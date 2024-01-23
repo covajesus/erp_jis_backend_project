@@ -402,7 +402,10 @@ class JobPosition(BaseModel):
 
 class PayrollItem(BaseModel):
     item_type_id: int
+    classification_id: int
+    order_id: int
     item: str
+    salary_settlement_name: str
     added_date: datetime
     updated_date: Union[datetime, None]
 

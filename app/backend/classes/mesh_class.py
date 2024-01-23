@@ -68,7 +68,7 @@ class MeshClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-    def get_all_by_supervisor(self, supervisor_rut):
+    def get_all_meshes_by_supervisor(self, supervisor_rut):
         try:
             # Obtener el branch_office_id del supervisor
             supervisor = (self.db.query(EmployeeLaborDatumModel)
@@ -86,7 +86,32 @@ class MeshClass:
                     .filter(EmployeeLaborDatumModel.branch_office_id == supervisor_branch_office_id)
                     .order_by(desc(MeshModel.id))
                     .all())
+            
             return [row._asdict() for row in data]
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+
+    def get_all_employees_by_supervisor(self, supervisor_rut):
+        try:
+            # Obtener el branch_office_id del supervisor
+            supervisor = (self.db.query(EmployeeLaborDatumModel)
+                          .filter(EmployeeLaborDatumModel.rut == supervisor_rut)
+                          .first())
+            if supervisor is None:
+                return f"Error: No supervisor found with rut {supervisor_rut}"
+
+            supervisor_branch_office_id = supervisor.branch_office_id
+
+            # Obtener todos los empleados que tienen el mismo branch_office_id
+            data = (self.db.query(EmployeeModel, EmployeeLaborDatumModel)
+                    .outerjoin(EmployeeLaborDatumModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut)
+                    .filter(EmployeeLaborDatumModel.branch_office_id == supervisor_branch_office_id)
+                    .all())
+            
+            return [{**{column.name: getattr(row.EmployeeModel, column.name) for column in EmployeeModel.__table__.columns},
+                     **{column.name: getattr(row.EmployeeLaborDatumModel, column.name) for column in EmployeeLaborDatumModel.__table__.columns}} for row in data]
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
