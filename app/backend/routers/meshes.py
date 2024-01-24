@@ -21,9 +21,12 @@ def get_all(session_user: UserLogin = Depends(get_current_active_user), db: Sess
 @meshes.post("/store")
 def store(mesh_list: MeshList, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
 
+    mesh_inputs_array = []
     for mesh in mesh_list.meshes:
         mesh_inputs = mesh.dict()
-        data = MeshClass(db).store(mesh_inputs)
+        mesh_inputs_array.append(mesh_inputs)
+    data = MeshClass(db).store(mesh_inputs_array)
+    # print(data)
     return {"message": "Data stored successfully", "data": data}
 
 @meshes.get("/edit/{id}")

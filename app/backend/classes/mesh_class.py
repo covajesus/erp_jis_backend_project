@@ -38,7 +38,6 @@ class MeshClass:
                 grouped_data[week_id] = item
                 grouped_data[week_id]['date'] = [item['date']]
 
-                # Obtener los datos del turno
                 turn_data = self.get_turn_by_id(item['turn_id'])
                 grouped_data[week_id]['turn_data'] = turn_data
             else:
@@ -70,7 +69,7 @@ class MeshClass:
             return f"Error: {error_message}"
     def get_all_meshes_by_supervisor(self, supervisor_rut):
         try:
-            # Obtener el branch_office_id del supervisor
+           
             supervisor = (self.db.query(EmployeeLaborDatumModel)
                           .filter(EmployeeLaborDatumModel.rut == supervisor_rut)
                           .first())
@@ -201,9 +200,9 @@ class MeshClass:
 
     def store(self, inputs):
         try:
-            first_date = datetime.fromisoformat(inputs['dates_in_range'][0])
+            first_date = datetime.fromisoformat(inputs[0]['date'])
             period = f"{first_date.year}-{first_date.month}"
-            mesh_data = {key: inputs[key] for key in ('rut', 'added_date')}
+            mesh_data = {key: inputs[0][key] for key in ('rut', 'added_date')}
             mesh_data['period'] = period
 
             validation = self.validate(mesh_data)
@@ -215,32 +214,56 @@ class MeshClass:
             _, num_days = monthrange(first_date.year, first_date.month)
             all_days = [datetime(first_date.year, first_date.month, day) for day in range(1, num_days+1)]
             
+            input_dates = [datetime.fromisoformat(input['date']).date() for input in inputs]
+    
             week_id = 1
-            input_dates = [datetime.fromisoformat(date).date() for date in inputs['dates_in_range']]
-            
+           
+            # Preprocesar los datos de entrada para obtener los datos de la semana siguiente
+            next_week_data = {}
+            for inp in inputs:
+                week_of_year = datetime.fromisoformat(inp['date']).date().isocalendar()[1]
+                next_week_data[week_of_year] = inp
+
+            # Variables para almacenar los datos de la semana actual
+            current_turn_id = None
+            current_rut = None
+            current_added_date = None
+
             for day in all_days:
-                validation_mesh_details = self.validate_mesh_detail(mesh.id, day.strftime('%Y-%m-%d %H:%M:%S'))
-                if validation_mesh_details == 0:
-                    formatted_date = day.strftime('%Y-%m-%d %H:%M:%S')
-                    detail_data = {
-                        'week_id': week_id,
-                        'turn_id': inputs['turn_id'],
-                        'mesh_id': mesh.id,
-                        'rut': inputs['rut'],
-                        'date': formatted_date,
-                        'added_date': inputs['added_date'],
-                        'is_working': day.date() in input_dates,
-                        'is_sunday': day.weekday() == 6,
-                    }
-                    
-                    detail = MeshDetailModel(**detail_data)
-                    
-                    self.db.add(detail)
+                formatted_date = day.strftime('%Y-%m-%d %H:%M:%S')
+                week_of_year = day.date().isocalendar()[1]
+
+                # Si hay datos para la semana siguiente, actualizar los datos actuales
+                if week_of_year in next_week_data:
+                    current_turn_id = next_week_data[week_of_year]['turn_id']
+                    current_rut = next_week_data[week_of_year]['rut']
+                    current_added_date = next_week_data[week_of_year]['added_date']
+
+                is_working = False
+                for inp in inputs:
+                    if day.date() == datetime.fromisoformat(inp['date']).date():
+                        is_working = True
+                        break
+
+                detail_data = {
+                    'week_id': week_id,
+                    'turn_id': current_turn_id,
+                    'mesh_id': mesh.id,
+                    'rut': current_rut,
+                    'date': formatted_date,
+                    'added_date': current_added_date,
+                    'is_working': is_working,
+                    'is_sunday': day.weekday() == 6,
+                }
+
+                detail = MeshDetailModel(**detail_data)
+
+                self.db.add(detail)
+                self.db.commit()
 
                 if day.weekday() == 6:  # Si el día es domingo
                     week_id += 1  # Incrementa week_id
-
-            self.db.commit()
+                        
         
         except Exception as e:
             error_message = str(e)
