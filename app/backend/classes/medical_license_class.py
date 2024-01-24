@@ -157,11 +157,21 @@ class MedicalLicenseClass:
     
     def download(self, id):
         try:
+            # Assuming 'added_date' is a datetime field
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()
 
-            file = DropboxClass(self.db).get('/employee_documents/', data.support)
+            if data and data.added_date > datetime(2023, 12, 31, 0, 0, 0):
+                file_path = '/medical_licenses/'
+            else:
+                file_path = '/employee_documents/'
 
-            return file
+            # Check if the 'data' object exists before using it
+            if data:
+                file = DropboxClass(self.db).get(file_path, data.support)
+                return file
+            else:
+                return "Error: Document not found"
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
