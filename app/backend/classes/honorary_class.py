@@ -44,13 +44,8 @@ class HonoraryClass:
 
             else:
                 data_query = self.db.query(HonoraryModel) \
-                                .join(BankModel, BankModel.id == HonoraryModel.bank_id) \
-                                .join(BranchOfficeModel, BranchOfficeModel.id == HonoraryModel.branch_office_id) \
-                                .join(RegionModel, RegionModel.id == HonoraryModel.region_id) \
-                                .join(CommuneModel, CommuneModel.id == HonoraryModel.commune_id) \
-                                .join(EmployeeModel, EmployeeModel.rut == HonoraryModel.requested_by) \
                                 .join(HonoraryReasonModel, HonoraryReasonModel.id == HonoraryModel.reason_id) \
-                                .filter(HonoraryModel.rut == rut) \
+                                .join(UserModel, UserModel.rut == HonoraryModel.requested_by) \
                                 .add_columns(
                                     HonoraryModel.status_id,
                                     HonoraryModel.id,
@@ -58,12 +53,11 @@ class HonoraryClass:
                                     HonoraryModel.full_name,
                                     UserModel.nickname,
                                     HonoraryReasonModel.reason,
-                                    HonoraryModel.start_date
+                                    HonoraryModel.added_date
                                 ) \
-                                .order_by(HonoraryModel.start_date.desc())
+                                .order_by(desc(HonoraryModel.added_date))
 
                 data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
-
                 total_items = data_query.count()
                 total_pages = (total_items + items_per_page - 1) // items_per_page
 
@@ -81,7 +75,7 @@ class HonoraryClass:
                     "full_name": honorary.full_name,
                     "nickname": honorary.nickname,
                     "reason": honorary.reason,
-                    "start_date": honorary.start_date
+                    "added_date": honorary.added_date
                 } for honorary in data]
 
             return {
