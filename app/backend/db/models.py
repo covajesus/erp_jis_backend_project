@@ -241,6 +241,7 @@ class UserModel(Base):
     rut = Column(Integer)
     visual_rut = Column(String(20))
     nickname = Column(String(255))
+    password = Column(Text())
     hashed_password = Column(Text())
     disabled = Column(Integer)
     added_date = Column(DateTime())

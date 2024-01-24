@@ -2,6 +2,7 @@ from app.backend.db.models import UserModel
 from app.backend.auth.auth_user import generate_bcrypt_hash
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
+from werkzeug.security import generate_password_hash
 
 class UserClass:
     def __init__(self, db):
@@ -70,7 +71,21 @@ class UserClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
+    def refresh_password(self, rut):
+        user = self.db.query(UserModel).filter(UserModel.rut == rut).first()
+        user.password = generate_password_hash(str(123456))
+        user.status_id = 1
+        user.updated_date = datetime.now()
+        self.db.add(user)
         
+        try:
+            self.db.commit()
+
+            return 1
+        except Exception as e:
+            return 0
+
     def update(self, id, user_inputs):
         user = self.db.query(UserModel).filter(UserModel.rut == id).first()
 
