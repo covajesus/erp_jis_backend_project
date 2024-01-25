@@ -74,6 +74,7 @@ from app.backend.routers.old_salary_settlements import old_salary_settlements
 from app.backend.routers.payroll_calculations import payroll_calculations
 from app.backend.routers.payroll_item_values import payroll_item_values
 from app.backend.routers.payroll_family_burdens import payroll_family_burdens
+from app.backend.routers.dte_atm_machines import dte_atm_machines
 
 app = FastAPI()
 
@@ -166,6 +167,7 @@ app.include_router(old_salary_settlements)
 app.include_router(payroll_calculations)
 app.include_router(payroll_item_values)
 app.include_router(payroll_family_burdens)
+app.include_router(dte_atm_machines)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
