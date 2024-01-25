@@ -381,7 +381,7 @@ class UpdateHonorary(BaseModel):
     account_number: str = None
     start_date: str = None
     end_date: str = None
-    amount: int = None
+    amount: str = None
     observation: str = None
 
 class UniformType(BaseModel):
