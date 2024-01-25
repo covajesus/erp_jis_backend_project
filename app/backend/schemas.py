@@ -518,6 +518,35 @@ class OldFamilyCoreDatum(BaseModel):
     mother_lastname: str
     born_date: str
 
+class DteAtmMachine(BaseModel):
+    branch_office_id: int
+    cashier_id: int
+    dte_type_id: int
+    sii_send_status_id: str
+    sii_status_id: str
+    sii_track_id: str
+    dte_code: str
+    folio: str
+    cash_amount: int
+    card_amount: int
+    subtotal:int
+    tax: int
+    discount: int
+    total: int
+    ticket_serial_number: int
+    ticket_hour: str
+    ticket_transaction_number: int
+    ticket_dispenser_number: int
+    ticket_number: int
+    ticket_station_number: int
+    ticket_sa: str
+    ticket_correlative: int
+    entrance_hour: str
+    exit_hour: str
+    item_quantity: int
+    sii_date: str
+    added_date: str
+
 class ProvisionalIndicator(BaseModel):
     period: str
     uf_value_current_month: str

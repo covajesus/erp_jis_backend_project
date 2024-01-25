@@ -230,6 +230,37 @@ class TurnModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class DteAtmMachineModel(Base):
+    __tablename__ = 'dte_atm_machines'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    branch_office_id = Column(Integer)
+    cashier_id = Column(Integer)
+    dte_type_id = Column(Integer)
+    sii_send_status_id = Column(String)
+    sii_status_id = Column(String)
+    sii_track_id = Column(String)
+    dte_code = Column(String)
+    folio = Column(String)
+    cash_amount = Column(Integer)
+    card_amount = Column(Integer)
+    subtotal = Column(Integer)
+    tax = Column(Integer)
+    discount = Column(Integer)
+    total = Column(Integer)
+    ticket_serial_number = Column(Integer)
+    ticket_hour = Column(String)
+    ticket_transaction_number = Column(Integer)
+    ticket_dispenser_number = Column(Integer)
+    ticket_number = Column(Integer)
+    ticket_station_number = Column(Integer)
+    ticket_sa = Column(String)
+    ticket_correlative = Column(Integer)
+    entrance_hour = Column(String)
+    exit_hour = Column(String)
+    item_quantity = Column(Integer)
+    sii_date = Column(Date())
+    added_date = Column(DateTime())
 
 class UserModel(Base):
     __tablename__ = 'users'
