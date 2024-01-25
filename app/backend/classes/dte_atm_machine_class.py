@@ -37,10 +37,10 @@ class DteAtmMachineClass:
             added_date=datetime.now()
         )
 
-        self.db.session.add(dte_atm_machine)
+        self.db.add(dte_atm_machine)
 
         try:
-            self.db.session.commit()
+            self.db.commit()
             return 1
         except Exception as e:
             error_message = str(e)
