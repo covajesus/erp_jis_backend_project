@@ -25,7 +25,6 @@ class MeshClass:
     def get_turn_by_id(self, id):
         stmt = select(TurnModel.turn, TurnModel.working, TurnModel.start, TurnModel.end, TurnModel.breaking, TurnModel.group_day_id, TurnModel.free_day_group_id, TurnModel.total_week_hours).where(TurnModel.id == id)
         result = self.db.execute(stmt).first()
-        print(result)
         return self.serialize_mesh(result)
         
 
@@ -35,16 +34,30 @@ class MeshClass:
             week_id = item['week_id']
             if week_id not in grouped_data:
                 # Si la semana no está en el diccionario, la agregamos
-                grouped_data[week_id] = item
-                grouped_data[week_id]['date'] = [item['date']]
-
                 turn_data = self.get_turn_by_id(item['turn_id'])
-                grouped_data[week_id]['turn_data'] = turn_data
+                grouped_data[week_id] = {
+                    'week_id': week_id,
+                    'turn_id': item['turn_id'],
+                    'mesh_id': item['mesh_id'],
+                    'rut': item['rut'],
+                    'added_date': item['added_date'],
+                    'turn_data': turn_data,
+                    'date': [{
+                        'date': item['date'],
+                        'is_sunday': item['is_sunday'],
+                        'is_working': item['is_working']
+                    }]
+                }
             else:
                 # Si la semana ya está en el diccionario, agregamos la fecha a la lista
-                grouped_data[week_id]['date'].append(item['date'])
-
+                grouped_data[week_id]['date'].append({
+                    'date': item['date'],
+                    'is_sunday': item['is_sunday'],
+                    'is_working': item['is_working']
+                })
         return list(grouped_data.values())
+
+        
     def getMeshByrutWeekPeriod(self, rut, period):
         try:
             periodYear = period.split('-')[0]
