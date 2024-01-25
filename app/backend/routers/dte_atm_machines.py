@@ -10,7 +10,7 @@ dte_atm_machines = APIRouter(
     tags=["DteAtmMachine"]
 )
 
-@dte_atm_machines.post("/")
+@dte_atm_machines.post("/store")
 def index(dte_atm_machine:DteAtmMachine, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     dte_atm_machine_inputs = dte_atm_machine.dict()
     
