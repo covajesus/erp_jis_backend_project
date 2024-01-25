@@ -262,7 +262,8 @@ class HonoraryClass:
             honorary.end_date = honorary_inputs.end_date
 
         if honorary_inputs.amount != None:
-            honorary.amount = honorary_inputs.amount
+            amount = HelperClass().remove_from_string('.', str(honorary_inputs.amount))
+            honorary.amount = amount
 
         if honorary_inputs.observation != None:
             honorary.observation = honorary_inputs.observation
