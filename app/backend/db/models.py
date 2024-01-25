@@ -68,6 +68,8 @@ class MeshDetailModel(Base):
     mesh_id = Column(Integer)
     turn_id = Column(Integer)
     week_id = Column(Integer)
+    is_working = Column(Integer)
+    is_sunday = Column(Integer)
     rut = Column(Integer)
     date = Column(DateTime())
     added_date = Column(DateTime())
@@ -868,6 +870,7 @@ class PayrollItemModel(Base):
     classification_id = Column(Integer)
     order_id = Column(Integer)
     item = Column(String(255))
+    salary_settlement_name = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

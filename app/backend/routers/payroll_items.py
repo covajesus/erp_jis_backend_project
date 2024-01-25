@@ -10,7 +10,7 @@ payroll_items = APIRouter(
     tags=["PayrollItems"]
 )
 
-@payroll_items.get("/")
+@payroll_items.post("/")
 def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db), items_per_page: int = 10):
     data = PayrollItemClass(db).get_all()
 
@@ -31,11 +31,15 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     return {"message": data}
 
 @payroll_items.patch("/update/{id}")
-def update(id:int, item_type_id: int = Form(...), item: str = Form(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    payroll_inputs = {"item_type_id": item_type_id, "item": item}
+def update(id: int, item_type_id: int = Form(...), classification_id: int = Form(...),order_id: int = Form(...),item: str = Form(...),salary_settlement_name: str = Form(...),session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    payroll_inputs = {
+        "item_type_id": item_type_id, 
+        "classification_id": classification_id,
+        "order_id": order_id,
+        "item": item,
+        "salary_settlement_name": salary_settlement_name,
+    }
     data = PayrollItemClass(db).update(id, payroll_inputs)
-    print(data)
-    print(payroll_inputs)
     return {"message": data}
 
 @payroll_items.get("/edit/{id}")
