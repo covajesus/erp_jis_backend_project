@@ -1074,6 +1074,11 @@ class ForgotPassword(BaseModel):
     rut: str
     email: str
 
+class UpdatePassWord(BaseModel):
+    visual_rut: str = None
+    hashed_password: str = None
+    updated_date: Union[datetime, None]
+
 class EmployeeList(BaseModel):
     rut: int
     rol_id: int
