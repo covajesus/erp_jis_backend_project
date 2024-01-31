@@ -81,6 +81,5 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
         else:
             data = 0
     else:
-        data = 0
-    
+        data = 0  
     return {"message": data}
