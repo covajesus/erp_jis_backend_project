@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
-from app.backend.schemas import User, UpdateUser, UserLogin, RecoverUser
+from app.backend.schemas import User, UpdateUser, UserLogin, RecoverUser,ConfirmEmail
 from app.backend.classes.user_class import UserClass
 from app.backend.auth.auth_user import get_current_active_user
 
@@ -58,5 +58,11 @@ def update(id: int, user: UpdateUser, session_user: UserLogin = Depends(get_curr
 def recover(user:RecoverUser, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     user_inputs = user.dict()
     data = UserClass(db).recover(user_inputs)
+
+    return {"message": data}
+
+@users.patch("/confirm_email")
+def confirm_email(user_inputs:ConfirmEmail, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = UserClass(db).confirm_email(user_inputs)
 
     return {"message": data}

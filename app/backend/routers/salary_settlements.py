@@ -3,6 +3,7 @@ from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import UserLogin, SalarySettlement
 from app.backend.classes.salary_settlement_class import SalarySettlementClass
+from app.backend.classes.document_employee_class import DocumentEmployeeClass
 from app.backend.auth.auth_user import get_current_active_user
 from fastapi import UploadFile, File
 import os
@@ -65,3 +66,21 @@ def multiple_store(files: List[UploadFile] = File(...), session_user: UserLogin 
         data = SalarySettlementClass(db).store_multiple(form_data, filename)
 
     return {"message": 1}
+
+
+@salary_settlements.delete("/delete/{id}")
+def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).delete_salary_settlement(id)
+    document_employee = DocumentEmployeeClass(db).get("id", id)
+
+    if data == 1 :
+        if document_employee.support != '' and document_employee.support != None:
+            response = DropboxClass(db).delete('/employee_documents/', document_employee.support)
+        if response == 1:
+            data = 1
+        else:
+            data = 0
+    else:
+        data = 0
+    
+    return {"message": data}

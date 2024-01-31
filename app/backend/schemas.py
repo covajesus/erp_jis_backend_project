@@ -1078,6 +1078,10 @@ class UpdatePassWord(BaseModel):
     visual_rut: str = None
     hashed_password: str = None
     updated_date: Union[datetime, None]
+class ConfirmEmail(BaseModel):
+    visual_rut: str = None
+    personal_email: str = None
+    updated_date: Union[datetime, None]
 
 class EmployeeList(BaseModel):
     rut: int

@@ -29,7 +29,8 @@ class SalarySettlementClass:
                         DocumentEmployeeModel.id,
                         EmployeeModel.names,
                         EmployeeModel.father_lastname,
-                        EmployeeModel.mother_lastname
+                        EmployeeModel.mother_lastname,
+                        EmployeeModel.visual_rut
                     ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
 
             total_items = data_query.count()
@@ -57,6 +58,7 @@ class SalarySettlementClass:
                                 "status_id": item.status_id,
                                 "id": item.id,
                                 "names": item.names,
+                                "visual_rut": item.visual_rut,
                                 "father_lastname": item.father_lastname,
                                 "mother_lastname": item.mother_lastname
                             }
@@ -173,6 +175,20 @@ class SalarySettlementClass:
             self.db.add(salary_settlement)
             self.db.commit()
             return 1
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+
+    def delete_salary_settlement(self, id):
+        try:
+            data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()
+            if data:
+                self.db.delete(data)
+                self.db.commit()
+                return 1
+            else:
+                return "No data found"
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

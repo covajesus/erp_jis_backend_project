@@ -1,4 +1,4 @@
-from app.backend.db.models import UserModel
+from app.backend.db.models import UserModel, EmployeeModel
 from app.backend.auth.auth_user import generate_bcrypt_hash
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
@@ -123,4 +123,31 @@ class UserClass:
 
             return 1
         except Exception as e:
+            return 0
+
+    def confirm_email(self, user_inputs):
+        print(user_inputs.visual_rut)
+        user = self.db.query(UserModel).filter(UserModel.visual_rut == user_inputs.visual_rut).first()
+        employee = self.db.query(EmployeeModel).filter(EmployeeModel.visual_rut == user_inputs.visual_rut).first()
+
+        print(user)  # Print user after query
+        print(employee)  # Print employee after query
+
+        if not user or not employee:
+            return 0  # Return 0 if no user or employee is found
+
+        employee.personal_email = user_inputs.personal_email
+        user.status_id = 1
+        user.updated_date = datetime.now()
+        employee.updated_date = datetime.now()
+
+        self.db.add(user)
+        self.db.add(employee)  # Add the updated employee to the database session
+
+        try:
+            self.db.commit()
+            return 1
+        except Exception as e:
+            self.db.rollback()  # Rollback the session in case of error
+            print(e)  # Print the exception
             return 0
