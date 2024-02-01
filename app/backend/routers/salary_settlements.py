@@ -70,12 +70,13 @@ def multiple_store(files: List[UploadFile] = File(...), session_user: UserLogin 
 
 @salary_settlements.delete("/delete/{id}")
 def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = SalarySettlementClass(db).delete_salary_settlement(id)
     document_employee = DocumentEmployeeClass(db).get("id", id)
+    data = SalarySettlementClass(db).delete_salary_settlement(id)
 
     if data == 1 :
         if document_employee.support != '' and document_employee.support != None:
-            response = DropboxClass(db).delete('/employee_documents/', document_employee.support)
+            response = DropboxClass(db).delete('/salary_settlements/', document_employee.support)
+          
         if response == 1:
             data = 1
         else:
