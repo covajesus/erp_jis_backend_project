@@ -60,3 +60,9 @@ def get_all_employees_by_supervisor(supervisor_rut: int, session_user: UserLogin
     data = MeshClass(db).get_all_employees_by_supervisor(supervisor_rut)
 
     return {"message": data}
+
+@meshes.delete("/delete/{id}")
+def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).deleteMesh(id)
+
+    return {"message": data}

@@ -281,3 +281,22 @@ class MeshClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    def deleteMesh(self, id):
+        try:
+           
+            mesh_details = self.db.query(MeshDetailModel).filter(MeshDetailModel.mesh_id == id).all()
+            for detail in mesh_details:
+                self.db.delete(detail)
+
+         
+            mesh = self.db.query(MeshModel).filter(MeshModel.id == id).first()
+            if mesh:
+                self.db.delete(mesh)
+                self.db.commit()
+                return 1
+            else:
+                return 0 
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
