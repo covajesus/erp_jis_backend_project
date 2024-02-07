@@ -1,4 +1,4 @@
-from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel
+from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel, EmployeeLaborDatumModel, BranchOfficeModel
 from datetime import datetime
 from sqlalchemy import desc
 from app.backend.classes.dropbox_class import DropboxClass
@@ -8,6 +8,65 @@ import json
 class MedicalLicenseClass:
     def __init__(self, db):
         self.db = db
+
+    def get_all_with_no_pagination(self, rut):
+        try:
+            data = (self.db.query(
+                        DocumentEmployeeModel.status_id, 
+                        DocumentEmployeeModel.document_type_id, 
+                        MedicalLicenseModel.document_employee_id, 
+                        DocumentEmployeeModel.support, 
+                        MedicalLicenseModel.rut, 
+                        MedicalLicenseModel.id, 
+                        MedicalLicenseModel.since, 
+                        MedicalLicenseModel.until, 
+                        MedicalLicenseModel.days, 
+                        EmployeeModel.visual_rut,
+                        EmployeeModel.names,  
+                        EmployeeModel.father_lastname,
+                        EmployeeModel.mother_lastname,
+                        EmployeeLaborDatumModel.branch_office_id, 
+                        BranchOfficeModel.branch_office,
+                        MedicalLicenseModel.folio
+                    )
+                    .outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == MedicalLicenseModel.document_employee_id)
+                    .join(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut)
+                    .join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut)
+                    .join(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id)
+                    .filter(MedicalLicenseModel.rut == rut)
+                    .all())
+
+            if not data:
+                return "No data found"
+
+            # Convertir los resultados de la consulta en diccionarios
+            result = []
+            for row in data:
+                row_dict = {
+                    "status_id": row[0],
+                    "document_type_id": row[1],
+                    "document_employee_id": row[2],
+                    "support": row[3],
+                    "rut": row[4],
+                    "id": row[5],
+                    "since": row[6].strftime('%Y-%m-%d') if row[6] else None,
+                    "until": row[7].strftime('%Y-%m-%d') if row[7] else None,
+                    "days": row[8],
+                    "visual_rut": row[9],
+                    "employee_name": row[10] + " " + row[11] + " " + row[12],  
+                    "branch_office_id": row[13],  
+                    "branch_office_name": row[14] ,
+                    "folio": row[15]  
+                    }
+                result.append(row_dict)
+
+            return result
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
+
+
 
     def get_all(self):
         try:

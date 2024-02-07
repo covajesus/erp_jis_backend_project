@@ -1,4 +1,4 @@
-from app.backend.db.models import VacationModel, TotalVacationDaysModel, OldVacationModel, OldDocumentEmployeeModel, DocumentEmployeeModel
+from app.backend.db.models import EmployeeModel, EmployeeLaborDatumModel, BranchOfficeModel, VacationModel, TotalVacationDaysModel, OldVacationModel, OldDocumentEmployeeModel, DocumentEmployeeModel
 from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.classes.employee_extra_datum_class import EmployeeExtraDatumClass
 from app.backend.classes.helper_class import HelperClass
@@ -117,16 +117,58 @@ class VacationClass:
 
     def get_all_with_no_pagination(self, rut):
         try:
-            data = self.db.query(DocumentEmployeeModel.status_id, DocumentEmployeeModel.document_type_id, VacationModel.document_employee_id, DocumentEmployeeModel.support, VacationModel.rut, VacationModel.id, VacationModel.since, VacationModel.until, VacationModel.days, VacationModel.no_valid_days).\
-                    outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id).\
-                    filter(VacationModel.rut == rut).\
-                    filter(DocumentEmployeeModel.document_type_id == 6).\
-                    order_by(desc(VacationModel.since)).all()
+            data = (self.db.query(
+                        DocumentEmployeeModel.status_id, 
+                        DocumentEmployeeModel.document_type_id, 
+                        VacationModel.document_employee_id, 
+                        DocumentEmployeeModel.support, 
+                        VacationModel.rut, 
+                        VacationModel.id, 
+                        VacationModel.since, 
+                        VacationModel.until, 
+                        VacationModel.days, 
+                        VacationModel.no_valid_days,
+                        EmployeeModel.visual_rut,
+                        EmployeeModel.names,  
+                        EmployeeModel.father_lastname,
+                        EmployeeModel.mother_lastname,
+                        EmployeeLaborDatumModel.branch_office_id, 
+                        BranchOfficeModel.branch_office 
+                    )
+                    .outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == VacationModel.document_employee_id)
+                    .join(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut)  # Asume que DocumentEmployeeModel tiene un campo 'employee_id'
+                    .join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut)  # Asume que EmployeeLaborDatumModel tiene un campo 'employee_id'
+                    .join(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id)  # Asume que BranchOfficeModel tiene un campo 'id'
+                    .filter(VacationModel.rut == rut)
+                    .filter(DocumentEmployeeModel.document_type_id == 6)
+                    .order_by(desc(VacationModel.since))
+                    .all())
 
             if not data:
                 return "No data found"
 
-            return data
+            # Convertir los resultados de la consulta en diccionarios
+            result = []
+            for row in data:
+                row_dict = {
+                    "status_id": row[0],
+                    "document_type_id": row[1],
+                    "document_employee_id": row[2],
+                    "support": row[3],
+                    "rut": row[4],
+                    "id": row[5],
+                    "since": row[6],
+                    "until": row[7],
+                    "days": row[8],
+                    "no_valid_days": row[9],
+                    "visual_rut": row[10],
+                    "employee_name": row[11] + " " + row[12] + " " + row[13],  
+                    "branch_office_id": row[14],  
+                    "branch_office_name": row[15]  
+                    }
+                result.append(row_dict)
+
+            return result
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
