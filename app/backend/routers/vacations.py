@@ -54,12 +54,13 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     response_1 = VacationClass(db).delete(id)
     document_employee = DocumentEmployeeClass(db).get("id", id)
     response_2 = DocumentEmployeeClass(db).delete(id)
+    print(response_1)
 
     if response_1 == 1 and response_2 == 1:
         if document_employee.support != '' and document_employee.support != None:
             response = DropboxClass(db).delete('/employee_documents/', document_employee.support)
 
-        if response == 1:
+        if response_1 == 1:
             data = 1
         else:
             data = 0
