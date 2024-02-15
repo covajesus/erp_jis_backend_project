@@ -115,6 +115,7 @@ class DocumentManagementClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+     # Devuelve todos los documentos de la base de datos que contenga el mismo documento_type_id y ordenados por id
     def get_all_where(self, document_type_id):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.document_type_id==document_type_id).order_by(DocumentEmployeeModel.id).all()

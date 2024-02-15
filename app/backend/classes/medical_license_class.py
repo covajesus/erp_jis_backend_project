@@ -9,6 +9,7 @@ class MedicalLicenseClass:
     def __init__(self, db):
         self.db = db
 
+    # Función para obtener todos los registros de licencias médicas de un empleado y sin paginación
     def get_all_with_no_pagination(self, rut):
         try:
             data = (self.db.query(

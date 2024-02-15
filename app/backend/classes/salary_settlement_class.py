@@ -18,6 +18,7 @@ class SalarySettlementClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    # Obtiene todos los registros de licencias medicas con paginacion
     def get_all_with_pagination(self, page = 1, items_per_page = 10):
         try:
 
@@ -73,7 +74,8 @@ class SalarySettlementClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-        
+
+    # Obtiene un registro de liquidacion de sueldo filtrados y paginados    
     def get(self, field, value, type = 1, page = 1, items_per_page = 10):
         try:
                 if type == 1:
@@ -161,7 +163,8 @@ class SalarySettlementClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-        
+
+    # Almacena multiples registros de liquidaciones de sueldo   
     def store_multiple(self, salary_settlement_inputs, support):
         try:
             salary_settlement = DocumentEmployeeModel()

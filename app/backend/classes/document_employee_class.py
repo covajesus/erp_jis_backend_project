@@ -16,7 +16,8 @@ class DocumentEmployeeClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-        
+
+    # Devuelve los documentos de un supervisor en especifico con paginacion, filtrado por el tipo de documento y el estado
     def supervisor_get_all(self, rut=None, page=1, items_per_page=10):
         try:
             data_query = self.db.query(
@@ -77,6 +78,7 @@ class DocumentEmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    # Devuelve todos los documentos de la base de datos que contenga el mismo documento_type_id y ordenados por id
     def get_all_where(self, document_type_id):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.document_type_id==document_type_id).order_by(DocumentEmployeeModel.id).all()
@@ -86,7 +88,8 @@ class DocumentEmployeeClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-        
+
+    # Devuelve todos los documentos de la base de datos que contenga el mismo rut, document_type_id y ordenados por id    
     def get_all_rut_where(self, rut, document_type_id):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.rut==rut).filter(DocumentEmployeeModel.document_type_id==document_type_id).order_by(DocumentEmployeeModel.id).all()

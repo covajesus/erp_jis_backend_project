@@ -279,7 +279,7 @@ class HonoraryClass:
         except Exception as e:
             return 0
         
-    
+    # Función para emitir boleta de honorarios a SII 
     def send(self, data):
         hr_settings = HrSettingClass(self.db).get()
 

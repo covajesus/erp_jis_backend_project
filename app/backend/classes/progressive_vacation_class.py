@@ -13,6 +13,7 @@ class ProgressiveVacationClass:
     def __init__(self, db):
         self.db = db
 
+    #funcion para obtener todos los registros de vacaciones progresivas sin paginacion
     def get_all_with_no_pagination(self, rut):
         try:
             data = (self.db.query(

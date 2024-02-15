@@ -18,6 +18,7 @@ class EmployeeLaborDatumClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    # Funcion para obtener a todos los empleados por sucursal
     def get_all_by_branch_office(self, branch_office_id):
         try:
             results = self.db.query(EmployeeModel, EmployeeLaborDatumModel.employee_type_id).\

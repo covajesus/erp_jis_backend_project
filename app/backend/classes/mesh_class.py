@@ -9,6 +9,8 @@ from calendar import monthrange
 class MeshClass:
     def __init__(self, db):
         self.db = db
+
+    # Función para serializar los datos de un objeto MeshModel
     def serialize_mesh(self, mesh):
         return {
             'turn': mesh.turn,
@@ -21,13 +23,13 @@ class MeshClass:
             'total_week_hours': mesh.total_week_hours,
             'scheduled': f'{mesh.group_day_id} x {mesh.free_day_group_id}',
         }
-
+    # Función para obtener los datos de un turno por su id
     def get_turn_by_id(self, id):
         stmt = select(TurnModel.turn, TurnModel.working, TurnModel.start, TurnModel.end, TurnModel.breaking, TurnModel.group_day_id, TurnModel.free_day_group_id, TurnModel.total_week_hours).where(TurnModel.id == id)
         result = self.db.execute(stmt).first()
         return self.serialize_mesh(result)
         
-
+    # Función para agrupar los datos por semana
     def group_by_week(self, data):
         grouped_data = {}
         for item in data:
@@ -57,7 +59,7 @@ class MeshClass:
                 })
         return list(grouped_data.values())
 
-        
+    # Función para obtener los datos de un turno por rut, semana y periodo, ejemplo rut = 12345678-9, week = 1, period = 2021-01    
     def getMeshByrutWeekPeriod(self, rut, period):
         try:
             periodYear = period.split('-')[0]
@@ -80,6 +82,8 @@ class MeshClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    # función para obtener todas las mallas horarias por supervisor
     def get_all_meshes_by_supervisor(self, supervisor_rut):
         try:
            
@@ -104,7 +108,7 @@ class MeshClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-
+    # Función para obtener todos los empleados por supervisor
     def get_all_employees_by_supervisor(self, supervisor_rut):
         try:
             # Obtener el branch_office_id del supervisor
@@ -128,7 +132,7 @@ class MeshClass:
             error_message = str(e)
             return f"Error: {error_message}"
 
-    
+    # Función para calcular la cantidad de días trabajados en la ultima semana del mes pasado, para luego la primera semana del mes que sigue se resten los días trabajados del turno seleccionado
     def quantity_last_week_working_days(self, rut, year, month, dataLastWeek):
                 data_dict = json.loads(dataLastWeek)
                 try:
@@ -142,7 +146,8 @@ class MeshClass:
                 except Exception as e:
                     error_message = str(e)
                     return f"Error: {error_message}"
-      
+    
+    # Función para obtener los datos de la ultima semana del mes pasado
     def last_week_working_days(self, rut, year, month):
         try:
             data = self.db.query(MeshDetailModel)\
@@ -202,7 +207,7 @@ class MeshClass:
             return f"Error: {error_message}"
     
   
-   
+    
     def validate(self, mesh_data):
         mesh_data = self.db.query(MeshModel).filter_by(rut=mesh_data['rut'], period=mesh_data['period']).first()
         return mesh_data
