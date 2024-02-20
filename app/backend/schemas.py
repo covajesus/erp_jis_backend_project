@@ -1018,6 +1018,13 @@ class UploadPicture(BaseModel):
                     rut: int = Form()
                 ):
         return cls(rut=rut)
+class UploadJisPrkingImage(BaseModel):
+
+    @classmethod
+    def as_form(cls,
+                    rut: int = Form()
+                ):
+        return cls(rut=rut)
     
 class UploadProgressiveVacation(BaseModel):
     progressive_vacation_id: int

@@ -11,6 +11,7 @@ from app.backend.routers.turns import turns
 from app.backend.routers.account_types import account_types
 from app.backend.routers.regions import regions
 from app.backend.routers.employees import employees
+from app.backend.routers.jis_parking_crud import jis_parking_crud
 from app.backend.routers.users import users
 from app.backend.routers.employee_labor_data import employee_labor_data
 from app.backend.routers.employee_extras import employee_extras
@@ -104,6 +105,7 @@ app.include_router(turns)
 app.include_router(account_types)
 app.include_router(regions)
 app.include_router(employees)
+app.include_router(jis_parking_crud)
 app.include_router(users)
 app.include_router(employee_labor_data)
 app.include_router(employee_extras)

@@ -836,6 +836,14 @@ class VacationModel(Base):
             "updated_date": str(self.updated_date),
         }
     
+class JisParkingCrudModel(Base):
+    __tablename__ = 'jis_parking_crud'
+
+    id = Column(Integer, primary_key=True)
+    support = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+    
 class ProgressiveVacationModel(Base):
     __tablename__ = 'progressive_vacations'
 
