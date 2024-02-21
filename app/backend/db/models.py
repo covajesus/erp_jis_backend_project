@@ -836,11 +836,32 @@ class VacationModel(Base):
             "updated_date": str(self.updated_date),
         }
     
-class JisParkingCrudModel(Base):
+class SliderModel(Base):
     __tablename__ = 'jis_parking_crud'
 
     id = Column(Integer, primary_key=True)
     support = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class LogoModel(Base):
+    __tablename__ = 'logo'
+
+    id = Column(Integer, primary_key=True)
+    support = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class AboutUsModel(Base):
+    __tablename__ = 'about_us'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class ContactModel(Base):
+    __tablename__ = 'contact'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
     
