@@ -20,9 +20,13 @@ def get_all(session_user: UserLogin = Depends(get_current_active_user), db: Sess
 
 @meshes.post("/store")
 def store(mesh_list: MeshList, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+
+    mesh_inputs_array = []
     for mesh in mesh_list.meshes:
         mesh_inputs = mesh.dict()
-        data = MeshClass(db).store(mesh_inputs)
+        mesh_inputs_array.append(mesh_inputs)
+    data = MeshClass(db).store(mesh_inputs_array)
+    # print(data)
     return {"message": "Data stored successfully", "data": data}
 
 @meshes.get("/edit/{id}")
@@ -45,8 +49,20 @@ def getMeshByrutWeekPeriod(rut:int, period:str, session_user: UserLogin = Depend
 
     return {"message": data}
 
-@meshes.get("/get_all_by_supervisor/{supervisor_rut}")
+@meshes.get("/get_all_meshes_by_supervisor/{supervisor_rut}")
 def get_all_by_supervisor(supervisor_rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = MeshClass(db).get_all_by_supervisor(supervisor_rut)
+    data = MeshClass(db).get_all_meshes_by_supervisor(supervisor_rut)
+
+    return {"message": data}
+
+@meshes.get("/get_all_employees_by_supervisor/{supervisor_rut}")
+def get_all_employees_by_supervisor(supervisor_rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).get_all_employees_by_supervisor(supervisor_rut)
+
+    return {"message": data}
+
+@meshes.delete("/delete/{id}")
+def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MeshClass(db).deleteMesh(id)
 
     return {"message": data}

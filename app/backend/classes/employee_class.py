@@ -9,6 +9,7 @@ class EmployeeClass:
     def __init__(self, db):
         self.db = db
 
+    # Funcion para obtener a todos los empleados sin paginacion
     def get_all_with_no_paginator(self):
         query = self.db.query(EmployeeModel).order_by(EmployeeModel.names).all()
 
@@ -37,6 +38,7 @@ class EmployeeClass:
         # Devolver la lista serializada
         return json.dumps(serialized_data)
 
+    # Funcion para obtener a todos los empleados con paginacion
     def get_all(self, rut=None, rol_id=None, page=0, items_per_page=10):
         try:
             if page != 0:
@@ -113,7 +115,7 @@ class EmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
 
-    
+    # Funcion para buscar empleados 
     def search(self, search_inputs, page=1, items_per_page=10):
         if len(search_inputs) > 0:
             search_rut = search_inputs['rut']
@@ -210,7 +212,8 @@ class EmployeeClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-           
+
+    # Funcion para obtener un empleado por rut       
     def get(self, field, value):
         try:
             data = self.db.query(EmployeeModel, ClockUserModel.privilege). \
@@ -263,6 +266,7 @@ class EmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    # Funcion para obtener un empleado por rut
     def one_simple_get(self, rut):
         try:
             employee = self.db.query(EmployeeModel).filter(EmployeeModel.rut==rut).first()
@@ -272,6 +276,7 @@ class EmployeeClass:
             error_message = str(e)
             return f"Error: {error_message}"
 
+    # Funcion para obtener un empleado por rut y verificar si esta activo
     def is_active(self, rut):
         employee = self.db.query(EmployeeModel).filter(EmployeeModel.rut==rut).count()
 
@@ -402,6 +407,7 @@ class EmployeeClass:
     
         return totals
     
+
     def validate_cellphone(self, cellphone):
         existence = self.db.query(EmployeeModel).filter(EmployeeModel.cellphone == cellphone).count()
         employeeExistence = self.db.query(EmployeeModel).filter(EmployeeModel.cellphone == cellphone).first()

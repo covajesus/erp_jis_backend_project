@@ -5,7 +5,9 @@ class ContractDataClass:
     def __init__(self, db):
         self.db = db
 
+    # Devuelve la primera fecha de expiracion del contrato que seria el ultimo dia habil del mes siguiente a la fecha de ingreso
     def first_expiration(self, expiration_inputs):
+        
         try:
             data = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == expiration_inputs['rut']).first()
 
@@ -18,6 +20,7 @@ class ContractDataClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
+    # Devuelve la segunda fecha de expiracion del contrato que seria el ultimo dia habil dos meses despues de la fecha de ingreso
     def second_expiration(self, first_expiration):
         try:
             response = HelperClass.extention_contract(first_expiration)

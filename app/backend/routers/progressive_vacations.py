@@ -13,6 +13,12 @@ progressive_vacations = APIRouter(
     tags=["ProgressiveVacations"]
 )
 
+@progressive_vacations.get("/get_all_with_no_pagination/{rut}")
+def get_all_with_no_pagination(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = ProgressiveVacationClass(db).get_all_with_no_pagination(rut)
+
+    return {"message": data}
+
 @progressive_vacations.get("/all/{rut}/{page}")
 def index(rut: int, page: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = ProgressiveVacationClass(db).get_all(rut, page)

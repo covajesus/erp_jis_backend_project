@@ -13,6 +13,7 @@ class DropboxClass():
     def __init__(self, db):
         self.db = db
 
+    # Función para subir archivos a Dropbox 
     def upload(self, name='', description='', data=None, dropbox_path='', computer_path='', resize=0):
         settings = SettingClass(self.db).get()
         f = data.file
@@ -91,6 +92,7 @@ class DropboxClass():
         else:
             return 0
 
+    # Sube la  imagen de la firma del empleado  a Dropbox
     def sign(self, name='', description='', data='', dropbox_path='', computer_path=''):
         settings = SettingClass(self.db).get()
 
@@ -128,6 +130,7 @@ class DropboxClass():
             print(f"Error al subir el archivo a Dropbox: {str(e)}")
             return 0
 
+    # Sube la firma del empleado a Dropbox
     def signature(self, file = ''):
         settings = SettingClass.get()
 
@@ -142,7 +145,7 @@ class DropboxClass():
         else:
             return 0
 
-    
+    # Funcion para Obtener la extension del archivo
     def get_file_extension(file_name):
         return Path(file_name).suffix
 
@@ -164,7 +167,7 @@ class DropboxClass():
                 return 0
         except ApiError:
             return 0
-
+    # Funcion para descargar archivos de Dropbox
     def download(self, url, file):
         settings = SettingClass(self.db).get()
 
@@ -181,6 +184,7 @@ class DropboxClass():
                 print(err)
             return 'Error al descargar archivo', 400, None
 
+    # Funcion para eliminar archivos de Dropbox
     def delete(self, url, file):
         settings = SettingClass(self.db).get()
 
@@ -195,6 +199,7 @@ class DropboxClass():
         except ApiError:
             return 0
     
+    # Funcion para verificar si un archivo existe en Dropbox
     def exist(self, url, file):
         if file == None:
             return 0

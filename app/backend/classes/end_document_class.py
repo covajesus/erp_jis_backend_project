@@ -63,6 +63,7 @@ class EndDocumentClass:
             return json.dumps({"error": f"Error: {error_message}"})
 
 
+    # Funcion para obtener la indemnizacion por años de servicio
     def indemnity_years(self, indemnity_year_inputs):
         try:
             hr_settings = HrSettingClass(self.db).get()
@@ -86,7 +87,8 @@ class EndDocumentClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-        
+
+    # Funcion para Calcular la  Indemnización Sustitutivo de Aviso Previo      
     def substitute_compensation(self, substitute_compesation_inputs):
         try:
             hr_settings = HrSettingClass(self.db).get()
@@ -108,6 +110,8 @@ class EndDocumentClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
+
+    # Funcion para calcular la indemnizacion para el calculo de vacaciones proporcionales
     def fertility_proportional(self, fertility_proportional_inputs):
         employee_labor_datum = EmployeeLaborDatumClass(self.db).get("rut", fertility_proportional_inputs['rut'])
         employee_labor_datum = json.loads(employee_labor_datum)
@@ -127,6 +131,8 @@ class EndDocumentClass:
 
         return result
     
+
+    # Funcion para calcular el total de dias de vacaciones
     def total_vacations(self, fertility_proportional_inputs):
         start_date = fertility_proportional_inputs['exit_company']
         end_date = HelperClass.add_business_days(start_date, fertility_proportional_inputs['balance'], fertility_proportional_inputs['number_holidays'])

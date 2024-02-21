@@ -1,4 +1,4 @@
-from app.backend.db.models import ProgressiveVacationModel, DocumentEmployeeModel
+from app.backend.db.models import ProgressiveVacationModel, DocumentEmployeeModel, EmployeeModel, EmployeeLaborDatumModel, BranchOfficeModel
 from app.backend.classes.employee_labor_datum_class import EmployeeLaborDatumClass
 from app.backend.classes.employee_extra_datum_class import EmployeeExtraDatumClass
 from app.backend.classes.helper_class import HelperClass
@@ -12,6 +12,65 @@ import json
 class ProgressiveVacationClass:
     def __init__(self, db):
         self.db = db
+
+    #funcion para obtener todos los registros de vacaciones progresivas sin paginacion
+    def get_all_with_no_pagination(self, rut):
+        try:
+            data = (self.db.query(
+                        DocumentEmployeeModel.status_id, 
+                        DocumentEmployeeModel.document_type_id, 
+                        ProgressiveVacationModel.document_employee_id, 
+                        DocumentEmployeeModel.support, 
+                        ProgressiveVacationModel.rut, 
+                        ProgressiveVacationModel.id, 
+                        ProgressiveVacationModel.since, 
+                        ProgressiveVacationModel.until, 
+                        ProgressiveVacationModel.days, 
+                        ProgressiveVacationModel.no_valid_days,
+                        EmployeeModel.visual_rut,
+                        EmployeeModel.names,  
+                        EmployeeModel.father_lastname,
+                        EmployeeModel.mother_lastname,
+                        EmployeeLaborDatumModel.branch_office_id, 
+                        BranchOfficeModel.branch_office 
+                    )
+                    .outerjoin(DocumentEmployeeModel, DocumentEmployeeModel.id == ProgressiveVacationModel.document_employee_id)
+                    .join(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut)
+                    .join(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut)
+                    .join(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id)
+                    .filter(ProgressiveVacationModel.rut == rut)
+                    .filter(DocumentEmployeeModel.document_type_id == 6)
+                    .order_by(desc(ProgressiveVacationModel.since))
+                    .all())
+    
+            if not data:
+                return "No data found"
+
+            # Convertir los resultados de la consulta en diccionarios
+            result = []
+            for row in data:
+                row_dict = {
+                    "status_id": row[0],
+                    "document_type_id": row[1],
+                    "document_employee_id": row[2],
+                    "support": row[3],
+                    "rut": row[4],
+                    "id": row[5],
+                    "since": row[6],
+                    "until": row[7],
+                    "days": row[8],
+                    "no_valid_days": row[9],
+                    "visual_rut": row[10],
+                    "employee_name": row[11] + " " + row[12] + " " + row[13],  
+                    "branch_office_id": row[14],  
+                    "branch_office_name": row[15]  
+                    }
+                result.append(row_dict)
+
+            return result
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
 
     def get_all(self, rut, page=1, items_per_page=10):
         try:

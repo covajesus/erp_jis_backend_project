@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.classes.authentication_class import AuthenticationClass
-from app.backend.schemas import ForgotPassword
+from app.backend.schemas import ForgotPassword, UpdatePassWord
 from datetime import timedelta
 from app.backend.classes.dropbox_class import DropboxClass
 
@@ -18,10 +18,10 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token_expires = timedelta(minutes=30)
     access_token_jwt = AuthenticationClass(db).create_token({'sub': str(user.rut)}, access_token_expires)
     signature = DropboxClass(db).get('/signatures/', str(user.signature))
-
     return {
         "access_token": access_token_jwt, 
         "rut": user.rut,
+        "status_id": user.status_id,
         "visual_rut": user.visual_rut,
         "rol_id": user.rol_id,
         "nickname": user.nickname,
@@ -55,6 +55,15 @@ def logout(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depen
 def forgot(employee_inputs: ForgotPassword, db: Session = Depends(get_db)):
 
     data = AuthenticationClass(db).forgot(employee_inputs)
+
+    return {
+        "message": data
+    }
+
+@login_users.patch("/update_password")
+def update_password(user_inputs: UpdatePassWord, db: Session = Depends(get_db)):
+
+    data = AuthenticationClass(db).update_password(user_inputs)
 
     return {
         "message": data

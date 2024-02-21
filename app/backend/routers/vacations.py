@@ -21,6 +21,12 @@ def index(rut: int, page: int, session_user: UserLogin = Depends(get_current_act
 
     return {"message": data}
 
+@vacations.get("/get_all_with_no_pagination/{rut}")
+def get_all_with_no_pagination(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = VacationClass(db).get_all_with_no_pagination(rut)
+
+    return {"message": data}
+
 @vacations.get("/pdf_all/{rut}/{page}")
 def pdf_index(rut: int, page: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = VacationClass(db).pdf_get_all(rut, 1)
@@ -48,12 +54,13 @@ def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), d
     response_1 = VacationClass(db).delete(id)
     document_employee = DocumentEmployeeClass(db).get("id", id)
     response_2 = DocumentEmployeeClass(db).delete(id)
+    print(response_1)
 
     if response_1 == 1 and response_2 == 1:
         if document_employee.support != '' and document_employee.support != None:
             response = DropboxClass(db).delete('/employee_documents/', document_employee.support)
 
-        if response == 1:
+        if response_1 == 1:
             data = 1
         else:
             data = 0

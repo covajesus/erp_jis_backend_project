@@ -7,7 +7,9 @@ import calendar
 import pandas 
 
 class HelperClass:
+    # Función para calcular el último periodo
     def calculate_last_period(current_period):
+        
         current_period = current_period.split("-")
 
         current_period_year = int(current_period[0])
@@ -27,6 +29,7 @@ class HelperClass:
 
         return last_period
     
+    # Función para calcular 2 periodos atrás
     def calculate_last_two_periods(current_period):
         current_period = current_period.split("-")
 
@@ -47,6 +50,7 @@ class HelperClass:
 
         return last_period
 
+    # Función para agregar  dias administrativos
     def add_business_days(start_date, num_days, holidays):
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
         current_date = start_date
@@ -58,6 +62,7 @@ class HelperClass:
 
         return current_date
     
+    # Función para contar los fines de semana
     def count_weekends(start_date, end_date):
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -75,14 +80,17 @@ class HelperClass:
         print(weekend_count)
         return weekend_count
     
+    # Función para calcular el valor de los días de vacaciones
     def vacation_day_value(amount):
         value = math.ceil(amount/30)
 
         return value
 
+    # Función para calcular la gratificación
     def gratification(salary): 
         return math.ceil(salary*0.25)
     
+    # Función para calcular la cantidad de años 
     def get_end_document_total_years(self, start_year, end_year):
         date1 = datetime.strptime(str(start_year), "%Y-%m-%d")
         date2 = datetime.strptime(str(end_year), "%Y-%m-%d")
@@ -102,6 +110,7 @@ class HelperClass:
 
         return years
 
+    # Función para calcular la cantidad de dias de vacaciones dependiendo si la persona se encuentra en zona extrema o no
     def vacation_days(self, days, extreme_zone_status_id):
         if days > 0:
             if extreme_zone_status_id == 1:
@@ -113,6 +122,7 @@ class HelperClass:
             
         return total
     
+    # Función para calcular la cantidad de dias de vacaciones progresivas
     def progressive_vacation_days(self, months, extreme_zone_status_id):
         if months > 0:
             if extreme_zone_status_id == 1:
@@ -139,6 +149,7 @@ class HelperClass:
 
         return value
     
+    # Función para calcular la cantidad de días hábiles
     def legal_days(self, since, until):
         if since is not None and until is not None:
             since_date = datetime.strptime(str(since), "%Y-%m-%d")
@@ -253,7 +264,7 @@ class HelperClass:
     
     def get_time_Y_m_d(self):
         return datetime.now().strftime('%Y-%m-%d')
-
+    
     def count_months(since_date, until_date):
         since_date = datetime.strptime(since_date, '%Y-%m-%d')
         until_date = datetime.strptime(until_date, '%Y-%m-%d')
@@ -297,6 +308,7 @@ class HelperClass:
 
         return periods
 
+    # Función para calcular la cantidad de vacaciones progresivas dependiendo de la cantidad de años y el nivel
     def progressive_vacation_days(self, years, level):
         total = 0
 
@@ -350,12 +362,14 @@ class HelperClass:
 
         return total
 
+    # Función para obtener el último día del mes
     def get_last_day_of_month(date_str):
         date = datetime.strptime(date_str, '%Y-%m-%d')
         last_day = calendar.monthrange(date.year, date.month)[1]
         last_day_date = datetime(date.year, date.month, last_day)
         return last_day_date.strftime('%Y-%m-%d')
 
+    
     def extention_contract(date):
         # Convertir la fecha de entrada a un objeto datetime
         date_dt = datetime.strptime(date, "%Y-%m-%d")

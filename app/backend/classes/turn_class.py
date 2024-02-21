@@ -4,9 +4,7 @@ from sqlalchemy import or_
 class TurnClass:
     def __init__(self, db):
         self.db = db
-
-  
-
+        
     def get(self, employee_type_id, group_id, search_term=None):
         try:
             query = self.db.query(TurnModel).\

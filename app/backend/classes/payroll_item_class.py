@@ -17,7 +17,10 @@ class PayrollItemClass:
                     serialized_data.append({
                         "id": payroll_item.id,
                         "item_type_id": payroll_item.item_type_id,
+                        "classification_id": payroll_item.classification_id,
+                        "order_id": payroll_item.order_id,
                         "item": payroll_item.item,
+                        "salary_settlement_name": payroll_item.salary_settlement_name,
                         "added_date": payroll_item.added_date,
                         "updated_date": payroll_item.updated_date,
                     })
@@ -95,7 +98,10 @@ class PayrollItemClass:
             data = self.db.query(PayrollItemModel).filter(PayrollItemModel.id == id).first()
             if data:
                 data.item_type_id = payroll_item_inputs["item_type_id"]
+                data.classification_id = payroll_item_inputs["classification_id"]
+                data.order_id = payroll_item_inputs["order_id"]
                 data.item = payroll_item_inputs["item"]
+                data.salary_settlement_name = payroll_item_inputs["salary_settlement_name"]
                 data.updated_date = datetime.now()
                 print(data)
                 print(payroll_item_inputs)
@@ -114,7 +120,10 @@ class PayrollItemClass:
                 serialized_data = {
                    "id": data.id,
                    "item_type_id": data.item_type_id,
+                   "classification_id": data.classification_id,
+                   "order_id": data.order_id,
                    "item": data.item,
+                   "salary_settlement_name": data.salary_settlement_name,
                    "added_date": data.added_date,
                    "updated_date": data.updated_date,
                 }

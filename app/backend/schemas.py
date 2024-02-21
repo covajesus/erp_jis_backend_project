@@ -402,7 +402,10 @@ class JobPosition(BaseModel):
 
 class PayrollItem(BaseModel):
     item_type_id: int
+    classification_id: int
+    order_id: int
     item: str
+    salary_settlement_name: str
     added_date: datetime
     updated_date: Union[datetime, None]
 
@@ -1057,7 +1060,7 @@ class Mesh(BaseModel):
     week_id: int
     turn_id: int
     rut: int
-    dates_in_range: List[str] 
+    date: str
     added_date: datetime
 
 class MeshList(BaseModel):
@@ -1070,6 +1073,15 @@ class LoginTest(BaseModel):
 class ForgotPassword(BaseModel):
     rut: str
     email: str
+
+class UpdatePassWord(BaseModel):
+    visual_rut: str = None
+    hashed_password: str = None
+    updated_date: Union[datetime, None]
+class ConfirmEmail(BaseModel):
+    visual_rut: str = None
+    personal_email: str = None
+    updated_date: Union[datetime, None]
 
 class EmployeeList(BaseModel):
     rut: int

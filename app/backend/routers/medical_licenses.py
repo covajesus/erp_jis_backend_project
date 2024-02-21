@@ -14,6 +14,12 @@ medical_licenses = APIRouter(
     tags=["MedicalLicenses"]
 )
 
+@medical_licenses.get("/get_all_with_no_pagination/{rut}")
+def get_all_with_no_pagination(rut: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = MedicalLicenseClass(db).get_all_with_no_pagination(rut)
+
+    return {"message": data}
+
 @medical_licenses.get("/")
 def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = MedicalLicenseClass(db).get_all()
