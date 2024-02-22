@@ -11,8 +11,7 @@ payroll_second_category_taxes = APIRouter(
 )
 
 @payroll_second_category_taxes.post("/store")
-def store(payroll_second_category_item: PayrollSecondCategoryTax, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    payroll_inputs = payroll_second_category_item.dict()
+def store(payroll_inputs: PayrollSecondCategoryTax = Depends(PayrollSecondCategoryTax.as_form), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = PayrollSecondCategoryTaxClass(db).store(payroll_inputs)
 
     return {"message": data}

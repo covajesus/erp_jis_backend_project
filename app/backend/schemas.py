@@ -382,7 +382,47 @@ class PayrollSecondCategoryTax(BaseModel):
     factor_4: str
     discount_4: int
 
+class PayrollSecondCategoryTax(BaseModel):
+    period: str
+    since_1: int
+    until_1: int
+    factor_1: str
+    discount_1: int
+    since_2: int
+    until_2: int
+    factor_2: str
+    discount_2: int
+    since_3: int
+    until_3: int
+    factor_3: str
+    discount_3: int
+    since_4: int
+    until_4: int
+    factor_4: str
+    discount_4: int
 
+    @classmethod
+    def as_form(cls, 
+                period: str = Form(),
+                since_1: int = Form(),
+                until_1: int = Form(), 
+                factor_1: str = Form(),
+                discount_1: int = Form(),
+                since_2: int = Form(),
+                until_2: int = Form(),
+                factor_2: str = Form(),
+                discount_2: int = Form(),
+                since_3: int = Form(),
+                until_3: int = Form(),
+                factor_3: str = Form(),
+                discount_3: int = Form(),
+                since_4: int = Form(),
+                until_4: int = Form(),
+                factor_4: str = Form(),
+                discount_4: int = Form()
+                ):
+        return cls(period=period, since_1=since_1, until_1=until_1, factor_1=factor_1, discount_1=discount_1, since_2=since_2, until_2=until_2, factor_2=factor_2, discount_2=discount_2, since_3=since_3, until_3=until_3, factor_3=factor_3, discount_3=discount_3, since_4=since_4, until_4=until_4, factor_4=factor_4, discount_4=discount_4)
+   
 class UpdateHonorary(BaseModel):
     reason_id: int = None
     branch_office_id: int = None
