@@ -639,6 +639,18 @@ class PayrollFamilyAsignationIndicatorModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class PayrollSecondCategoryTaxModel(Base):
+    __tablename__ = 'payroll_second_category_taxes'
+
+    id = Column(Integer, primary_key=True)
+    period = Column(String(255))
+    since = Column(Integer)
+    until = Column(Integer)
+    factor = Column(Float)
+    discount = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class PayrollHeavyDutyQuoteIndicatorModel(Base):
     __tablename__ = 'payroll_heavy_duty_quote_indicators'
 

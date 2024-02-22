@@ -68,6 +68,16 @@ class PayrollItemClass:
 
         return data
     
+    def get_other_discout_items(self):
+        data = self.db.query(PayrollItemModel).filter(PayrollItemModel.classification_id == 3).all()
+
+        return data
+    
+    def get_legal_discount_items(self):
+        data = self.db.query(PayrollItemModel).filter(PayrollItemModel.classification_id == 4).all()
+
+        return data
+    
     def store(self, payroll_item_inputs):
         try:
             data = PayrollItemModel(**payroll_item_inputs)

@@ -46,8 +46,13 @@ class PayrollCalculationClass:
             # 12
             self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'], taxable_assets)
 
-            # 12
-            self.second_level_insurance(employee['rut'], period, taxable_assets)
+            # 13
+            self.legal_discount(employee['rut'], period)
+
+            # 14
+            self.other_discount(employee['rut'], period)
+
+            # self.second_level_insurance(employee['rut'], period, taxable_assets)
 
     def taxable_salary(self, rut, period):
         taxable_items = PayrollItemClass(self.db).get_no_taxable_items()
@@ -320,5 +325,59 @@ class PayrollCalculationClass:
 
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
+    def legal_discount(self, rut, period):
+        legal_discount_items = PayrollItemClass(self.db).get_()
+
+        legal_discount_total = 0
+
+        for legal_discount_item in legal_discount_items:
+            legal_discount_item_value = PayrollItemValueClass(self.db).get(rut, legal_discount_item.id)
+
+            legal_discount_total += legal_discount_item_value.amount
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 63
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = legal_discount_total
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+
+    def other_discount(self, rut, period):
+        other_discount_items = PayrollItemClass(self.db).get_()
+
+        other_discount_total = 0
+
+        for other_discount_item in other_discount_items:
+            other_discount_item_value = PayrollItemValueClass(self.db).get(rut, other_discount_item.id)
+
+            other_discount_total += other_discount_item_value.amount
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 64
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = other_discount_total
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
     def second_level_insurance(self, rut, period, taxable_assets):
         payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period, taxable_assets)
+
+        payroll_afp_quote = PayrollAfpQuoteIndicatorClass(self.db).get(pention_id, period)
+
+        if taxable_assets > payroll_taxable_income_cap_indicator.afp:
+            pention_amount = payroll_afp_quote.dependent_rate_afp * payroll_afp_quote.dependent_rate_afp
+        else:
+            pention_amount = taxable_assets * payroll_afp_quote.dependent_rate_afp
+
+        amount = self.proportional(rut, 0, period, pention_amount, 0)
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 59
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)

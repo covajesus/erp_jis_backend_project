@@ -362,6 +362,27 @@ class Honorary(BaseModel):
     amount: int
     observation: str
 
+
+class PayrollSecondCategoryTax(BaseModel):
+    period: str
+    since_1: int
+    until_1: int
+    factor_1: str
+    discount_1: int
+    since_2: int
+    until_2: int
+    factor_2: str
+    discount_2: int
+    since_3: int
+    until_3: int
+    factor_3: str
+    discount_3: int
+    since_4: int
+    until_4: int
+    factor_4: str
+    discount_4: int
+
+
 class UpdateHonorary(BaseModel):
     reason_id: int = None
     branch_office_id: int = None
