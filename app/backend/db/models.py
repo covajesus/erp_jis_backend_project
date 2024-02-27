@@ -406,12 +406,10 @@ class EmployeeViewModel(Base):
     __table_args__ = {'info': {'is_view': True}}  # Indica que es una vista
 
     id = Column(Integer, primary_key=True)
-    rol_id = Column(Integer, ForeignKey('rols.id'))
     clock_rol_id = Column(Integer)
     status_id = Column(Integer)
     rut = Column(Integer)
     visual_rut = Column(String(20))
-    nickname = Column(String(255))
     names = Column(String(255))
     father_lastname = Column(String(255))
     mother_lastname = Column(String(255))
