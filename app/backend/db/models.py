@@ -861,7 +861,18 @@ class ContactModel(Base):
     __tablename__ = 'contact'
 
     id = Column(Integer, primary_key=True)
-    text = Column(String(255))
+    address = Column(String(255))
+    cellphone = Column(String(100))
+    email = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class BlogModel(Base):
+    __tablename__ = 'blog'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(255))
+    description = Column(String(100))
+    picture = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
     

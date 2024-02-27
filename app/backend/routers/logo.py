@@ -18,7 +18,6 @@ logo = APIRouter(
 
 @logo.post("/upload_logo/")
 def upload_logo(support: UploadFile = File(...) , session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    print(support)
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/Logo/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)

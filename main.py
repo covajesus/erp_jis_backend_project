@@ -15,6 +15,7 @@ from app.backend.routers.slider import slider
 from app.backend.routers.logo import logo
 from app.backend.routers.about_us import about_us
 from app.backend.routers.contact import contact
+from app.backend.routers.blog import blog
 from app.backend.routers.users import users
 from app.backend.routers.employee_labor_data import employee_labor_data
 from app.backend.routers.employee_extras import employee_extras
@@ -112,6 +113,7 @@ app.include_router(slider)
 app.include_router(logo)
 app.include_router(about_us)
 app.include_router(contact)
+app.include_router(blog)
 app.include_router(users)
 app.include_router(employee_labor_data)
 app.include_router(employee_extras)

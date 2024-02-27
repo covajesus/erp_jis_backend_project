@@ -10,7 +10,9 @@ class Contactclass:
 
     def update_contact(self, data):
         contact = self.db.query(ContactModel).first()
-        contact.text = data.text
+        contact.address = data.address
+        contact.cellphone = data.cellphone
+        contact.email = data.email
         contact.updated_date = datetime.now()
 
         self.db.commit()
@@ -19,4 +21,4 @@ class Contactclass:
     
     def get_contact(self):
         contact = self.db.query(ContactModel).first()
-        return contact
+        return {"message": contact}
