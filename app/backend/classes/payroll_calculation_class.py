@@ -11,6 +11,7 @@ class PayrollCalculationClass:
     def __init__(self, db):
         self.db = db
 
+    # Función para calcular la planilla de sueldos
     def calculate(self, period = None):
         employees = PayrollEmployeeClass(self.db).get_all(period)
 
