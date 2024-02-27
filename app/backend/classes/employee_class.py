@@ -1,4 +1,4 @@
-from app.backend.db.models import EmployeeModel, EmployeeLaborDatumModel, ClockUserModel, BranchOfficeModel, OldEmployeeModel, OldEmployeeLaborDatumModel, SupervisorModel, EmployeeLaborDatumModel
+from app.backend.db.models import EmployeeModel, EmployeeLaborDatumModel, EmployeeViewModel, ClockUserModel, BranchOfficeModel, OldEmployeeModel, OldEmployeeLaborDatumModel, SupervisorModel, EmployeeLaborDatumModel
 from datetime import datetime
 from sqlalchemy import func
 from app.backend.classes.helper_class import HelperClass
@@ -38,6 +38,12 @@ class EmployeeClass:
         # Devolver la lista serializada
         return json.dumps(serialized_data)
 
+    # Funcion para obtener a todos los empleados con paginacion
+    def full_details(self):
+        data = self.db.query(EmployeeViewModel).all()
+
+        return data
+                    
     # Funcion para obtener a todos los empleados con paginacion
     def get_all(self, rut=None, rol_id=None, page=0, items_per_page=10):
         try:

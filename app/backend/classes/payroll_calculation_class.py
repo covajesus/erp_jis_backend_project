@@ -6,6 +6,7 @@ from app.backend.classes.payroll_uf_indicator_class import PayrollUfIndicatorCla
 from app.backend.classes.payroll_minium_taxable_income_indicator_class import PayrollMiniumTaxableIncomeIndicatorClass
 from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuoteIndicatorClass
 from app.backend.classes.payroll_umployment_insurance_indicator_class import PayrollUmploymentInsuranceIndicatorClass
+from app.backend.classes.payroll_second_category_tax_class import PayrollSecondCategoryTaxClass
 
 class PayrollCalculationClass:
     def __init__(self, db):
@@ -363,19 +364,12 @@ class PayrollCalculationClass:
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
     def second_level_insurance(self, rut, period, taxable_assets):
-        payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period, taxable_assets)
+        payroll_second_category_tax_indicator = PayrollSecondCategoryTaxClass(self.db).get(period, taxable_assets)
 
-        payroll_afp_quote = PayrollAfpQuoteIndicatorClass(self.db).get(pention_id, period)
-
-        if taxable_assets > payroll_taxable_income_cap_indicator.afp:
-            pention_amount = payroll_afp_quote.dependent_rate_afp * payroll_afp_quote.dependent_rate_afp
-        else:
-            pention_amount = taxable_assets * payroll_afp_quote.dependent_rate_afp
-
-        amount = self.proportional(rut, 0, period, pention_amount, 0)
+        amount = payroll_second_category_tax_indicator.discount
 
         payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 59
+        payroll_item_value_data['item_id'] = 65
         payroll_item_value_data['rut'] = rut
         payroll_item_value_data['period'] = period
         payroll_item_value_data['amount'] = amount

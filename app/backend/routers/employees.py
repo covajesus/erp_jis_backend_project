@@ -143,3 +143,9 @@ def select_inputs(session_user: UserLogin = Depends(get_current_active_user), db
     employees = EmployeeClass(db).get_all_with_no_paginator()
 
     return {"message": employees}
+
+@employees.get("/full_details")
+def select_inputs(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    employees = EmployeeClass(db).full_details()
+
+    return {"message": employees}
