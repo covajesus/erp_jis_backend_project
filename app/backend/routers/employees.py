@@ -145,7 +145,7 @@ def select_inputs(session_user: UserLogin = Depends(get_current_active_user), db
     return {"message": employees}
 
 @employees.get("/full_details")
-def select_inputs(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def full_details(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     employees = EmployeeClass(db).full_details()
 
     return {"message": employees}
