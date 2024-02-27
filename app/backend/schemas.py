@@ -1059,7 +1059,26 @@ class UploadPicture(BaseModel):
                     rut: int = Form()
                 ):
         return cls(rut=rut)
-    
+
+
+class UpdateAboutUs(BaseModel):
+    text: str
+class UpdateContact(BaseModel):
+    address: str
+    cellphone: str
+    email: str
+
+class CreateBlog(BaseModel):
+    title: str
+    description: str
+
+    @classmethod
+    def as_form(cls, 
+                title: str = Form(),
+                description: str = Form(),
+                
+                ):
+        return cls(title=title, description=description)
 class UploadProgressiveVacation(BaseModel):
     progressive_vacation_id: int
     rut: int

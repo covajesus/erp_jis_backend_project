@@ -141,6 +141,7 @@ class MeshClass:
                         .filter(extract('year', MeshDetailModel.date) == year)\
                         .filter(extract('month', MeshDetailModel.date) == month)\
                         .filter(MeshDetailModel.week_id == data_dict['week_id'] )\
+                        .filter(MeshDetailModel.is_working == 1)\
                         .count()      
                     return data
                 except Exception as e:
