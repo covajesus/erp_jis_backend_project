@@ -22,7 +22,7 @@ def update_about_us(data: UpdateAboutUs, session_user: UserLogin = Depends(get_c
     return {"message": "About us updated successfully"}
 
 @about_us.get("/get_about_us/")
-def get_about_us(UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def get_about_us(db: Session = Depends(get_db)):
     about_us = AboutUsClass(db).get_about_us()
     return about_us
 
