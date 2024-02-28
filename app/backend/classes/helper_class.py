@@ -94,17 +94,16 @@ class HelperClass:
     def get_end_document_total_years(self, start_year, end_year):
         date1 = datetime.strptime(str(start_year), "%Y-%m-%d")
         date2 = datetime.strptime(str(end_year), "%Y-%m-%d")
-
+        start_year_date = datetime.now().year
+        date3 = datetime.strptime(str(start_year_date) + "-01-01", "%Y-%m-%d")
         delta = date2 - date1
-
+        current_delta =  date2 - date3 
         years = delta.days // 365
-        remaining_months = (delta.days % 365)
-
-        if remaining_months >= 6:
-            years += 1
-
+        
+        current_remaining_months = (int(current_delta.days) // 30)
+        if current_remaining_months >= 6:
+            years += 1   
         return years
-
     def months_to_years(self, months):
         years = int(months/12)
 

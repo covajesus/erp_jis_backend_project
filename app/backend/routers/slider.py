@@ -21,7 +21,7 @@ def upload_image(support: UploadFile = File(...) , session_user: UserLogin = Dep
     print(support)
     dropbox_client = DropboxClass(db)
 
-    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/Slider/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
+    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/sliders/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
 
     SliderClass(db).upload_image(filename)
     return {"message": "File uploaded successfully", "file_name": filename}
@@ -32,11 +32,17 @@ def delete_image(id: int, session_user: UserLogin = Depends(get_current_active_u
     support = SliderClass(db).delete(id)
     # Get the file from the request
     # Delete the file from Dropbox
-    dropbox_client.delete("/Slider/",support)
+    dropbox_client.delete("/sliders/",support)
 
     return {"message": "File deleted successfully"}
 
 @slider.get("/get_images/")
-def get_images(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def get_images(db: Session = Depends(get_db)):
+    dropbox_client = DropboxClass(db)
     data = SliderClass(db).get()
-    return data
+    link = []
+    for i in range(len(data)):
+        data[i].support = dropbox_client.get("/sliders/",data[i].support )
+        link.append(data[i].support)
+
+    return link
