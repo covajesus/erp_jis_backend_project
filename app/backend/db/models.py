@@ -545,6 +545,7 @@ class PayrollTaxableIncomeCapIndicatorModel(Base):
     afp = Column(Integer)
     ips = Column(Integer)
     unemployment = Column(Integer)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -556,6 +557,7 @@ class PayrollMiniumTaxableIncomeIndicatorModel(Base):
     under_18_over_65 = Column(Float)
     particular_home = Column(Float)
     no_remunerations = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -594,6 +596,7 @@ class PayrollAfpQuoteIndicatorModel(Base):
     dependent_rate_afp = Column(Float)
     dependent_sis = Column(Float)
     independent_rate_afp = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

@@ -98,11 +98,11 @@ class HelperClass:
         date3 = datetime.strptime(str(start_year_date) + "-01-01", "%Y-%m-%d")
         delta = date2 - date1
         current_delta =  date2 - date3 
-        years = delta.days // 365
-        
+        years = delta.days // 365 
         current_remaining_months = (int(current_delta.days) // 30)
         if current_remaining_months >= 6:
             years += 1   
+
         return years
     def months_to_years(self, months):
         years = int(months/12)
