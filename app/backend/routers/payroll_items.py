@@ -10,7 +10,7 @@ payroll_items = APIRouter(
     tags=["PayrollItems"]
 )
 
-@payroll_items.post("/")
+@payroll_items.get("/")
 def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db), items_per_page: int = 10):
     data = PayrollItemClass(db).get_all()
 

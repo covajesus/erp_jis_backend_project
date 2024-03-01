@@ -99,10 +99,10 @@ class HelperClass:
 
         years = delta.days // 365
         remaining_months = (delta.days % 365)
-
+        print(remaining_months)
         if remaining_months >= 6:
             years += 1
-
+        print(years)
         return years
 
     def months_to_years(self, months):
