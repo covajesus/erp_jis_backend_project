@@ -31,5 +31,5 @@ class LogoClass:
         return support
     
     def get(self):
-        data = self.db.query(LogoModel).all()
+        data = self.db.query(LogoModel).order_by(LogoModel.id.desc()).first()
         return data

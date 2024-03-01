@@ -20,7 +20,7 @@ logo = APIRouter(
 def upload_logo(support: UploadFile = File(...) , session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     dropbox_client = DropboxClass(db)
 
-    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/Logo/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
+    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/logo/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
 
     LogoClass(db).upload_logo(filename)
     return {"message": "File uploaded successfully", "file_name": filename}
@@ -31,7 +31,7 @@ def delete_logo(id: int, session_user: UserLogin = Depends(get_current_active_us
     support = LogoClass(db).delete(id)
     # Get the file from the request
     # Delete the file from Dropbox
-    dropbox_client.delete("/Logo/",support)
+    dropbox_client.delete("/logo/",support)
 
     return {"message": "File deleted successfully"}
 
@@ -39,3 +39,13 @@ def delete_logo(id: int, session_user: UserLogin = Depends(get_current_active_us
 def get_logos(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = LogoClass(db).get()
     return data
+
+
+@logo.get("/get_logo_for_website/")
+def get_logos( db: Session = Depends(get_db)):
+    dropbox_client = DropboxClass(db)
+    data = LogoClass(db).get()
+    data.support = dropbox_client.get("/logo/",data.support )
+    return data
+
+

@@ -855,7 +855,7 @@ class VacationModel(Base):
         }
     
 class SliderModel(Base):
-    __tablename__ = 'jis_parking_crud'
+    __tablename__ = 'slider'
 
     id = Column(Integer, primary_key=True)
     support = Column(String(255))

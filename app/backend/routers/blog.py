@@ -20,7 +20,7 @@ blog = APIRouter(
 async def store(data: CreateBlog = Depends(CreateBlog.as_form) ,  support: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     dropbox_client = DropboxClass(db)
 
-    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/Blog/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
+    filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/blog/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
 
     data = BlogClass(db ).store(data,filename)
     return {"message": data}
@@ -30,6 +30,19 @@ async def store(data: CreateBlog = Depends(CreateBlog.as_form) ,  support: Uploa
 async def get(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = BlogClass(db).get_all()
     return {"message": data}    
+
+
+@blog.get("/get_all_for_website")
+async def get(db: Session = Depends(get_db)):
+    dropbox_client = DropboxClass(db)
+    data = BlogClass(db).get_all()
+
+    for i in range(len(data)):
+        data[i].picture = dropbox_client.get("/blog/",data[i].picture )
+
+    return {"message": data}    
+
+
 
 # @blog.delete("/delete/{id}")
 # async def delete(id: int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

@@ -22,7 +22,7 @@ def update_contact(data: UpdateContact, session_user: UserLogin = Depends(get_cu
     return {"message": "contact updated successfully"}
 
 @contact.get("/get_contact/")
-def get_contact(UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def get_contact(db: Session = Depends(get_db)):
     contact = Contactclass(db).get_contact()
     return contact
 
