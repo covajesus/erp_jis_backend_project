@@ -1068,6 +1068,22 @@ class UpdateContact(BaseModel):
     cellphone: str
     email: str
 
+class CreatePossibleEmployee(BaseModel):
+    rut: str
+    names: str
+    father_lastname: str
+    mother_lastname: str
+    cellphone: str
+    @classmethod
+    def as_form(cls, 
+                rut: str = Form(),
+                names: str = Form(),
+                father_lastname: str = Form(),
+                mother_lastname: str = Form(),
+                cellphone: str = Form()
+                ):
+        return cls(rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, cellphone=cellphone)
+    
 class CreateBlog(BaseModel):
     title: str
     description: str
@@ -1079,6 +1095,12 @@ class CreateBlog(BaseModel):
                 
                 ):
         return cls(title=title, description=description)
+    
+
+class CreateFrecuentQuestion(BaseModel):
+    question: str
+    answer: str
+
 class UploadProgressiveVacation(BaseModel):
     progressive_vacation_id: int
     rut: int

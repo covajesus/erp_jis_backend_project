@@ -896,6 +896,25 @@ class BlogModel(Base):
     picture = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
+class PossibleEmployeesModel(Base):
+    __tablename__ = 'possible_employees'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(String(100))
+    names = Column(String(255))
+    father_lastname = Column(String(100))
+    mother_lastname = Column(String(100))
+    cellphone = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class FrecuentQuestionModel(Base):
+    __tablename__ = 'frecuent_question'
+
+    id = Column(Integer, primary_key=True)
+    question = Column(String(255))
+    answer = Column(String(100))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
     
 class ProgressiveVacationModel(Base):
     __tablename__ = 'progressive_vacations'
