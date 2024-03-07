@@ -5,8 +5,45 @@ from datetime import datetime, timedelta
 from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
 import calendar
 import pandas 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 class HelperClass:
+
+    def send_email(self, data):
+       # Email configuration
+        email_address = 'noreply@jisparking.com'
+        password = 'Noreply2024'
+
+        # Email content
+        sender_email = 'your_email@gmail.com'
+        receiver_email = 'contacto@jisparking.com'
+        subject = 'Test email from Python'
+        body = 'This is a test email sent from Python.'
+
+        # Create a MIMEText object
+        message = MIMEMultipart()
+        message['From'] = sender_email
+        message['To'] = receiver_email
+        message['Subject'] = subject
+
+        # Attach the body to the email
+        message.attach(MIMEText(body, 'plain'))
+
+        # Connect to Gmail's SMTP server
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()  # Start TLS encryption
+        server.login(email_address, password)  # Login to Gmail
+
+        # Send the email
+        server.sendmail(sender_email, receiver_email, message.as_string())
+
+        # Close the connection to the SMTP server
+        server.quit()
+
+        print('Email sent successfully!')
+
     # Función para calcular el último periodo
     def calculate_last_period(current_period):
         

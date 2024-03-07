@@ -8,6 +8,7 @@ import base64
 import os
 from app.backend.classes.dropbox_class import DropboxClass
 from app.backend.classes.contact_class import Contactclass
+from app.backend.classes.helper_class import HelperClass
 from fastapi import File, UploadFile
 import dropbox
 
@@ -15,6 +16,12 @@ contact = APIRouter(
     prefix="/contact",
     tags=["Contact"]
 )
+
+@contact.post("/send_email/") 
+def send_email(request: Request, db: Session = Depends(get_db)):
+    data = request.json()
+    HelperClass().send_email(data)
+    return {"message": "email sent successfully"}
 
 @contact.patch("/update_contact/")
 def update_contact(data: UpdateContact, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

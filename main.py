@@ -92,7 +92,8 @@ os.environ['ALGORITHM'] = 'HS256'
 origins = [
     "*",
     "http://localhost:5173",
-    "http://localhost:8000",
+    "https://apijis.com",
+    
 ]
 
 app.add_middleware(
