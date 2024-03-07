@@ -14,7 +14,7 @@ class HelperClass:
     def send_email(self, data):
        # Email configuration
         email_address = 'noreply@jisparking.com'
-        password = 'Noreply2024'
+        password = ''
 
         # Email content
         sender_email = 'your_email@gmail.com'
