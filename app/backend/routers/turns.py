@@ -15,3 +15,9 @@ def edit(employee_type_id:int, group_id:int, search_term:str = None, session_use
     data = TurnClass(db).get(employee_type_id, group_id, search_term)
 
     return {"message": data}
+
+@turns.get("/get_all")
+def get_all(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = TurnClass(db).get_all()
+
+    return {"message": data}
