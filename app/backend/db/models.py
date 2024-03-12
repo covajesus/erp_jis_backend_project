@@ -238,6 +238,7 @@ class ScheduleModel(Base):
     id = Column(Integer, primary_key=True)
     turn_id = Column(Integer)
     week_schedule_id = Column(Integer)
+    horary_name = Column(String(255))
     start = Column(String(255))
     end = Column(String(255))
     day = Column(Integer)

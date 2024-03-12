@@ -13,7 +13,7 @@ schedule = APIRouter(
 
 @schedule.post("/store")
 def store(data:CreateSchedule, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    # print(data)
+    print(data.horary_name)
     data = ScheduleClass(db).store(data)
 
     return {"message": data}

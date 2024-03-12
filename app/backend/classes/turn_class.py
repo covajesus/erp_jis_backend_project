@@ -6,6 +6,14 @@ class TurnClass:
         self.db = db
 
 
+    def get_by_group(self, group_id):
+        try:
+            data = self.db.query(TurnModel).filter(TurnModel.group_id == group_id).all()
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
     def get_all(self):
         try:
             data = self.db.query(TurnModel).all()

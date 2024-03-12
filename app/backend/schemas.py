@@ -1095,33 +1095,33 @@ class CreateBlog(BaseModel):
                 
                 ):
         return cls(title=title, description=description)
-    
 
 class Day(BaseModel):
-    id: int
-    group_day_id: int
-    visibility_id: int
-    free_day_group_id: int
-    group_id: int
-    employee_type_id: int
-    breaking: str
-    day_hours: int
-    end: str
-    end_collation_time_threshold: str
-    end_entry_time_threshold: str
-    end_exit_time_threshold: str
-    start: str
-    start_collation_time_threshold: str
-    start_entry_time_threshold: str
-    start_exit_time_threshold: str
-    total_week_hours: int
-    turn: str
-    added_date: datetime
-    working: str
-    updated_date: datetime
+    id: Optional[int] = None
+    group_day_id: Optional[int] = None
+    visibility_id: Optional[int] = None
+    free_day_group_id: Optional[int] = None
+    group_id: Optional[int] = None
+    employee_type_id: Optional[int] = None
+    breaking: Optional[str] = None
+    day_hours: Optional[int] = None
+    end: Optional[str] = None
+    end_collation_time_threshold: Optional[str] = None
+    end_entry_time_threshold: Optional[str] = None
+    end_exit_time_threshold: Optional[str] = None
+    start: Optional[str] = None
+    start_collation_time_threshold: Optional[str] = None
+    start_entry_time_threshold: Optional[str] = None
+    start_exit_time_threshold: Optional[str] = None
+    total_week_hours: Optional[int] = None
+    turn: Optional[str] = None
+    working: Optional[str] = None
+    added_date: Optional[datetime] = None
+    updated_date: Optional[datetime] = None
 
 class CreateSchedule(BaseModel):
     schedule: Optional[Dict[str, Day]]
+    horary_name: Optional[str] = None
     added_date: datetime
     updated_date: Union[datetime, None]
 
