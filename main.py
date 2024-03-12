@@ -8,6 +8,7 @@ from app.backend.routers.pentions import pentions
 from app.backend.routers.banks import banks
 from app.backend.routers.meshes import meshes
 from app.backend.routers.turns import turns
+from app.backend.routers.schedule import schedule
 from app.backend.routers.account_types import account_types
 from app.backend.routers.regions import regions
 from app.backend.routers.employees import employees
@@ -110,6 +111,7 @@ app.include_router(nationalities)
 app.include_router(pentions)
 app.include_router(banks)
 app.include_router(turns)
+app.include_router(schedule)
 app.include_router(account_types)
 app.include_router(regions)
 app.include_router(employees)

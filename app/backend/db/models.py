@@ -232,6 +232,18 @@ class TurnModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class ScheduleModel(Base):
+    __tablename__ = 'schedule'
+
+    id = Column(Integer, primary_key=True)
+    turn_id = Column(Integer)
+    week_schedule_id = Column(Integer)
+    start = Column(String(255))
+    end = Column(String(255))
+    day = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class DteAtmMachineModel(Base):
     __tablename__ = 'dte_atm_machines'
 

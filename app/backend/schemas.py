@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from fastapi import UploadFile, File
-from typing import Union, List
+from typing import Union, List, Dict, Optional
 from datetime import datetime
 from decimal import Decimal
 from fastapi import Form
@@ -1096,6 +1096,34 @@ class CreateBlog(BaseModel):
                 ):
         return cls(title=title, description=description)
     
+
+class Day(BaseModel):
+    id: int
+    group_day_id: int
+    visibility_id: int
+    free_day_group_id: int
+    group_id: int
+    employee_type_id: int
+    breaking: str
+    day_hours: int
+    end: str
+    end_collation_time_threshold: str
+    end_entry_time_threshold: str
+    end_exit_time_threshold: str
+    start: str
+    start_collation_time_threshold: str
+    start_entry_time_threshold: str
+    start_exit_time_threshold: str
+    total_week_hours: int
+    turn: str
+    added_date: datetime
+    working: str
+    updated_date: datetime
+
+class CreateSchedule(BaseModel):
+    schedule: Optional[Dict[str, Day]]
+    added_date: datetime
+    updated_date: Union[datetime, None]
 
 class CreateFrecuentQuestion(BaseModel):
     question: str
