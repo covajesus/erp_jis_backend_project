@@ -232,6 +232,19 @@ class TurnModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class ScheduleModel(Base):
+    __tablename__ = 'schedule'
+
+    id = Column(Integer, primary_key=True)
+    turn_id = Column(Integer)
+    week_schedule_id = Column(Integer)
+    horary_name = Column(String(255))
+    start = Column(String(255))
+    end = Column(String(255))
+    day = Column(Integer)
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class DteAtmMachineModel(Base):
     __tablename__ = 'dte_atm_machines'
 
@@ -904,7 +917,7 @@ class VacationModel(Base):
         }
     
 class SliderModel(Base):
-    __tablename__ = 'jis_parking_crud'
+    __tablename__ = 'slider'
 
     id = Column(Integer, primary_key=True)
     support = Column(String(255))
@@ -940,6 +953,25 @@ class BlogModel(Base):
     title = Column(String(255))
     description = Column(String(100))
     picture = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class PossibleEmployeesModel(Base):
+    __tablename__ = 'possible_employees'
+
+    id = Column(Integer, primary_key=True)
+    rut = Column(String(100))
+    names = Column(String(255))
+    father_lastname = Column(String(100))
+    mother_lastname = Column(String(100))
+    cellphone = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+class FrecuentQuestionModel(Base):
+    __tablename__ = 'frecuent_question'
+
+    id = Column(Integer, primary_key=True)
+    question = Column(String(255))
+    answer = Column(String(100))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
     

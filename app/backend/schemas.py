@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from fastapi import UploadFile, File
-from typing import Union, List
+from typing import Union, List, Dict, Optional
 from datetime import datetime
 from decimal import Decimal
 from fastapi import Form
@@ -1068,6 +1068,22 @@ class UpdateContact(BaseModel):
     cellphone: str
     email: str
 
+class CreatePossibleEmployee(BaseModel):
+    rut: str
+    names: str
+    father_lastname: str
+    mother_lastname: str
+    cellphone: str
+    @classmethod
+    def as_form(cls, 
+                rut: str = Form(),
+                names: str = Form(),
+                father_lastname: str = Form(),
+                mother_lastname: str = Form(),
+                cellphone: str = Form()
+                ):
+        return cls(rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, cellphone=cellphone)
+    
 class CreateBlog(BaseModel):
     title: str
     description: str
@@ -1079,6 +1095,40 @@ class CreateBlog(BaseModel):
                 
                 ):
         return cls(title=title, description=description)
+
+class Day(BaseModel):
+    id: Optional[int] = None
+    group_day_id: Optional[int] = None
+    visibility_id: Optional[int] = None
+    free_day_group_id: Optional[int] = None
+    group_id: Optional[int] = None
+    employee_type_id: Optional[int] = None
+    breaking: Optional[str] = None
+    day_hours: Optional[int] = None
+    end: Optional[str] = None
+    end_collation_time_threshold: Optional[str] = None
+    end_entry_time_threshold: Optional[str] = None
+    end_exit_time_threshold: Optional[str] = None
+    start: Optional[str] = None
+    start_collation_time_threshold: Optional[str] = None
+    start_entry_time_threshold: Optional[str] = None
+    start_exit_time_threshold: Optional[str] = None
+    total_week_hours: Optional[int] = None
+    turn: Optional[str] = None
+    working: Optional[str] = None
+    added_date: Optional[datetime] = None
+    updated_date: Optional[datetime] = None
+
+class CreateSchedule(BaseModel):
+    schedule: Optional[Dict[str, Day]]
+    horary_name: Optional[str] = None
+    added_date: datetime
+    updated_date: Union[datetime, None]
+
+class CreateFrecuentQuestion(BaseModel):
+    question: str
+    answer: str
+
 class UploadProgressiveVacation(BaseModel):
     progressive_vacation_id: int
     rut: int

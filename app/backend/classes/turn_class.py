@@ -4,6 +4,23 @@ from sqlalchemy import or_
 class TurnClass:
     def __init__(self, db):
         self.db = db
+
+
+    def get_by_group(self, group_id):
+        try:
+            data = self.db.query(TurnModel).filter(TurnModel.group_id == group_id).all()
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
+    def get_all(self):
+        try:
+            data = self.db.query(TurnModel).all()
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
         
     def get(self, employee_type_id, group_id, search_term=None):
         try:

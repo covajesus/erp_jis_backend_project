@@ -37,6 +37,12 @@ def delete_image(id: int, session_user: UserLogin = Depends(get_current_active_u
     return {"message": "File deleted successfully"}
 
 @slider.get("/get_images/")
+def get_images(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SliderClass(db).get()
+    return data
+
+
+@slider.get("/get_slider_for_website/")
 def get_images(db: Session = Depends(get_db)):
     dropbox_client = DropboxClass(db)
     data = SliderClass(db).get()
@@ -46,3 +52,4 @@ def get_images(db: Session = Depends(get_db)):
         link.append(data[i].support)
 
     return link
+

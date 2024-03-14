@@ -94,9 +94,7 @@ class PayrollClass:
                         social_laws.period_until = period_until
                         social_laws.regime = employee.regime_id
                         social_laws.employee_type = 0
-                        social_laws.working_days = working_days
-                        social_laws.line_type = 0
-                        social_laws.movement_code = datetime.now()
+                        social_laws.working_days = employee.contract_type_id
                     else:
                         period_since = HelperClass().social_law_since_period(1, open_period_payroll_inputs['period'], 0)
                         period_until = HelperClass().social_law_since_period(2, open_period_payroll_inputs['period'], last_day)
