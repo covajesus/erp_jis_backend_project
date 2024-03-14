@@ -6,7 +6,7 @@ class PayrollEmployeeClass:
     def __init__(self, db):
         self.db = db
 
-    def get_all(self, period = None):
+    def get_all(self, period = None, page=0, items_per_page=10):
         try:
             if period == None:
                 data = self.db.query(PayrollEmployeeModel).order_by('rut').all()

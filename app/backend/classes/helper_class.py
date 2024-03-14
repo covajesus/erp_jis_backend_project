@@ -148,6 +148,22 @@ class HelperClass:
 
         return value
     
+    def social_law_period(type, period, value):
+        if type == 1:
+            value = period + "-01"
+        elif type == 2:
+            value = period + "-" + value
+
+        return value
+    
+    def social_law_working_days(value):
+        if datetime.now().month == 30:
+            working_days = 30 - value
+        else:
+            working_days = datetime.now().month - value
+
+        return working_days
+    
     # Función para calcular la cantidad de días hábiles
     def legal_days(self, since, until):
         if since is not None and until is not None:
@@ -365,9 +381,13 @@ class HelperClass:
     def get_last_day_of_month(date_str):
         date = datetime.strptime(date_str, '%Y-%m-%d')
         last_day = calendar.monthrange(date.year, date.month)[1]
-        last_day_date = datetime(date.year, date.month, last_day)
-        return last_day_date.strftime('%Y-%m-%d')
+        return last_day
 
+     # Función para obtener el último día del mes
+    def last_day_of_month(date_str):
+        date = datetime.strptime(date_str, '%Y-%m-%d')
+        last_day = date.replace(day=1) - timedelta(days=1) + timedelta(days=32)
+        return (last_day - timedelta(days=1)).strftime('%Y-%m-%d')
     
     def extention_contract(date):
         # Convertir la fecha de entrada a un objeto datetime

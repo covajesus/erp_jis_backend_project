@@ -8,8 +8,8 @@ class PayrollSecondCategoryTaxClass:
     def get(self, period, taxable_assets):
         data = self.db.query(PayrollSecondCategoryTaxModel).filter(
             PayrollSecondCategoryTaxModel.period == period,
-            PayrollSecondCategoryTaxModel.since >= taxable_assets,
-            PayrollSecondCategoryTaxModel.until <= taxable_assets
+            PayrollSecondCategoryTaxModel.since <= taxable_assets,
+            PayrollSecondCategoryTaxModel.until >= taxable_assets
         ).first()
 
         return data

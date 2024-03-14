@@ -1,8 +1,9 @@
-from app.backend.db.models import EmployeeModel, EmployeeLaborDatumModel, PayrollEmployeeModel
+from app.backend.db.models import EmployeeModel, NationalityModel, EmployeeLaborDatumModel, PayrollEmployeeModel, SocialLawModel, GenderModel
 from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.helper_class import HelperClass
 from app.backend.classes.payroll_period_class import PayrollPeriodClass
 from datetime import datetime
+from app.backend.classes.vacation_class import VacationClass
 
 class PayrollClass:
     def __init__(self, db):
@@ -33,38 +34,100 @@ class PayrollClass:
                                     EmployeeLaborDatumModel.employee_type_id, EmployeeLaborDatumModel.regime_id, EmployeeLaborDatumModel.health_payment_id,
                                     EmployeeLaborDatumModel.extra_health_payment_type_id, EmployeeLaborDatumModel.apv_payment_type_id,
                                     EmployeeLaborDatumModel.salary, EmployeeLaborDatumModel.collation, EmployeeLaborDatumModel.locomotion,
-                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.apv_amount
+                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.apv_amount, EmployeeModel.gender_id, EmployeeModel.nationality_id
                                     ). \
                             outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).all()
                 
                 for employee in employees:
-                    payroll_employee = PayrollEmployeeModel()
-                    payroll_employee.rut = employee.rut
-                    payroll_employee.visual_rut = employee.visual_rut
-                    payroll_employee.period = open_period_payroll_inputs['period']
-                    payroll_employee.names = employee.names
-                    payroll_employee.father_lastname = employee.father_lastname
-                    payroll_employee.mother_lastname = employee.mother_lastname
-                    payroll_employee.contract_type_id = employee.contract_type_id
-                    payroll_employee.branch_office_id = employee.branch_office_id
-                    payroll_employee.health_id = employee.health_id
-                    payroll_employee.pention_id = employee.pention_id
-                    payroll_employee.employee_type_id = employee.employee_type_id
-                    payroll_employee.regime_id = employee.regime_id
-                    payroll_employee.health_payment_id = employee.health_payment_id
-                    payroll_employee.extra_health_payment_type_id = employee.extra_health_payment_type_id
-                    payroll_employee.apv_payment_type_id = employee.apv_payment_type_id
-                    payroll_employee.salary = employee.salary
-                    payroll_employee.collation = employee.collation
-                    payroll_employee.locomotion = employee.locomotion
-                    extra_health_amount = HelperClass().return_zero_empty_input(employee.extra_health_amount)
-                    payroll_employee.extra_health_amount = extra_health_amount
-                    apv_amount = HelperClass().return_zero_empty_input(employee.apv_amount)
-                    payroll_employee.apv_amount = apv_amount
-                    payroll_employee.added_date = datetime.now()
-                    payroll_employee.updated_date = datetime.now()
-                    self.db.add(payroll_employee)
-                    self.db.commit()
+                    gender = self.db.query(GenderModel).filter(GenderModel.id == employee.gender_id).first()
+                    nationality = self.db.query(NationalityModel).filter(NationalityModel.id == employee.gender_id).first()
+                    
+                    vaction_days = VacationClass(self.db).how_many_vacation_days(employee.rut, open_period_payroll_inputs['period'])
+
+                    if vaction_days >= 0:
+                        period_since = HelperClass().social_law_period(1, open_period_payroll_inputs['period'], 0)
+                        period_until = HelperClass().social_law_period(2, open_period_payroll_inputs['period'], vaction_days)
+                        working_days = HelperClass()
+
+                        payroll_employee = PayrollEmployeeModel()
+                        payroll_employee.rut = employee.rut
+                        payroll_employee.visual_rut = employee.visual_rut
+                        payroll_employee.period = open_period_payroll_inputs['period']
+                        payroll_employee.names = employee.names
+                        payroll_employee.father_lastname = employee.father_lastname
+                        payroll_employee.mother_lastname = employee.mother_lastname
+                        payroll_employee.contract_type_id = employee.contract_type_id
+                        payroll_employee.branch_office_id = employee.branch_office_id
+                        payroll_employee.health_id = employee.health_id
+                        payroll_employee.pention_id = employee.pention_id
+                        payroll_employee.employee_type_id = employee.employee_type_id
+                        payroll_employee.regime_id = employee.regime_id
+                        payroll_employee.health_payment_id = employee.health_payment_id
+                        payroll_employee.extra_health_payment_type_id = employee.extra_health_payment_type_id
+                        payroll_employee.apv_payment_type_id = employee.apv_payment_type_id
+                        payroll_employee.salary = employee.salary
+                        payroll_employee.collation = employee.collation
+                        payroll_employee.locomotion = employee.locomotion
+                        extra_health_amount = HelperClass().return_zero_empty_input(employee.extra_health_amount)
+                        payroll_employee.extra_health_amount = extra_health_amount
+                        apv_amount = HelperClass().return_zero_empty_input(employee.apv_amount)
+                        payroll_employee.apv_amount = apv_amount
+                        payroll_employee.added_date = datetime.now()
+                        payroll_employee.updated_date = datetime.now()
+                        self.db.add(payroll_employee)
+                        self.db.commit()
+
+                        
+
+                        rut_data = HelperClass().split(employee.rut, '-')
+                        social_laws = SocialLawModel()
+                        social_laws.rut = rut_data[0]
+                        social_laws.dv = rut_data[1]
+                        social_laws.father_lastname = employee.father_lastname
+                        social_laws.mother_lastname = employee.mother_lastname
+                        social_laws.names = employee.names
+                        social_laws.gender = gender.social_law_code
+                        social_laws.nationality = nationality.social_law_code
+                        social_laws.nationality = nationality.social_law_code
+                        social_laws.payment_type = 1
+                        social_laws.period_since = period_since
+                        social_laws.period_until = period_until
+                        social_laws.regime = employee.regime_id
+                        social_laws.employee_type = 0
+                        social_laws.working_days = working_days
+                        social_laws.line_type = 0
+                        social_laws.movement_code = datetime.now()
+                    else:
+                        period_since = HelperClass().social_law_since_period(1, open_period_payroll_inputs['period'], 0)
+                        period_until = HelperClass().social_law_since_period(2, open_period_payroll_inputs['period'], last_day)
+
+                        payroll_employee = PayrollEmployeeModel()
+                        payroll_employee.rut = employee.rut
+                        payroll_employee.visual_rut = employee.visual_rut
+                        payroll_employee.period = open_period_payroll_inputs['period']
+                        payroll_employee.names = employee.names
+                        payroll_employee.father_lastname = employee.father_lastname
+                        payroll_employee.mother_lastname = employee.mother_lastname
+                        payroll_employee.contract_type_id = employee.contract_type_id
+                        payroll_employee.branch_office_id = employee.branch_office_id
+                        payroll_employee.health_id = employee.health_id
+                        payroll_employee.pention_id = employee.pention_id
+                        payroll_employee.employee_type_id = employee.employee_type_id
+                        payroll_employee.regime_id = employee.regime_id
+                        payroll_employee.health_payment_id = employee.health_payment_id
+                        payroll_employee.extra_health_payment_type_id = employee.extra_health_payment_type_id
+                        payroll_employee.apv_payment_type_id = employee.apv_payment_type_id
+                        payroll_employee.salary = employee.salary
+                        payroll_employee.collation = employee.collation
+                        payroll_employee.locomotion = employee.locomotion
+                        extra_health_amount = HelperClass().return_zero_empty_input(employee.extra_health_amount)
+                        payroll_employee.extra_health_amount = extra_health_amount
+                        apv_amount = HelperClass().return_zero_empty_input(employee.apv_amount)
+                        payroll_employee.apv_amount = apv_amount
+                        payroll_employee.added_date = datetime.now()
+                        payroll_employee.updated_date = datetime.now()
+                        self.db.add(payroll_employee)
+                        self.db.commit()
 
                     payroll_item_value_data = {}
                     payroll_item_value_data['item_id'] = 35
