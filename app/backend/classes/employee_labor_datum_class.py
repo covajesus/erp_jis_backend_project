@@ -1,8 +1,7 @@
-from app.backend.db.models import EmployeeLaborDatumModel, UserModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
+from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
 import json
-from sqlalchemy import or_
 
 
 class EmployeeLaborDatumClass:
@@ -315,13 +314,7 @@ class EmployeeLaborDatumClass:
         return 1
     
     def active_employee_total(self):
-        total = self.db.query(EmployeeModel) \
-                            .outerjoin(UserModel, UserModel.rut == EmployeeModel.rut) \
-                            .filter(or_(UserModel.rol_id == 1,
-                                        UserModel.rol_id == 2,
-                                        UserModel.rol_id == 3,
-                                        UserModel.rol_id == 4)) \
-                            .count()
+        total = self.db.query(EmployeeModel).count()
 
         return total
     
