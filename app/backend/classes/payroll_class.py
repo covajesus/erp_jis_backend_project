@@ -1,9 +1,9 @@
-from app.backend.db.models import EmployeeModel, NationalityModel, EmployeeLaborDatumModel, PayrollEmployeeModel, SocialLawModel, GenderModel
+from app.backend.db.models import EmployeeModel, EmployeeExtraModel, NationalityModel, PentionModel, RegimeModel, EmployeeLaborDatumModel, PayrollEmployeeModel, SocialLawModel, GenderModel
 from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.helper_class import HelperClass
 from app.backend.classes.payroll_period_class import PayrollPeriodClass
 from datetime import datetime
-from app.backend.classes.vacation_class import VacationClass
+from app.backend.classes.medical_license_class import MedicalLicenseClass
 
 class PayrollClass:
     def __init__(self, db):
@@ -34,20 +34,26 @@ class PayrollClass:
                                     EmployeeLaborDatumModel.employee_type_id, EmployeeLaborDatumModel.regime_id, EmployeeLaborDatumModel.health_payment_id,
                                     EmployeeLaborDatumModel.extra_health_payment_type_id, EmployeeLaborDatumModel.apv_payment_type_id,
                                     EmployeeLaborDatumModel.salary, EmployeeLaborDatumModel.collation, EmployeeLaborDatumModel.locomotion,
-                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.apv_amount, EmployeeModel.gender_id, EmployeeModel.nationality_id
+                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.apv_amount, EmployeeModel.gender_id, EmployeeModel.nationality_id,
+                                    EmployeeExtraModel.young_job_status_id
                                     ). \
-                            outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut).all()
+                            outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut). \
+                            outerjoin(EmployeeExtraModel, EmployeeExtraModel.rut == EmployeeModel.rut).all()
                 
                 for employee in employees:
                     gender = self.db.query(GenderModel).filter(GenderModel.id == employee.gender_id).first()
                     nationality = self.db.query(NationalityModel).filter(NationalityModel.id == employee.gender_id).first()
+                    regime = self.db.query(RegimeModel).filter(RegimeModel.id == employee.regime_id).first()
+                    pention_code = self.db.query(PentionModel).filter(PentionModel.id == employee.pention_id).first()
+                    young_job_status = HelperClass.get_social_law_young_status(employee.young_job_status_id)
                     
-                    vaction_days = VacationClass(self.db).how_many_vacation_days(employee.rut, open_period_payroll_inputs['period'])
+                    license_days = MedicalLicenseClass(self.db).how_many_medical_license_days(employee.rut, open_period_payroll_inputs['period'])
 
-                    if vaction_days >= 0:
+                    if license_days >= 0:
                         period_since = HelperClass().social_law_period(1, open_period_payroll_inputs['period'], 0)
-                        period_until = HelperClass().social_law_period(2, open_period_payroll_inputs['period'], vaction_days)
-                        working_days = HelperClass()
+                        period_until = HelperClass().social_law_period(2, open_period_payroll_inputs['period'], license_days)
+                        working_days = HelperClass().social_law_working_days(license_days)
+                        date_since = HelperClass().social_law_date(1, open_period_payroll_inputs['period'], 0)
 
                         payroll_employee = PayrollEmployeeModel()
                         payroll_employee.rut = employee.rut
@@ -76,9 +82,7 @@ class PayrollClass:
                         payroll_employee.updated_date = datetime.now()
                         self.db.add(payroll_employee)
                         self.db.commit()
-
                         
-
                         rut_data = HelperClass().split(employee.rut, '-')
                         social_laws = SocialLawModel()
                         social_laws.rut = rut_data[0]
@@ -92,9 +96,17 @@ class PayrollClass:
                         social_laws.payment_type = 1
                         social_laws.period_since = period_since
                         social_laws.period_until = period_until
-                        social_laws.regime = employee.regime_id
+                        social_laws.regime = regime.regime
                         social_laws.employee_type = 0
-                        social_laws.working_days = employee.contract_type_id
+                        social_laws.working_days = working_days
+                        social_laws.line_type = 0
+                        social_laws.movement_code = 3
+                        social_laws.date_since = working_days
+                        social_laws.date_until = working_days
+                        social_laws.young_job_status = young_job_status
+                        social_laws.pention_code = pention_code.social_law_code
+                        self.db.add(social_laws)
+                        self.db.commit()
                     else:
                         period_since = HelperClass().social_law_since_period(1, open_period_payroll_inputs['period'], 0)
                         period_until = HelperClass().social_law_since_period(2, open_period_payroll_inputs['period'], last_day)

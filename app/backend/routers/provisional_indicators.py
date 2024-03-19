@@ -20,6 +20,7 @@ from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuot
 from app.backend.classes.payroll_family_asignation_indicator_class import PayrollFamilyAsignationIndicatorClass
 from app.backend.classes.payroll_heavy_duty_quote_indicator_class import PayrollHeavyDutyQuoteIndicatorClass
 from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
+from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
 from app.backend.classes.helper_class import HelperClass
 from app.backend.auth.auth_user import get_current_active_user
 
@@ -167,6 +168,16 @@ def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = 
     distribution_7_percent_health_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
     provisional_indicator_inputs['indicator_id'] = distribution_7_percent_health_indicator
     provisional_indicator_inputs['indicator_type_id'] = 11
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    ccaf_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
+    provisional_indicator_inputs['indicator_id'] = ccaf_indicator
+    provisional_indicator_inputs['indicator_type_id'] = 12
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    other_indicator = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs)
+    provisional_indicator_inputs['indicator_id'] = other_indicator
+    provisional_indicator_inputs['indicator_type_id'] = 13
     PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
     return {"message": 1}

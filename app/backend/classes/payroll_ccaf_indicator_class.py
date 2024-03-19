@@ -5,6 +5,21 @@ class PayrollCcafIndicatorClass:
     def __init__(self, db):
         self.db = db
 
+    def get(self, period):
+        data = self.db.query(PayrollCcafIndicatorModel).filter(PayrollCcafIndicatorModel.period == period).first()
+
+        return data
+
+    def get_all(self, period):
+        try:
+            data = self.db.query(PayrollCcafIndicatorModel).filter(PayrollCcafIndicatorModel.period == period).first()
+            if not data:
+                return "No data found"
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
     def store(self, payroll_indicator_inputs):
         try:
             payroll_ccaf_indicator = PayrollCcafIndicatorModel()

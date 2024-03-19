@@ -65,27 +65,6 @@ class VacationClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
-
-    def how_many_vacation_days(self, rut, period):
-        since = str(period) + '-01'
-
-        last_day_month = HelperClass.get_last_day_of_month(since)
-        until = str(period) + '-' + str(last_day_month)
-
-        try:
-            # Realizar una consulta para sumar los días de vacaciones dentro del rango especificado
-            total_days = self.db.query(func.sum(VacationModel.days)).\
-                filter(VacationModel.rut == rut).\
-                filter(VacationModel.since >= since).\
-                filter(VacationModel.since <= until).scalar()
-
-            # Si no hay vacaciones en el rango, total_days puede ser None, en ese caso, convertirlo a 0
-            total_days = total_days or 0
-            return total_days
-        
-        except Exception as e:
-            error_message = str(e)
-            return f"Error: {error_message}"
              
     def get_all(self, rut, page=1, items_per_page=10):
         try:

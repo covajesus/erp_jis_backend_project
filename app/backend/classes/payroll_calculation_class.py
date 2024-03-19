@@ -7,6 +7,8 @@ from app.backend.classes.payroll_minium_taxable_income_indicator_class import Pa
 from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuoteIndicatorClass
 from app.backend.classes.payroll_umployment_insurance_indicator_class import PayrollUmploymentInsuranceIndicatorClass
 from app.backend.classes.payroll_second_category_tax_class import PayrollSecondCategoryTaxClass
+from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
+from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
 
 class PayrollCalculationClass:
     def __init__(self, db):
@@ -34,11 +36,13 @@ class PayrollCalculationClass:
         self.pention(employee['rut'], period, employee['pention_id'], employee['regime_id'])
         self.worker_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
         self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
+        self.ccaf_calculated_quote(employee['rut'], period, employee['health_type_id'])
         self.legal_discount(employee['rut'], period)
         self.other_discount(employee['rut'], period)
         self.second_level_insurance(employee['rut'], period)
         self.total_assets(employee['rut'], period)
         self.total_discounts(employee['rut'], period)
+        self.disability_survival_insurance(employee['rut'], period, employee['pention_id'])
         self.total_to_pay(employee['rut'], period)
     
     def taxable_salary(self, rut, period):
@@ -245,6 +249,37 @@ class PayrollCalculationClass:
 
             PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
+    def ccaf_calculated_quote(self, rut, period, health_type_id):
+        payroll_ccaf_indicator = PayrollCcafIndicatorClass(self.db).get(period)
+
+        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
+        taxable_assets = payroll_item_value.amount
+
+        if health_type_id == 2:
+            amount = round((taxable_assets * payroll_ccaf_indicator.ccaf)/100)
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 73
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+    def mutuality_quote(self, rut, period):
+        payroll_other_indicator = PayrollOtherIndicatorClass(self.db).get(period)
+
+        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
+        taxable_assets = payroll_item_value.amount
+
+        amount = round((taxable_assets * payroll_other_indicator.mutual_value)/100)
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 73
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+        
     def pention(self, rut, period, pention_id, regime_id):
         if regime_id == 1:
             payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
@@ -461,6 +496,20 @@ class PayrollCalculationClass:
 
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
+    def disability_survival_insurance(self, rut, period, pention_id):
+        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
+        taxable_assets = payroll_item_value.amount
+
+        payroll_afp_quote = PayrollAfpQuoteIndicatorClass(self.db).get(pention_id, period)
+        amount = (taxable_assets * float(payroll_afp_quote.dependent_sis))/100
+
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = 70
+        payroll_item_value_data['rut'] = rut
+        payroll_item_value_data['period'] = period
+        payroll_item_value_data['amount'] = amount
+
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
     def total_discounts(self, rut, period):
         payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 63, period)

@@ -1,6 +1,7 @@
 from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel, EmployeeLaborDatumModel, BranchOfficeModel
 from datetime import datetime
 from sqlalchemy import desc
+from sqlalchemy.sql import func
 from app.backend.classes.dropbox_class import DropboxClass
 from app.backend.classes.helper_class import HelperClass
 import json
@@ -66,15 +67,33 @@ class MedicalLicenseClass:
             error_message = str(e)
             return f"Error: {error_message}"
 
-
-
-
     def get_all(self):
         try:
             data = self.db.query(MedicalLicenseModel).order_by(MedicalLicenseModel.id).all()
             if not data:
                 return "No hay registros"
             return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+    def how_many_medical_license_days(self, rut, period):
+        since = str(period) + '-01'
+
+        last_day_month = HelperClass.get_last_day_of_month(since)
+        until = str(period) + '-' + str(last_day_month)
+
+        try:
+            # Realizar una consulta para sumar los días de vacaciones dentro del rango especificado
+            total_days = self.db.query(func.sum(MedicalLicenseModel.days)).\
+                filter(MedicalLicenseModel.rut == rut).\
+                filter(MedicalLicenseModel.since >= since).\
+                filter(MedicalLicenseModel.since <= until).scalar()
+
+            # Si no hay vacaciones en el rango, total_days puede ser None, en ese caso, convertirlo a 0
+            total_days = total_days or 0
+            return total_days
+        
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

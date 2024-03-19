@@ -12,7 +12,9 @@ from app.backend.classes.payroll_umployment_insurance_indicator_class import Pay
 from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuoteIndicatorClass
 from app.backend.classes.payroll_family_asignation_indicator_class import PayrollFamilyAsignationIndicatorClass
 from app.backend.classes.payroll_heavy_duty_quote_indicator_class import PayrollHeavyDutyQuoteIndicatorClass
-from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicator
+from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
+from app.backend.classes.payroll_other_indicator_class import PayrollCcafIndicatorClass
+from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
 from app.backend.auth.auth_user import get_current_active_user
 
 previred_indicators = APIRouter(
@@ -33,14 +35,14 @@ def index(period:str, db: Session = Depends(get_db)):
     PayrollAfpQuoteIndicatorClass(db).get_all(period)
     PayrollFamilyAsignationIndicatorClass(db).get_all(period)
     PayrollHeavyDutyQuoteIndicatorClass(db).get_all(period)
+    PayrollCcafIndicatorClass(db).get_all(period)
+    PayrollOtherIndicatorClass(db).get_all(period)
 
     return {"message": 1}
 
 @previred_indicators.post("/store")
 def store(previred_indicator:PreviredIndicator, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     previred_indicator_inputs = previred_indicator.dict()
-
-    print(previred_indicator_inputs)
 
     PayrollIndicatorClass(db).store(previred_indicator_inputs)
     PayrollUfIndicatorClass(db).store(previred_indicator_inputs)
@@ -52,5 +54,7 @@ def store(previred_indicator:PreviredIndicator, session_user: UserLogin = Depend
     PayrollAfpQuoteIndicatorClass(db).store(previred_indicator_inputs)
     PayrollFamilyAsignationIndicatorClass(db).store(previred_indicator_inputs)
     PayrollHeavyDutyQuoteIndicatorClass(db).store(previred_indicator_inputs)
+    PayrollCcafIndicatorClass(db).store(previred_indicator_inputs)
+    PayrollOtherIndicatorClass(db).store(previred_indicator_inputs)
 
     return {"message": 1}

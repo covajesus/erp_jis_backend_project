@@ -12,37 +12,34 @@ from email.mime.multipart import MIMEMultipart
 class HelperClass:
 
     def send_email(self, data):
-       # Email configuration
-        email_address = 'noreply@jisparking.com'
-        password = ''
+        # Configuración del servidor SMTP
+        smtp_server = 'mail.jisparking.com'
+        smtp_port = 465
+        smtp_user = 'noreply@jisparking.com'
+        smtp_password = 'Macana11!'
 
-        # Email content
-        sender_email = 'your_email@gmail.com'
-        receiver_email = 'contacto@jisparking.com'
-        subject = 'Test email from Python'
-        body = 'This is a test email sent from Python.'
+        # Crear el objeto mensaje
+        msg = MIMEMultipart()
+        msg['From'] = smtp_user
+        msg['To'] = 'contacto@jisparking.com'  # Reemplaza con la dirección de correo del destinatario
+        msg['Subject'] = data['subject']
 
-        # Create a MIMEText object
-        message = MIMEMultipart()
-        message['From'] = sender_email
-        message['To'] = receiver_email
-        message['Subject'] = subject
+        # Cuerpo del mensaje
+        body = f"""
+        Nombre: {data['name']}
+        Apellido: {data['lastname']}
+        Correo: {data['email']}
+        Teléfono: {data['phone']}
+        
+        Mensaje:
+        {data['message']}
+        """
+        msg.attach(MIMEText(body, 'plain'))
 
-        # Attach the body to the email
-        message.attach(MIMEText(body, 'plain'))
-
-        # Connect to Gmail's SMTP server
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()  # Start TLS encryption
-        server.login(email_address, password)  # Login to Gmail
-
-        # Send the email
-        server.sendmail(sender_email, receiver_email, message.as_string())
-
-        # Close the connection to the SMTP server
-        server.quit()
-
-        print('Email sent successfully!')
+        # Establecer conexión con el servidor SMTP
+        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, msg['To'], msg.as_string())
 
     # Función para calcular el último periodo
     def calculate_last_period(current_period):
@@ -426,6 +423,12 @@ class HelperClass:
         last_day = date.replace(day=1) - timedelta(days=1) + timedelta(days=32)
         return (last_day - timedelta(days=1)).strftime('%Y-%m-%d')
     
+    def get_social_law_young_status(value):
+        if value == 1:
+            return "S"
+        else:
+            return "N"
+
     def extention_contract(date):
         # Convertir la fecha de entrada a un objeto datetime
         date_dt = datetime.strptime(date, "%Y-%m-%d")

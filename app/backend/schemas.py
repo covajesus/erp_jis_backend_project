@@ -95,16 +95,24 @@ class UpdateNationality(BaseModel):
 
 class Pention(BaseModel):
     pention: str
-    pention_remuneration_code: int
+    social_law: int
     rut: str
     amount: str
     previred_code: int
     added_date: datetime
     updated_date: Union[datetime, None]
 
+class Contact(BaseModel):
+    name: str
+    lastname: str
+    email: str
+    phone: str
+    subject: str
+    message: str
+
 class UpdatePention(BaseModel):
     pention: str = None
-    pention_remuneration_code: int = None
+    social_law: int = None
     rut: str = None
     amount: str = None
     previred_code: int = None

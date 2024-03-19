@@ -117,7 +117,7 @@ class PentionModel(Base):
 
     id = Column(Integer, primary_key=True)
     pention = Column(String(255))
-    pention_remuneration_code = Column(Integer)
+    social_law_code = Column(Integer)
     rut = Column(String(255))
     amount = Column(String(255))
     previred_code = Column(Integer)
@@ -332,6 +332,15 @@ class LetterTypeModel(Base):
 
     id = Column(Integer, primary_key=True)
     letter_type = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
+class PayrollOtherIndicatorModel(Base):
+    __tablename__ = 'payroll_other_indicators'
+
+    id = Column(Integer, primary_key=True)
+    mutual_value = Column(String(255))
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

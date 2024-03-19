@@ -88,7 +88,7 @@ class OldEmployeeLaborDatumClass:
                 serialized_pention = {
                     "id": pention.id,
                     "pention": pention.pention,
-                    "pention_remuneration_code": pention.pention_remuneration_code,
+                    "social_law": pention.social_law,
                     "rut": pention.rut,
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
