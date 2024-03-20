@@ -8,6 +8,8 @@ import pandas
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 class HelperClass:
 
@@ -35,6 +37,37 @@ class HelperClass:
         {data['message']}
         """
         msg.attach(MIMEText(body, 'plain'))
+
+        # Establecer conexión con el servidor SMTP
+        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, msg['To'], msg.as_string())
+
+    def send_email_with_attachment(self, data, file):
+        # Configuración del servidor SMTP
+        smtp_server = 'mail.jisparking.com'
+        smtp_port = 465
+        smtp_user = 'noreply@jisparking.com'
+        smtp_password = 'Macana11!'
+
+        # Crear el objeto mensaje
+        msg = MIMEMultipart()
+        msg['From'] = smtp_user
+        msg['To'] = 'contacto@jisparking.com'  # Reemplaza con la dirección de correo del destinatario
+        msg['Subject'] = 'Nuevo postulante a Jisparking'
+
+        # Cuerpo del mensaje en HTML
+        body = f"""
+        <html>
+            <body>
+                <p>Nombre: {data['names']}</p>
+                <p>Región: {data['region']}</p>
+                <p>Comuna: {data['commune']}</p>
+                <p>CV: <a href="{file}" download="Curriculum.pdf">Curriculum</a></p>
+            </body>
+        </html>
+        """
+        msg.attach(MIMEText(body, 'html'))  # Configurar como HTML
 
         # Establecer conexión con el servidor SMTP
         with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:

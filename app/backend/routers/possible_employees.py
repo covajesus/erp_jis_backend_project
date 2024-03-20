@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.backend.schemas import  UserLogin, CreatePossibleEmployee
 from app.backend.classes.employee_class import EmployeeClass
 from app.backend.auth.auth_user import get_current_active_user
+from app.backend.classes.region_class import RegionClass
+from app.backend.classes.commune_class import CommuneClass
 from app.backend.classes.helper_class import HelperClass
 import base64
 import os
@@ -16,14 +18,26 @@ possible_employees = APIRouter(
     prefix="/possible_employees",
     tags=["Possible Employees"]
 )
-
+    
 @possible_employees.post("/store")
-async def store(data: CreatePossibleEmployee = Depends(CreatePossibleEmployee.as_form) ,  support: UploadFile = File(...),  db: Session = Depends(get_db)):
+async def store(data: CreatePossibleEmployee = Depends(CreatePossibleEmployee.as_form), support: UploadFile = File(...), db: Session = Depends(get_db)):
+    data = data.dict()
+    
     dropbox_client = DropboxClass(db)
 
     filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/possible_employees_cv/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
 
-    HelperClass().send_email(data)
+    file = dropbox_client.get('/possible_employees_cv/', filename)
+
+    region = RegionClass(db).get("id", data['region'])
+
+    data['region'] = region.region
+
+    commune = CommuneClass(db).get("id", data['commune'])
+
+    data['commune'] = commune.commune
+
+    HelperClass().send_email_with_attachment(data, file)
 
     return "1"
 

@@ -1076,15 +1076,28 @@ class UpdateContact(BaseModel):
     cellphone: str
     email: str
 
-class CreatePossibleEmployee(BaseModel):
+# Clase para representar los datos del formulario
+class PossibleEmployeeFormData(BaseModel):
     names: str
-    region: str
-    commune: str
+    region: int
+    commune: int
+
     @classmethod
     def as_form(cls, 
                 names: str = Form(),
-                region: str = Form(),
-                commune: str = Form()                ):
+                region: int = Form(),
+                commune: int = Form()):
+        return cls(names=names, region=region, commune=commune)
+
+class CreatePossibleEmployee(BaseModel):
+    names: str
+    region: int
+    commune: int
+    @classmethod
+    def as_form(cls, 
+                names: str = Form(),
+                region: int = Form(),
+                commune: int = Form()                ):
         return cls(names=names, region=region, commune=commune)
     
 class CreateBlog(BaseModel):
