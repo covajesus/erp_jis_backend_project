@@ -11,7 +11,7 @@ regions = APIRouter(
 )
 
 @regions.get("/")
-def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def index():
     data = RegionClass(db).get_all()
 
     return {"message": data}
