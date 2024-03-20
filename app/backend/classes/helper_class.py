@@ -53,7 +53,7 @@ class HelperClass:
         # Crear el objeto mensaje
         msg = MIMEMultipart()
         msg['From'] = smtp_user
-        msg['To'] = 'contacto@jisparking.com'  # Reemplaza con la dirección de correo del destinatario
+        msg['To'] = 'empleos@jisparking.com'  # Reemplaza con la dirección de correo del destinatario
         msg['Subject'] = 'Nuevo postulante a Jisparking'
 
         # Cuerpo del mensaje en HTML
