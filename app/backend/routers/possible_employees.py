@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.backend.schemas import  UserLogin, CreatePossibleEmployee
 from app.backend.classes.employee_class import EmployeeClass
 from app.backend.auth.auth_user import get_current_active_user
+from app.backend.classes.helper_class import HelperClass
 import base64
 import os
 from app.backend.classes.dropbox_class import DropboxClass
@@ -22,9 +23,9 @@ async def store(data: CreatePossibleEmployee = Depends(CreatePossibleEmployee.as
 
     filename = dropbox_client.upload(name=support.filename, data=support, dropbox_path='/possible_employees_cv/', computer_path=os.path.join(os.path.dirname(__file__)), resize=0)
 
-    data = PossibleEmployeeClass(db ).store(data,filename)
-    return {"message": data}
+    HelperClass().send_email(data)
 
+    return "1"
 
 @possible_employees.get("/get_all")
 async def get(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

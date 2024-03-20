@@ -1077,20 +1077,15 @@ class UpdateContact(BaseModel):
     email: str
 
 class CreatePossibleEmployee(BaseModel):
-    rut: str
     names: str
-    father_lastname: str
-    mother_lastname: str
-    cellphone: str
+    region: str
+    commune: str
     @classmethod
     def as_form(cls, 
-                rut: str = Form(),
                 names: str = Form(),
-                father_lastname: str = Form(),
-                mother_lastname: str = Form(),
-                cellphone: str = Form()
-                ):
-        return cls(rut=rut, names=names, father_lastname=father_lastname, mother_lastname=mother_lastname, cellphone=cellphone)
+                region: str = Form(),
+                commune: str = Form()                ):
+        return cls(names=names, region=region, commune=commune)
     
 class CreateBlog(BaseModel):
     title: str

@@ -11,7 +11,7 @@ communes = APIRouter(
 )
 
 @communes.get("/{region_id}")
-def index(region_id:int):
+def index(region_id:int, db: Session = Depends(get_db)):
     if region_id != -1:
         data = CommuneClass(db).get_all(region_id)
     else:
