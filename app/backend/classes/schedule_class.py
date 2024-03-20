@@ -1,4 +1,4 @@
-from app.backend.db.models import ScheduleModel
+from app.backend.db.models import ScheduleModel, WeekScheduleModel
 import json
 from sqlalchemy import or_, asc
 from collections import defaultdict
@@ -7,6 +7,28 @@ from collections import defaultdict
 class ScheduleClass:
     def __init__(self, db):
         self.db = db
+
+
+    def get_by_group_from_week_schedule(self,  group_id, search_term=None):
+        try:
+            query = self.db.query(WeekScheduleModel).\
+                filter(WeekScheduleModel.group_id == group_id)
+            
+            if search_term and search_term != "Buscar Turno":
+                # Asume que `schedule` es el campo que quieres buscar
+                query = query.filter(or_(WeekScheduleModel.horary_name.contains(search_term)))
+            elif search_term and search_term == "":
+                 data = query.all()
+            
+            data = query.all()
+            
+            if not data:
+                return "No data found"
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
     def store(self, data):
         try:
             # Get the last week_schedule_id in the database
@@ -54,20 +76,13 @@ class ScheduleClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-    def get(self, employee_type_id, group_id, search_term=None):
+    def get_by_week_schedule_id(self, week_schedule_id):
         try:
-            query = self.db.query(ScheduleModel).\
-                filter(ScheduleModel.employee_type_id == employee_type_id, ScheduleModel.group_id == group_id)
-            
-            if search_term and search_term != "Buscar Turno":
-                # Asume que `turn` es el campo que quieres buscar
-                query = query.filter(or_(ScheduleModel.turn.contains(search_term)))
-            
-            data = query.all()
-            
-            if not data:
-                return "No data found"
+            data = (self.db.query(ScheduleModel)
+                    .filter(ScheduleModel.week_schedule_id == week_schedule_id)
+                    .all())
             return data
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        

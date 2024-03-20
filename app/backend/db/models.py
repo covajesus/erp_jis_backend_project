@@ -238,12 +238,19 @@ class ScheduleModel(Base):
     id = Column(Integer, primary_key=True)
     turn_id = Column(Integer)
     week_schedule_id = Column(Integer)
+    group_id = Column(Integer)
     horary_name = Column(String(255))
     start = Column(String(255))
     end = Column(String(255))
     day = Column(Integer)
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
+class WeekScheduleModel(Base):
+    __tablename__ = 'week_schedule'
+
+    id = Column(Integer, primary_key=True)
+    group_id = Column(Integer)
+    horary_name = Column(String(255))
 
 class DteAtmMachineModel(Base):
     __tablename__ = 'dte_atm_machines'
