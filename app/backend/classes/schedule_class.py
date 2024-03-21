@@ -9,16 +9,14 @@ class ScheduleClass:
         self.db = db
 
 
-    def get_by_group_from_week_schedule(self,  group_id, search_term=None):
+    def get_by_group_from_week_schedule(self, employee_type_id, group_id, search_term=None):
         try:
             query = self.db.query(WeekScheduleModel).\
-                filter(WeekScheduleModel.group_id == group_id)
+                filter(WeekScheduleModel.employee_type_id == employee_type_id, WeekScheduleModel.group_id == group_id)
             
             if search_term and search_term != "Buscar Turno":
-                # Asume que `schedule` es el campo que quieres buscar
+                # Asume que `turn` es el campo que quieres buscar
                 query = query.filter(or_(WeekScheduleModel.horary_name.contains(search_term)))
-            elif search_term and search_term == "":
-                 data = query.all()
             
             data = query.all()
             
@@ -28,6 +26,26 @@ class ScheduleClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+
+    # def get_by_group_from_week_schedule(self,  group_id, search_term=None):
+    #     try:
+    #         query = self.db.query(WeekScheduleModel).\
+    #             filter(WeekScheduleModel.group_id == group_id , WeekScheduleModel.employee_type_id == employee_type_id)
+            
+    #         if search_term and search_term != "Buscar Turno":
+    #             # Asume que `schedule` es el campo que quieres buscar
+    #             query = query.filter(or_(WeekScheduleModel.horary_name.contains(search_term)))
+    #         elif search_term and search_term == "":
+    #              data = query.all()
+            
+    #         data = query.all()
+            
+    #         if not data:
+    #             return "No data found"
+    #         return data
+    #     except Exception as e:
+    #         error_message = str(e)
+    #         return f"Error: {error_message}"
 
     def store(self, data):
         try:

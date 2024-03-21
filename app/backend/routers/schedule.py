@@ -32,6 +32,12 @@ def get_by_group(group_id:int, search_term: Optional[str] = None, session_user: 
 
     return {"message": data}
 
+@schedule.get("/get_by_group/{employee_type_id}/{group_id}/{search_term}")
+def get_by_group(employee_type_id:int, group_id:int, search_term: Optional[str] = None, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = ScheduleClass(db).get_by_group_from_week_schedule(employee_type_id,group_id, search_term)
+
+    return {"message": data}
+
 @schedule.get("/get_by_week_schedule_id/{id}")
 def get_by_week_schedule_id(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = ScheduleClass(db).get_by_week_schedule_id(id)

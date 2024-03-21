@@ -250,6 +250,7 @@ class WeekScheduleModel(Base):
 
     id = Column(Integer, primary_key=True)
     group_id = Column(Integer)
+    employee_type_id = Column(Integer)
     horary_name = Column(String(255))
 
 class DteAtmMachineModel(Base):
