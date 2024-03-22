@@ -90,7 +90,7 @@ class MedicalLicenseClass:
                 filter(MedicalLicenseModel.since >= since).\
                 filter(MedicalLicenseModel.since <= until).scalar()
 
-            # Si no hay vacaciones en el rango, total_days puede ser None, en ese caso, convertirlo a 0
+            # Si no hay licencias en el rango, total_days puede ser None, en ese caso, convertirlo a 0
             total_days = total_days or 0
             return total_days
         

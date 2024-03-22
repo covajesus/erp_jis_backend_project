@@ -1,14 +1,38 @@
-from app.backend.db.models import EmployeeModel, HealthModel, EmployeeExtraModel, NationalityModel, RegimeModel, EmployeeLaborDatumModel, PayrollEmployeeModel, SocialLawModel, GenderModel
+from app.backend.db.models import HealthModel, RegimeModel, EmployeeLaborDatumModel, SocialLawModel, EmployeeLaborDatumModel, PayrollEmployeeModel
 from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
-from app.backend.classes.helper_class import HelperClass
-from app.backend.classes.payroll_period_class import PayrollPeriodClass
-from datetime import datetime
 from app.backend.classes.medical_license_class import MedicalLicenseClass
+from app.backend.classes.helper_class import HelperClass
 
 class SocialLawClass:
     def __init__(self, db):
         self.db = db
 
+    def get_totals(self, period):
+        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).all()
+
+        for payroll_employee in payroll_employees:
+            medical_license = MedicalLicenseClass().how_many_medical_license_days(payroll_employee.rut, period)
+
+            medical_license_total = 0
+
+            entrance_total = 0
+
+            exit_total = 0
+
+            if medical_license > 0:
+                medical_license_total = medical_license_total + 1
+
+            entrance = HelperClass.validate_entrance(payroll_employee.entrance_company, period)
+
+            if entrance > 0:
+                entrance_total = entrance_total + 1
+
+            exit = HelperClass.validate_exit(payroll_employee.exit_company, period)
+
+            if entrance > 0:
+                exit_total = exit_total + 1
+
+        
     def store(self, period):
         try:
             social_laws = self.db.query(SocialLawModel).filter(SocialLawModel.period == period).all()
@@ -16,6 +40,7 @@ class SocialLawClass:
             for social_law in social_laws:
                 employee_labor_data = self.db.query(EmployeeLaborDatumModel).filter(EmployeeLaborDatumModel.rut == social_law.rut).first()
                 payroll_item_value = PayrollItemValueClass(self.db).get_with_period(social_law.rut, 70, period)
+                regime = self.db.query(RegimeModel).filter(RegimeModel.id == employee_labor_data.regime_id).first()
                 disability_insurance_quote = payroll_item_value.amount
 
                 payroll_item_value = PayrollItemValueClass(self.db).get_with_period(social_law.rut, 4, period)
@@ -70,7 +95,7 @@ class SocialLawClass:
                 social_law_employee.ips_isl_fonasa_taxable_value = social_law.taxable_value
 
                 if employee_labor_data.regime_id == 1:
-                    social_law_employee.ex_cashier_regime_code = 
+                    social_law_employee.ex_cashier_regime_code = regime.social_law_code
 
                 if employee_labor_data.health_id == 2:
                     social_law_employee.fonasa_health_quote = health.value

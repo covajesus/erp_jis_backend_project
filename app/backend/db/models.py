@@ -34,6 +34,7 @@ class GenderModel(Base):
 
     id = Column(Integer, primary_key=True)
     gender = Column(String(255))
+    social_law_code = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -99,7 +100,7 @@ class NationalityModel(Base):
 
     id = Column(Integer, primary_key=True)
     nationality = Column(String(255))
-    previred_code = Column(Integer)
+    social_law_code = Column(Integer)
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -675,7 +676,7 @@ class SocialLawModel(Base):
     payment_type = Column(Integer)
     period_since = Column(Integer)
     period_until = Column(Integer)
-    regime = Column(Integer)
+    regime = Column(String(255))
     employee_type = Column(Integer)
     working_days = Column(Integer)
     line_type = Column(Integer)
@@ -689,7 +690,6 @@ class SocialLawModel(Base):
     number_simple_loads = Column(Integer)
     household_allowance = Column(Integer)
     retroactive_family_allowance = Column(Integer)
-    number_simple_loads = Column(Integer)
     reimbursement_family_charges = Column(Integer)
     young_job_status = Column(Integer)
     pention_code = Column(Integer)
@@ -699,7 +699,7 @@ class SocialLawModel(Base):
     disability_insurance_quote = Column(Integer)
     pention_voluntary_savings = Column(Integer)
     pention_substitute_taxable_income = Column(Integer)
-    substitute_agreed_date = Column(Float)
+    substitute_agreed_rate = Column(Float)
     substitute_compensation_contribution = Column(Integer)
     substitute_period_numbers = Column(Integer)
     substitute_period_since = Column(String(255))

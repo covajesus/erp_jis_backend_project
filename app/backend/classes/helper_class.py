@@ -215,11 +215,24 @@ class HelperClass:
 
         return value
     
-    def social_law_period(type, period, value):
+    def social_law_date(type, period, value):
+        period = HelperClass().split(period, '-')
+        period = period[1] +"/"+ period[0]
+
         if type == 1:
-            value = period + "-01"
+            value = "01/" + str(period)
         elif type == 2:
-            value = period + "-" + value
+            value = str(value) +"/"+ str(period)
+
+        return value
+    
+    def social_law_period(type, period, value):
+        period = HelperClass().split(period, '-')
+
+        if int(period[1]) < 10:
+            period[1] = "0" + period[1]
+
+        value = period[1] + period[0]
 
         return value
     
@@ -311,6 +324,12 @@ class HelperClass:
         rut = rut.split('-')
 
         return rut[0]
+    
+    def validate_entrance(entrance_company, period):
+        if value == None:
+            value = 0
+
+        return value
     
     def return_zero_empty_input(self, value):
         if value == None:
@@ -450,6 +469,12 @@ class HelperClass:
         last_day = calendar.monthrange(date.year, date.month)[1]
         return last_day
 
+    # Función para obtener el último día del mes
+    def social_law_get_last_day_of_month(date_str):
+        date = datetime.strptime(date_str, '%d/%m/%Y')
+        last_day = calendar.monthrange(date.year, date.month)[1]
+        return last_day
+    
      # Función para obtener el último día del mes
     def last_day_of_month(date_str):
         date = datetime.strptime(date_str, '%Y-%m-%d')

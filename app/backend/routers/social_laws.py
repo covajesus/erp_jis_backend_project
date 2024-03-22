@@ -4,39 +4,21 @@ from sqlalchemy.orm import Session
 from app.backend.schemas import Rol, UpdateRol, UserLogin
 from app.backend.classes.rol_class import RolClass
 from app.backend.auth.auth_user import get_current_active_user
+from app.backend.classes.social_law_class import SocialLawClass
 
-rols = APIRouter(
-    prefix="/rols",
-    tags=["Rols"]
+social_laws = APIRouter(
+    prefix="/social_laws",
+    tags=["SocialLaws"]
 )
 
-@rols.get("/")
-def index(session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = RolClass(db).get_all()
+@social_laws.get("/calculate/{period}")
+def store(period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SocialLawClass(db).calculate(period)
 
     return {"message": data}
 
-@rols.post("/store")
-def store(rol:Rol, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    bank_inputs = rol.dict()
-    data = RolClass(db).store(bank_inputs)
-
-    return {"message": data}
-
-@rols.get("/edit/{id}")
-def edit(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = RolClass(db).get("id", id)
-
-    return {"message": data}
-
-@rols.delete("/delete/{id}")
-def delete(id:int, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = RolClass(db).delete(id)
-
-    return {"message": data}
-
-@rols.patch("/update/{id}")
-def update(id: int, rol: UpdateRol, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = RolClass(db).update(id, rol)
+@social_laws.get("/totals/{period}")
+def store(period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SocialLawClass(db).get_totals(period)
 
     return {"message": data}
