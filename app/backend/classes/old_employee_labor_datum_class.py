@@ -45,7 +45,7 @@ class OldEmployeeLaborDatumClass:
                     "health_remuneration_code": health.health_remuneration_code,
                     "health": health.health,
                     "rut": health.rut,
-                    "previred_code": health.previred_code,
+                    "social_law": health.social_law,
                 }
 
                 # Serializar los datos de la comuna
