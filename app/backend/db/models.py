@@ -1085,7 +1085,7 @@ class HealthModel(Base):
     health_remuneration_code = Column(Integer)
     health = Column(String(255))
     rut = Column(Integer)
-    previred_code = Column(Integer)
+    social_law = Column(Integer)
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

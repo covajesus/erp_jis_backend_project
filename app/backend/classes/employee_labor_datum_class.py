@@ -70,7 +70,7 @@ class EmployeeLaborDatumClass:
                     "health_remuneration_code": health.health_remuneration_code,
                     "health": health.health,
                     "rut": health.rut,
-                    "previred_code": health.previred_code,
+                    "social_law": health.social_law,
                 }
 
                 serialized_commune = {
@@ -108,7 +108,7 @@ class EmployeeLaborDatumClass:
                 serialized_pention = {
                     "id": pention.id,
                     "pention": pention.pention,
-                    "social_law": pention.social_law,
+                    "social_law": pention.social_law_code,
                     "rut": pention.rut,
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
