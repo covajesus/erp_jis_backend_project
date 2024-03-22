@@ -130,7 +130,6 @@ class OldEmployeeLaborDatumClass:
                     "pention_name": pention.pention if pention else None,
                     "job_position_id": job_position.id if job_position else None,
                     "job_position_name": job_position.job_position if job_position else None,
-                    "extra_health_payment_type_id": employee_labor_data.extra_health_payment_type_id,
                     "employee_type_id": employee_labor_data.employee_type_id,
                     "regime_id": employee_labor_data.regime_id,
                     "status_id": employee_labor_data.status_id,
