@@ -21,9 +21,7 @@ class OldEmployeeLaborDatumClass:
                 filter(getattr(OldEmployeeLaborDatumModel, field) == value).first()
 
             if data:
-                
-                # Acceder a los datos directamente por índice
-                old_employee_labor_data = data[0]
+                employee_labor_data = data[0]
                 region = data[1]
                 health = data[2]
                 commune = data[3]
@@ -31,15 +29,13 @@ class OldEmployeeLaborDatumClass:
                 job_position = data[5]
                 branch_office = data[6]
                 pention = data[7]
-    
-                # Serializar los datos de la región
+
                 serialized_region = {
                     "id": region.id,
                     "region": region.region,
                     "region_remuneration_code": region.region_remuneration_code,
                 }
 
-                # Serializar los datos de la salud
                 serialized_health = {
                     "id": health.id,
                     "health_remuneration_code": health.health_remuneration_code,
@@ -48,27 +44,23 @@ class OldEmployeeLaborDatumClass:
                     "social_law": health.social_law,
                 }
 
-                # Serializar los datos de la comuna
                 serialized_commune = {
                     "id": commune.id,
                     "region_id": commune.region_id,
                     "commune": commune.commune,
                 }
 
-                # Serializar los datos del estado civil
                 serialized_civil_state = {
                     "id": civil_state.id,
                     "civil_state": civil_state.civil_state,
                 }
 
-                # Serializar los datos del cargo
                 serialized_job_position = {
                     "id": job_position.id,
                     "job_position": job_position.job_position,
                     "functions": job_position.functions,
                 }
 
-                # Serializar los datos de la sucursal
                 serialized_branch_office = {
                     "id": branch_office.id,
                     "branch_office": branch_office.branch_office,
@@ -84,59 +76,48 @@ class OldEmployeeLaborDatumClass:
                     "dte_code": branch_office.dte_code,
                 }
 
-                # Serializar los datos de la pensión
                 serialized_pention = {
                     "id": pention.id,
                     "pention": pention.pention,
-                    "social_law": pention.social_law,
+                    "social_law": pention.social_law_code,
                     "rut": pention.rut,
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
                 }
 
-                entrance_pention = old_employee_labor_data.entrance_pention
+                entrance_pention = employee_labor_data.entrance_pention
 
-                entrance_company = old_employee_labor_data.entrance_company
+                entrance_company = employee_labor_data.entrance_company
 
-                exit_company = old_employee_labor_data.exit_company
+                entrance_health = employee_labor_data.entrance_health
 
-                entrance_health = old_employee_labor_data.entrance_health
-
-                if entrance_pention:
+                if entrance_pention and entrance_pention != '0000-00-00' and entrance_pention != None:
                     formatted_entrance_pention = datetime.strptime(entrance_pention, '%Y-%m-%d').date()
                     formatted_entrance_pention_str = formatted_entrance_pention.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_pention = None
                     formatted_entrance_pention_str = None
 
-                if entrance_company:
+                if entrance_company and entrance_company != '0000-00-00':
                     formatted_entrance_company = datetime.strptime(entrance_company, '%Y-%m-%d').date()
                     formatted_entrance_company_str = formatted_entrance_company.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_company = None
                     formatted_entrance_company_str = None
 
-                if exit_company:
-                    formatted_exit_company = datetime.strptime(exit_company, '%Y-%m-%d').date()
-                    formatted_exit_company_str = formatted_exit_company.strftime('%Y-%m-%d')
-                else:
-                    formatted_exit_company = None
-                    formatted_exit_company_str = None
-
-                if entrance_health:
+                if entrance_health and entrance_health != '0000-00-00':
                     formatted_entrance_health = datetime.strptime(entrance_health, '%Y-%m-%d').date()
                     formatted_entrance_health_str = formatted_entrance_health.strftime('%Y-%m-%d')
                 else:
                     formatted_entrance_health = None
                     formatted_entrance_health_str = None
 
-                # Serializar los datos del empleado
                 serialized_employee_labor_data = {
-                    "id": old_employee_labor_data.id,
-                    "rut": old_employee_labor_data.rut,
-                    "contract_type_id": old_employee_labor_data.contract_type_id,
-                    "branch_office_id": old_employee_labor_data.branch_office_id,
-                    "address": old_employee_labor_data.address,
+                    "id": employee_labor_data.id,
+                    "rut": employee_labor_data.rut,
+                    "contract_type_id": employee_labor_data.contract_type_id,
+                    "branch_office_id": employee_labor_data.branch_office_id,
+                    "address": employee_labor_data.address,
                     "region_id": region.id if region else None,
                     "region_name": region.region if region else None,
                     "commune_id": commune.id if commune else None,
@@ -149,21 +130,22 @@ class OldEmployeeLaborDatumClass:
                     "pention_name": pention.pention if pention else None,
                     "job_position_id": job_position.id if job_position else None,
                     "job_position_name": job_position.job_position if job_position else None,
-                    "employee_type_id": old_employee_labor_data.employee_type_id,
-                    "regime_id": old_employee_labor_data.regime_id,
-                    "status_id": old_employee_labor_data.status_id,
-                    "health_payment_id": old_employee_labor_data.health_payment_id,
+                    "extra_health_payment_type_id": employee_labor_data.extra_health_payment_type_id,
+                    "employee_type_id": employee_labor_data.employee_type_id,
+                    "regime_id": employee_labor_data.regime_id,
+                    "status_id": employee_labor_data.status_id,
+                    "health_payment_id": employee_labor_data.health_payment_id,
                     "entrance_pention": formatted_entrance_pention_str,
                     "entrance_company": formatted_entrance_company_str,
-                    "exit_company": formatted_exit_company_str,
                     "entrance_health": formatted_entrance_health_str,
-                    "salary": old_employee_labor_data.salary,
-                    "collation": old_employee_labor_data.collation,
-                    "locomotion": old_employee_labor_data.locomotion,
-                    "extra_health_amount": old_employee_labor_data.extra_health_amount,
-                    "apv_payment_type_id": old_employee_labor_data.apv_payment_type_id,
-                    "apv_amount": old_employee_labor_data.apv_amount
+                    "salary": employee_labor_data.salary,
+                    "collation": employee_labor_data.collation,
+                    "locomotion": employee_labor_data.locomotion,
+                    "extra_health_amount": employee_labor_data.extra_health_amount,
+                    "apv_payment_type_id": employee_labor_data.apv_payment_type_id,
+                    "apv_amount": employee_labor_data.apv_amount
                 }
+
 
                 # Convierte el resultado a una cadena JSON
                 serialized_result = json.dumps({
