@@ -270,7 +270,7 @@ class ProgressiveVacationClass:
 
         progressive_vacation_days = HelperClass().progressive_vacation_days(total_years, employee_extra_data.progressive_vacation_level_id)
 
-        return 1
+        return progressive_vacation_days
 
     def taken(self, rut):
         progressive_vacations = self.db.query(ProgressiveVacationModel). \
