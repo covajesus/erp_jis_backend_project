@@ -91,6 +91,8 @@ class OldEmployeeLaborDatumClass:
 
                 entrance_health = employee_labor_data.entrance_health
 
+                exit_company = employee_labor_data.exit_company
+
                 if entrance_pention and entrance_pention != '0000-00-00' and entrance_pention != None:
                     formatted_entrance_pention = datetime.strptime(entrance_pention, '%Y-%m-%d').date()
                     formatted_entrance_pention_str = formatted_entrance_pention.strftime('%Y-%m-%d')
@@ -111,6 +113,13 @@ class OldEmployeeLaborDatumClass:
                 else:
                     formatted_entrance_health = None
                     formatted_entrance_health_str = None
+
+                if exit_company and exit_company != '0000-00-00':
+                    formatted_exit_company = datetime.strptime(exit_company, '%Y-%m-%d').date()
+                    formatted_exit_company_str = formatted_exit_company.strftime('%Y-%m-%d')
+                else:
+                    formatted_exit_company = None
+                    formatted_exit_company_str = None
 
                 serialized_employee_labor_data = {
                     "id": employee_labor_data.id,
@@ -137,6 +146,7 @@ class OldEmployeeLaborDatumClass:
                     "entrance_pention": formatted_entrance_pention_str,
                     "entrance_company": formatted_entrance_company_str,
                     "entrance_health": formatted_entrance_health_str,
+                    "exit_company": formatted_exit_company_str,
                     "salary": employee_labor_data.salary,
                     "collation": employee_labor_data.collation,
                     "locomotion": employee_labor_data.locomotion,
