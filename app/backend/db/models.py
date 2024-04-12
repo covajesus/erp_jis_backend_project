@@ -341,10 +341,9 @@ class PayrollOtherIndicatorModel(Base):
     __tablename__ = 'payroll_other_indicators'
 
     id = Column(Integer, primary_key=True)
-    mutual_value = Column(String(255))
+    other_type_id = Column(String(255))
+    other_value = Column(String(255))
     period = Column(String(255))
-    added_date = Column(DateTime())
-    updated_date = Column(DateTime())
 
 class EmployeeLaborDatumModel(Base):
     __tablename__ = 'employee_labor_data'
@@ -559,6 +558,7 @@ class PayrollUtmUtaIndicatorModel(Base):
     id = Column(Integer, primary_key=True)
     utm_value_current_month = Column(Float)
     uta_value_current_month = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -591,6 +591,7 @@ class PayrollVoluntaryPrevitionalIndicatorModel(Base):
     id = Column(Integer, primary_key=True)
     voluntary_pension_savings_monthly = Column(Float)
     voluntary_pension_savings_annual = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -599,6 +600,7 @@ class PayrollAgreedDepositIndicatorModel(Base):
 
     id = Column(Integer, primary_key=True)
     agreed_deposit = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -714,6 +716,7 @@ class PayrollFamilyAsignationIndicatorModel(Base):
     amount = Column(Float)
     minimum_value_rate = Column(Integer)
     top_value_rate = Column(Integer)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -722,10 +725,10 @@ class PayrollSecondCategoryTaxModel(Base):
 
     id = Column(Integer, primary_key=True)
     period = Column(String(255))
-    since = Column(Integer)
-    until = Column(Integer)
-    factor = Column(Float)
-    discount = Column(Integer)
+    since = Column(String(255))
+    until = Column(String(255))
+    factor = Column(String(255))
+    discount = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -737,6 +740,7 @@ class PayrollHeavyDutyQuoteIndicatorModel(Base):
     job_position = Column(Float)
     employer = Column(Float)
     worker = Column(Float)
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
@@ -744,8 +748,9 @@ class PayrollCcafIndicatorModel(Base):
     __tablename__ = 'payroll_ccaf_indicators'
 
     id = Column(Integer, primary_key=True)
-    ccaf = Column(Float)
-    fonasa = Column(Float)
+    ccaf = Column(String(255))
+    fonasa = Column(String(255))
+    period = Column(String(255))
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 

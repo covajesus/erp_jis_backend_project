@@ -26,6 +26,7 @@ class PayrollUmploymentInsuranceIndicatorClass:
                 payroll_umployment_insurance_indicator.contract_type_id = contract_type_id
                 payroll_umployment_insurance_indicator.worker = indefinite_term_worker
                 payroll_umployment_insurance_indicator.employer = indefinite_term_employeer
+                payroll_umployment_insurance_indicator.period = payroll_indicator_inputs['period']
                 payroll_umployment_insurance_indicator.added_date = datetime.now()
                 self.db.add(payroll_umployment_insurance_indicator)
                 self.db.commit()
@@ -40,6 +41,7 @@ class PayrollUmploymentInsuranceIndicatorClass:
                 payroll_umployment_insurance_indicator.contract_type_id = contract_type_id
                 payroll_umployment_insurance_indicator.worker = fixed_term_worker
                 payroll_umployment_insurance_indicator.employer = fixed_term_employeer
+                payroll_umployment_insurance_indicator.period = payroll_indicator_inputs['period']
                 payroll_umployment_insurance_indicator.added_date = datetime.now()
                 self.db.add(payroll_umployment_insurance_indicator)
                 self.db.commit()
@@ -54,6 +56,7 @@ class PayrollUmploymentInsuranceIndicatorClass:
                 payroll_umployment_insurance_indicator.contract_type_id = contract_type_id
                 payroll_umployment_insurance_indicator.worker = indefinite_term_worker_11_years
                 payroll_umployment_insurance_indicator.employer = indefinite_term_employeer_11_years
+                payroll_umployment_insurance_indicator.period = payroll_indicator_inputs['period']
                 payroll_umployment_insurance_indicator.added_date = datetime.now()
                 self.db.add(payroll_umployment_insurance_indicator)
                 self.db.commit()
@@ -68,6 +71,7 @@ class PayrollUmploymentInsuranceIndicatorClass:
                 payroll_umployment_insurance_indicator.contract_type_id = contract_type_id
                 payroll_umployment_insurance_indicator.worker = domestic_worker
                 payroll_umployment_insurance_indicator.employer = domestic_employeer
+                payroll_umployment_insurance_indicator.period = payroll_indicator_inputs['period']
                 payroll_umployment_insurance_indicator.added_date = datetime.now()
                 self.db.add(payroll_umployment_insurance_indicator)
                 self.db.commit()

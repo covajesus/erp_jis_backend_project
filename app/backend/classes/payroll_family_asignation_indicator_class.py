@@ -21,6 +21,7 @@ class PayrollFamilyAsignationIndicatorClass:
                 payroll_family_asignation_indicator.amount = a_family_assignment_amount
                 payroll_family_asignation_indicator.minimum_value_rate = a_family_assignment_rent_requirement_input_minimum_value
                 payroll_family_asignation_indicator.top_value_rate = a_family_assignment_rent_requirement_input_top_value
+                payroll_family_asignation_indicator.period = payroll_indicator_inputs['period']
                 payroll_family_asignation_indicator.added_date = datetime.now()
                 self.db.add(payroll_family_asignation_indicator)
                 self.db.commit()
@@ -38,6 +39,7 @@ class PayrollFamilyAsignationIndicatorClass:
                 payroll_family_asignation_indicator.amount = b_family_assignment_amount
                 payroll_family_asignation_indicator.minimum_value_rate = b_family_assignment_rent_requirement_input_minimum_value
                 payroll_family_asignation_indicator.top_value_rate = b_family_assignment_rent_requirement_input_top_value
+                payroll_family_asignation_indicator.period = payroll_indicator_inputs['period']
                 payroll_family_asignation_indicator.added_date = datetime.now()
                 self.db.add(payroll_family_asignation_indicator)
                 self.db.commit()
@@ -56,6 +58,7 @@ class PayrollFamilyAsignationIndicatorClass:
                 payroll_family_asignation_indicator.amount = c_family_assignment_amount
                 payroll_family_asignation_indicator.minimum_value_rate = c_family_assignment_rent_requirement_input_minimum_value
                 payroll_family_asignation_indicator.top_value_rate = c_family_assignment_rent_requirement_input_top_value
+                payroll_family_asignation_indicator.period = payroll_indicator_inputs['period']
                 payroll_family_asignation_indicator.added_date = datetime.now()
                 self.db.add(payroll_family_asignation_indicator)
                 self.db.commit()
@@ -73,6 +76,7 @@ class PayrollFamilyAsignationIndicatorClass:
                 payroll_family_asignation_indicator.amount = d_family_assignment_amount
                 payroll_family_asignation_indicator.minimum_value_rate = d_family_assignment_rent_requirement_input_minimum_value
                 payroll_family_asignation_indicator.top_value_rate = d_family_assignment_rent_requirement_input_top_value
+                payroll_family_asignation_indicator.period = payroll_indicator_inputs['period']
                 payroll_family_asignation_indicator.added_date = datetime.now()
                 self.db.add(payroll_family_asignation_indicator)
                 self.db.commit()

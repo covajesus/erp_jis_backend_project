@@ -28,6 +28,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = cuprum_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = cuprum_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = cuprum_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -45,6 +46,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = habitat_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = habitat_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = habitat_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -62,6 +64,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = planvital_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = planvital_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = planvital_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -79,6 +82,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = provida_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = provida_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = provida_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -96,6 +100,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = capital_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = capital_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = capital_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -113,6 +118,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = modelo_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = modelo_dependent_sis
                 payroll_afp_quote_indicator.independent_rate_afp = modelo_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()
@@ -130,6 +136,7 @@ class PayrollAfpQuoteIndicatorClass:
                 payroll_afp_quote_indicator.dependent_rate_afp = uno_dependent_rate_afp
                 payroll_afp_quote_indicator.dependent_sis = uno_dependent_sis_input
                 payroll_afp_quote_indicator.independent_rate_afp = uno_independent_rate_afp
+                payroll_afp_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_afp_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_afp_quote_indicator)
                 self.db.commit()

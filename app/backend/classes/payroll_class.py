@@ -136,18 +136,10 @@ class PayrollClass:
                             amount = last_two_periods_taxable_assets.amount
 
                         payroll_item_value_data = {}
-                        payroll_item_value_data['item_id'] = 60
+                        payroll_item_value_data['item_id'] = 57
                         payroll_item_value_data['rut'] = employee.rut
                         payroll_item_value_data['period'] = open_period_payroll_inputs['period']
                         payroll_item_value_data['amount'] = amount
-
-                        PayrollItemValueClass(self.db).store(payroll_item_value_data)
-                    else:
-                        payroll_item_value_data = {}
-                        payroll_item_value_data['item_id'] = 60
-                        payroll_item_value_data['rut'] = employee.rut
-                        payroll_item_value_data['period'] = open_period_payroll_inputs['period']
-                        payroll_item_value_data['amount'] = 30
 
                         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 

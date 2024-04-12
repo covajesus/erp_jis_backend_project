@@ -21,6 +21,7 @@ class PayrollHeavyDutyQuoteIndicatorClass:
                 payroll_heavy_duty_quote_indicator.job_position = 1.2
                 payroll_heavy_duty_quote_indicator.employer = 1.3
                 payroll_heavy_duty_quote_indicator.worker = 1.4
+                payroll_heavy_duty_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_heavy_duty_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_heavy_duty_quote_indicator)
                 self.db.commit()
@@ -38,6 +39,7 @@ class PayrollHeavyDutyQuoteIndicatorClass:
                 payroll_heavy_duty_quote_indicator.job_position = 2
                 payroll_heavy_duty_quote_indicator.employer = 2
                 payroll_heavy_duty_quote_indicator.worker = 2
+                payroll_heavy_duty_quote_indicator.period = payroll_indicator_inputs['period']
                 payroll_heavy_duty_quote_indicator.added_date = datetime.now()
                 self.db.add(payroll_heavy_duty_quote_indicator)
                 self.db.commit()

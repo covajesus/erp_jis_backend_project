@@ -174,10 +174,23 @@ def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = 
     provisional_indicator_inputs['indicator_id'] = ccaf_indicator
     provisional_indicator_inputs['indicator_type_id'] = 12
     PayrollIndicatorClass(db).store(provisional_indicator_inputs)
-
-    other_indicator = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = other_indicator
+ 
+    other_type_id = 1
+    other_indicator_mutual = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+    provisional_indicator_inputs['indicator_id'] = other_indicator_mutual
     provisional_indicator_inputs['indicator_type_id'] = 13
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    other_type_id = 2
+    other_indicator_honorary = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+    provisional_indicator_inputs['indicator_id'] = other_indicator_honorary
+    provisional_indicator_inputs['indicator_type_id'] = 14
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    other_type_id = 3
+    other_indicator_gratification = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+    provisional_indicator_inputs['indicator_id'] = other_indicator_gratification
+    provisional_indicator_inputs['indicator_type_id'] = 15
     PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
     return {"message": 1}
@@ -213,8 +226,6 @@ async def scrape(period:str, session_user: UserLogin = Depends(get_current_activ
             period_title = HelperClass().split(" ", period_title)
 
             data[1] = 0
-
-            print(data)
 
             return data
         else:

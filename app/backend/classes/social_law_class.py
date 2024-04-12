@@ -8,7 +8,7 @@ class SocialLawClass:
         self.db = db
 
     def get_totals(self, period):
-        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).all()
+        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).filter(PayrollEmployeeModel.item_id == 55).filter(PayrollEmployeeModel.amount < 30).all()
 
         for payroll_employee in payroll_employees:
             medical_license = MedicalLicenseClass().how_many_medical_license_days(payroll_employee.rut, period)

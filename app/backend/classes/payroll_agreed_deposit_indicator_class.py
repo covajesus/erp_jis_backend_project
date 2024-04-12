@@ -13,6 +13,7 @@ class PayrollAgreedDepositIndicatorClass:
 
             payroll_agreed_deposit_indicator = PayrollAgreedDepositIndicatorModel()
             payroll_agreed_deposit_indicator.agreed_deposit = agreed_deposit_annual
+            payroll_agreed_deposit_indicator.period = payroll_indicator_inputs['period']
             payroll_agreed_deposit_indicator.added_date = datetime.now()
             self.db.add(payroll_agreed_deposit_indicator)
             self.db.commit()

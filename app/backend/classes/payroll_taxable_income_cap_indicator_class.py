@@ -24,6 +24,7 @@ class PayrollTaxableIncomeCapIndicatorClass:
             payroll_taxable_income_cap_indicator.afp = cap_income_tax_afp
             payroll_taxable_income_cap_indicator.ips = cap_income_tax_ips
             payroll_taxable_income_cap_indicator.unemployment = cap_income_tax_unemployment
+            payroll_taxable_income_cap_indicator.period = payroll_indicator_inputs['period']
             payroll_taxable_income_cap_indicator.added_date = datetime.now()
             payroll_taxable_income_cap_indicator.updated_date = datetime.now()
             self.db.add(payroll_taxable_income_cap_indicator)

@@ -372,40 +372,40 @@ class Honorary(BaseModel):
 
 class PayrollSecondCategoryTax(BaseModel):
     period: str
-    since_1: int
-    until_1: int
+    since_1: str
+    until_1: str
     factor_1: str
     discount_1: str
-    since_2: int
-    until_2: int
+    since_2: str
+    until_2: str
     factor_2: str
     discount_2: str
-    since_3: int
-    until_3: int
+    since_3: str
+    until_3: str
     factor_3: str
     discount_3: str
-    since_4: int
-    until_4: int
+    since_4: str
+    until_4: str
     factor_4: str
     discount_4: str
 
     @classmethod
     def as_form(cls, 
                 period: str = Form(),
-                since_1: int = Form(),
-                until_1: int = Form(), 
+                since_1: str = Form(),
+                until_1: str = Form(), 
                 factor_1: str = Form(),
                 discount_1: str = Form(),
-                since_2: int = Form(),
-                until_2: int = Form(),
+                since_2: str = Form(),
+                until_2: str = Form(),
                 factor_2: str = Form(),
                 discount_2: str = Form(),
-                since_3: int = Form(),
-                until_3: int = Form(),
+                since_3: str = Form(),
+                until_3: str = Form(),
                 factor_3: str = Form(),
                 discount_3: str = Form(),
-                since_4: int = Form(),
-                until_4: int = Form(),
+                since_4: str = Form(),
+                until_4: str = Form(),
                 factor_4: str = Form(),
                 discount_4: str = Form()
                 ):
@@ -664,6 +664,9 @@ class ProvisionalIndicator(BaseModel):
     less_hard_work_worker: str
     distribution_7_percent_health_employeer_ccaf: str
     distribution_7_percent_health_employeer_fonasa: str
+    mutual_value: str
+    honorary_value: str
+    gratification_value: str
 
 class UpdateFamilyCoreDatum(BaseModel):
     family_type_id: int = None

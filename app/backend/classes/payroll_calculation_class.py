@@ -122,7 +122,8 @@ class PayrollCalculationClass:
         imponible_salary = payroll_item_value.amount
         payroll_minium_taxable_income_indicator = PayrollMiniumTaxableIncomeIndicatorClass(self.db).get(period)
         top_minimal_salary = payroll_minium_taxable_income_indicator.dependent_independent_workers
-        cap_value = (top_minimal_salary * 4.75)/12
+        payroll_other_indicator = PayrollOtherIndicatorClass(self.db).get(period, 1)
+        cap_value = (top_minimal_salary * payroll_other_indicator)/12
 
         if (imponible_salary * 0.25) > cap_value:
             amount = cap_value
@@ -267,7 +268,7 @@ class PayrollCalculationClass:
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
     def mutuality_quote(self, rut, period):
-        payroll_other_indicator = PayrollOtherIndicatorClass(self.db).get(period)
+        payroll_other_indicator = PayrollOtherIndicatorClass(self.db).get(period, 1)
 
         payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
         taxable_assets = payroll_item_value.amount

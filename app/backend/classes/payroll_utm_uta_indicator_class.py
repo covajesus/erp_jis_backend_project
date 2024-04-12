@@ -16,6 +16,7 @@ class PayrollUtmUtaIndicatorClass:
             payroll_utm_uta_indicator = PayrollUtmUtaIndicatorModel()
             payroll_utm_uta_indicator.utm_value_current_month = utm_value_current_month
             payroll_utm_uta_indicator.uta_value_current_month = uta_value_current_month
+            payroll_utm_uta_indicator.period = payroll_indicator_inputs['period']                                                                                                                                                        
             payroll_utm_uta_indicator.added_date = datetime.now()
             self.db.add(payroll_utm_uta_indicator)
             self.db.commit()

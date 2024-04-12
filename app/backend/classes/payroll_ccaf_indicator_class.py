@@ -25,6 +25,7 @@ class PayrollCcafIndicatorClass:
             payroll_ccaf_indicator = PayrollCcafIndicatorModel()
             payroll_ccaf_indicator.ccaf = payroll_indicator_inputs['distribution_7_percent_health_employeer_ccaf']
             payroll_ccaf_indicator.fonasa = payroll_indicator_inputs['distribution_7_percent_health_employeer_fonasa']
+            payroll_ccaf_indicator.period = payroll_indicator_inputs['period']
             payroll_ccaf_indicator.added_date = datetime.now()
             self.db.add(payroll_ccaf_indicator)
             self.db.commit()
