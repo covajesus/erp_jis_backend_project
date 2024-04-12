@@ -123,7 +123,7 @@ class PayrollCalculationClass:
         payroll_minium_taxable_income_indicator = PayrollMiniumTaxableIncomeIndicatorClass(self.db).get(period)
         top_minimal_salary = payroll_minium_taxable_income_indicator.dependent_independent_workers
         payroll_other_indicator = PayrollOtherIndicatorClass(self.db).get(period, 1)
-        cap_value = (top_minimal_salary * payroll_other_indicator)/12
+        cap_value = (top_minimal_salary * 4.75)/12
 
         if (imponible_salary * 0.25) > cap_value:
             amount = cap_value

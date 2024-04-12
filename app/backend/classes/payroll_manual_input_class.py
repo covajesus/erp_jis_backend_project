@@ -28,11 +28,14 @@ class PayrollManualInputClass:
     def multiple_store(self, payroll_manual_inputs):
         numeric_rut = HelperClass().numeric_rut(str(payroll_manual_inputs.rut))
 
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = payroll_manual_inputs.payroll_item_id
-        payroll_item_value_data['rut'] = numeric_rut
-        payroll_item_value_data['period'] = payroll_manual_inputs.period
-        payroll_item_value_data['amount'] = payroll_manual_inputs.amount
+        existence_status = PayrollItemValueClass(self.db).existence(numeric_rut, payroll_manual_inputs.payroll_item_id, payroll_manual_inputs.period)
+
+        if existence_status > 0 and existence_status != None:
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = payroll_manual_inputs.payroll_item_id
+            payroll_item_value_data['rut'] = numeric_rut
+            payroll_item_value_data['period'] = payroll_manual_inputs.period
+            payroll_item_value_data['amount'] = payroll_manual_inputs.amount
 
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
