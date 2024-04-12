@@ -36,7 +36,7 @@ class PayrollCalculationClass:
         self.pention(employee['rut'], period, employee['pention_id'], employee['regime_id'])
         self.worker_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
         self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
-        self.ccaf_calculated_quote(employee['rut'], period, employee['health_type_id'])
+        # self.ccaf_calculated_quote(employee['rut'], period, employee['health_payment_id'])
         self.legal_discount(employee['rut'], period)
         self.other_discount(employee['rut'], period)
         self.second_level_insurance(employee['rut'], period)
