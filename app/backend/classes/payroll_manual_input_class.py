@@ -28,15 +28,12 @@ class PayrollManualInputClass:
     def multiple_store(self, payroll_manual_inputs):
         numeric_rut = HelperClass().numeric_rut(str(payroll_manual_inputs.rut))
 
-        payroll_manual_input = PayrollManualInputModel()
-        payroll_manual_input.rut = numeric_rut
-        payroll_manual_input.payroll_item_id = payroll_manual_inputs.payroll_item_id
-        payroll_manual_input.amount = payroll_manual_inputs.amount
-        payroll_manual_input.period = payroll_manual_inputs.period
-        payroll_manual_input.added_date = datetime.now()
+        payroll_item_value_data = {}
+        payroll_item_value_data['item_id'] = payroll_manual_inputs.payroll_item_id
+        payroll_item_value_data['rut'] = numeric_rut
+        payroll_item_value_data['period'] = payroll_manual_inputs.period
+        payroll_item_value_data['amount'] = payroll_manual_inputs.amount
 
-        self.db.add(payroll_manual_input)
-
-        self.db.commit()
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1

@@ -36,6 +36,7 @@ async def upload(form_data: UploadPayrollManualInput = Depends(UploadPayrollManu
                 form_data.rut = value
             if key == 'Monto':
                 form_data.amount = value
+
         PayrollManualInputClass(db).multiple_store(form_data)
 
     return 1
