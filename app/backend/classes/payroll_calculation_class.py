@@ -502,7 +502,7 @@ class PayrollCalculationClass:
         taxable_assets = payroll_item_value.amount
 
         payroll_afp_quote = PayrollAfpQuoteIndicatorClass(self.db).get(pention_id, period)
-        amount = (taxable_assets * float(payroll_afp_quote.dependent_sis))/100
+        amount = (taxable_assets * float(1.49))/100
 
         payroll_item_value_data = {}
         payroll_item_value_data['item_id'] = 70
