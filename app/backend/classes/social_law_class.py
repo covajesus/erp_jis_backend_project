@@ -16,7 +16,6 @@ class SocialLawClass:
 
         # Iterar sobre los empleados de nómina
         for payroll_employee in payroll_employees:
-            print(payroll_employee.rut)
             # Inicializar totales para este empleado
             medical_license_total = 0
             entrance_total = 0
@@ -89,16 +88,22 @@ class SocialLawClass:
             medical_license_total = MedicalLicenseClass(self.db).how_many_medical_license_days(payroll_employee.rut, period)
 
             if last_day_month == 28:
-                last_day_month = last_day_month + 2
+                medical_license_total = (medical_license_total - last_day_month) + 2
             elif last_day_month == 29:
-                last_day_month = last_day_month + 1
+                medical_license_total = (medical_license_total - last_day_month) + 1
             elif last_day_month == 31:
-                last_day_month = last_day_month - 1
+                medical_license_total = (medical_license_total - last_day_month) - 1
+            
+            if payroll_employee.rut == '27141399':
+                print(medical_license_total)
 
             # Calcular total de días de entrada para este empleado
             entrance_total = HelperClass.how_many_entrance_days(payroll_employee.entrance_company)
 
             exit_total = HelperClass.how_many_exit_days(payroll_employee.exit_company)
+
+            if exit_total == last_day_month:
+                exit_total = 0
             
             payroll_item_value = PayrollItemValueClass(self.db).get_with_period(payroll_employee.rut, 13, period)
 

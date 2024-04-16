@@ -331,9 +331,9 @@ class PayrollCalculationClass:
                 else:
                     amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
             else:
-                payroll_item_value_taxable_assets = PayrollItemValueClass(self.db).get_with_period(rut, 60, period)
+                payroll_item_value_taxable_assets = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
 
-                if payroll_item_value_taxable_assets.amount > payroll_taxable_income_cap_indicator.unemployment:
+                if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
                     taxable_assets = payroll_taxable_income_cap_indicator.unemployment
                 else:
                     taxable_assets = payroll_item_value_taxable_assets.amount
@@ -356,14 +356,8 @@ class PayrollCalculationClass:
     def worker_unemployment_insurance(self, rut, period, regime_id, contract_type_id):
         payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
 
-        medical_license_days = MedicalLicenseClass(self.db).how_many_medical_license_days(rut, period)
-
-        if medical_license_days > 0:
-            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
-            taxable_assets = payroll_item_value.amount
-        else:
-            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 38, period)
-            taxable_assets = payroll_item_value.amount
+        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
+        taxable_assets = payroll_item_value.amount
 
         if regime_id == 2 or regime_id == 3:
             amount = 0
@@ -383,9 +377,7 @@ class PayrollCalculationClass:
                 else:
                     amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
             else:
-                payroll_item_value_taxable_assets = PayrollItemValueClass(self.db).get_with_period(rut, 60, period)
-
-                if payroll_item_value_taxable_assets.amount > payroll_taxable_income_cap_indicator.unemployment:
+                if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
                     taxable_assets = payroll_taxable_income_cap_indicator.unemployment
                 else:
                     taxable_assets = payroll_item_value_taxable_assets.amount
