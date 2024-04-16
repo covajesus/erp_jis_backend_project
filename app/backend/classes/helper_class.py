@@ -325,6 +325,75 @@ class HelperClass:
 
         return rut[0]
     
+    def how_many_entrance_days(entrance_company):
+        # Verificar si la entrada no es None
+        if entrance_company is not None:
+            # Convertir la fecha de entrada de cadena a objeto datetime
+            entrance_company = datetime.strptime(str(entrance_company), '%Y-%m-%d')
+            
+            # Obtener la fecha actual
+            current_date = datetime.now()
+            
+            # Obtener el año y mes actual
+            current_year = current_date.year
+            current_month = current_date.month
+            
+            # Obtener el año y mes de la entrada
+            entrance_year = entrance_company.year
+            entrance_month = entrance_company.month
+
+            # Verificar si la entrada pertenece al mismo año y mes actual
+            if entrance_year == current_year and entrance_month == current_month:
+                # Obtener el primer día del mes actual
+                first_date = datetime(current_year, current_month, 1)
+                print("first_date:", first_date)
+
+                # Calcular la diferencia de días entre la entrada y el primer día del mes
+                days = (entrance_company - first_date).days
+                print("days:", days)
+                    
+                return max(0, days)  # Retornar la diferencia de días, mínimo 0
+                
+            else:
+                return 0  # Si la entrada no es del mismo año y mes actual, retornar None
+        else:
+            return 0  # Si la entrada es None, retornar None
+
+
+    def how_many_exit_days(exit_company):
+        # Verificar si la entrada no es None
+        if exit_company is not None:
+            # Convertir la fecha de entrada de cadena a objeto datetime
+            exit_company = datetime.strptime(str(exit_company), '%Y-%m-%d')
+            
+            # Obtener el año y mes de la entrada
+            exit_year = exit_company.year
+            exit_month = exit_company.month
+
+            # Obtener la fecha actual
+            current_date = datetime.now()
+
+            # Obtener el año y mes actual
+            current_year = current_date.year
+            current_month = current_date.month
+
+            # Obtener el último día del mes actual
+            last_day_month = HelperClass.last_day_month(exit_year, exit_month)
+
+            # Obtener el día de la entrada
+            exit_day = exit_company.day
+
+            if exit_year == current_year and exit_month == current_month:
+
+                # Calcular la diferencia de días entre el último día del mes y el día de la entrada
+                days = last_day_month - exit_day
+
+                return max(0, days)  # Retornar la diferencia de días, mínimo 0
+            else:
+                return 0
+        else:
+            return 0  # Si la entrada es None, retornar 0
+    
     def validate_entrance(entrance_company, period):
         if value == None:
             value = 0
@@ -336,6 +405,24 @@ class HelperClass:
             value = 0
 
         return value
+    
+    def last_day_month(year, month):
+        month = int(month)
+        year = int(year)
+        # Obtener el último día del mes y si es un año bisiesto
+        end_day = calendar.monthrange(year, month)[1]
+        is_leap_year = calendar.isleap(year)
+
+        # Si el mes es febrero y es un año bisiesto, el último día es 29, de lo contrario es 28
+        if month == 2 and is_leap_year:
+            end_day = 29
+        else:
+            end_day = 28
+
+        if month != 2:
+            end_day = 30
+
+        return end_day
     
     def final_day_month(self, month):
         if month == '1':

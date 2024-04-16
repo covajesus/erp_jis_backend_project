@@ -34,7 +34,7 @@ class PayrollClass:
                                     EmployeeLaborDatumModel.employee_type_id, EmployeeLaborDatumModel.regime_id, EmployeeLaborDatumModel.health_payment_id,
                                     EmployeeLaborDatumModel.extra_health_payment_type_id, EmployeeLaborDatumModel.apv_payment_type_id,
                                     EmployeeLaborDatumModel.salary, EmployeeLaborDatumModel.collation, EmployeeLaborDatumModel.locomotion,
-                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.apv_amount, EmployeeModel.gender_id, EmployeeModel.nationality_id,
+                                    EmployeeLaborDatumModel.extra_health_amount, EmployeeLaborDatumModel.entrance_company, EmployeeLaborDatumModel.exit_company, EmployeeLaborDatumModel.apv_amount, EmployeeModel.gender_id, EmployeeModel.nationality_id,
                                     EmployeeExtraModel.young_job_status_id
                                     ). \
                             outerjoin(EmployeeLaborDatumModel, EmployeeLaborDatumModel.rut == EmployeeModel.rut). \
@@ -68,6 +68,7 @@ class PayrollClass:
                     payroll_employee.salary = employee.salary
                     payroll_employee.collation = employee.collation
                     payroll_employee.locomotion = employee.locomotion
+                    payroll_employee.entrance_company = employee.entrance_company
                     extra_health_amount = HelperClass().return_zero_empty_input(employee.extra_health_amount)
                     payroll_employee.extra_health_amount = extra_health_amount
                     apv_amount = HelperClass().return_zero_empty_input(employee.apv_amount)

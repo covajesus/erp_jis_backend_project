@@ -656,6 +656,8 @@ class PayrollEmployeeModel(Base):
     names = Column(String(255))
     father_lastname = Column(String(255))
     mother_lastname = Column(String(255))
+    entrance_company = Column(String(255))
+    exit_company = Column(String(255))
     salary = Column(Integer)
     collation = Column(Integer)
     locomotion = Column(Integer)

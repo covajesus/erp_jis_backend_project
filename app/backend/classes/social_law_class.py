@@ -8,31 +8,120 @@ class SocialLawClass:
         self.db = db
 
     def get_totals(self, period):
-        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).filter(PayrollEmployeeModel.item_id == 55).filter(PayrollEmployeeModel.amount < 30).all()
+        # Obtener todos los empleados de nómina para el período dado
+        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).order_by('rut').all()
 
+        # Inicializar un diccionario para almacenar los totales de cada empleado
+        totals_dict = {}
+
+        # Iterar sobre los empleados de nómina
         for payroll_employee in payroll_employees:
-            medical_license = MedicalLicenseClass().how_many_medical_license_days(payroll_employee.rut, period)
-
+            print(payroll_employee.rut)
+            # Inicializar totales para este empleado
             medical_license_total = 0
-
             entrance_total = 0
-
             exit_total = 0
+            absenteeism_total = 0
+            total_days = 0
 
-            if medical_license > 0:
-                medical_license_total = medical_license_total + 1
+            # Calcular total de licencia médica para este empleado
+            medical_license_total = MedicalLicenseClass(self.db).how_many_medical_license_days(payroll_employee.rut, period)
 
-            entrance = HelperClass.validate_entrance(payroll_employee.entrance_company, period)
+            # Calcular total de días de entrada para este empleado
+            entrance_total = HelperClass.how_many_entrance_days(payroll_employee.entrance_company)
 
-            if entrance > 0:
-                entrance_total = entrance_total + 1
+            exit_total = HelperClass.how_many_exit_days(payroll_employee.exit_company)
+            
+            date = HelperClass().split(str(period), "-")
 
-            exit = HelperClass.validate_exit(payroll_employee.exit_company, period)
+            last_day_month = HelperClass.last_day_month(date[0], date[1])
 
-            if entrance > 0:
-                exit_total = exit_total + 1
+            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(payroll_employee.rut, 13, period)
 
-        
+            if payroll_item_value is not None:
+                absenteeism_total = payroll_item_value.amount
+            else:
+                absenteeism_total = 0
+
+            total_days = last_day_month - medical_license_total - entrance_total - exit_total - absenteeism_total
+
+            if total_days < 0:
+                total_days = 0
+
+            if medical_license_total > 0 or entrance_total > 0 or exit_total > 0:
+                totals_dict[payroll_employee.id] = {
+                    'rut': payroll_employee.rut,
+                    'names': payroll_employee.names,
+                    'father_lastname': payroll_employee.father_lastname,
+                    'mother_lastname': payroll_employee.mother_lastname,
+                    'visual_rut': payroll_employee.visual_rut,
+                    'medical_license_total': medical_license_total,
+                    'entrance_total': entrance_total,
+                    'exit_total': exit_total,
+                    'absenteeism_total': absenteeism_total,
+                    'total_days': total_days
+                }
+
+        # Retornar los totales para todos los empleados
+        return totals_dict
+    
+    def movements(self, period):
+        # Obtener todos los empleados de nómina para el período dado
+        payroll_employees = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).order_by('rut').all()
+
+        # Inicializar un diccionario para almacenar los totales de cada empleado
+        totals_dict = {}
+
+        # Iterar sobre los empleados de nómina
+        for payroll_employee in payroll_employees:
+            # Inicializar totales para este empleado
+            medical_license_total = 0
+            entrance_total = 0
+            exit_total = 0
+            absenteeism_total = 0
+            total_days = 0
+
+            # Calcular total de licencia médica para este empleado
+            medical_license_total = MedicalLicenseClass(self.db).how_many_medical_license_days(payroll_employee.rut, period)
+
+            # Calcular total de días de entrada para este empleado
+            entrance_total = HelperClass.how_many_entrance_days(payroll_employee.entrance_company)
+
+            exit_total = HelperClass.how_many_exit_days(payroll_employee.exit_company)
+            
+            date = HelperClass().split(str(period), "-")
+
+            last_day_month = HelperClass.last_day_month(date[0], date[1])
+
+            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(payroll_employee.rut, 13, period)
+
+            if payroll_item_value is not None:
+                absenteeism_total = payroll_item_value.amount
+            else:
+                absenteeism_total = 0
+
+            total_days = last_day_month - medical_license_total - entrance_total - exit_total - absenteeism_total
+
+            if total_days < 0:
+                total_days = 0
+
+            if total_days > 0:
+                payroll_item_value_data = {}
+                payroll_item_value_data['item_id'] = 55
+                payroll_item_value_data['rut'] = payroll_employee.rut
+                payroll_item_value_data['period'] = period
+                payroll_item_value_data['amount'] = total_days
+
+                PayrollItemValueClass(self.db).store(payroll_item_value_data)
+            else:
+                payroll_item_value_data = {}
+                payroll_item_value_data['item_id'] = 55
+                payroll_item_value_data['rut'] = payroll_employee.rut
+                payroll_item_value_data['period'] = period
+                payroll_item_value_data['amount'] = last_day_month
+
+                PayrollItemValueClass(self.db).store(payroll_item_value_data)
+    
     def store(self, period):
         try:
             social_laws = self.db.query(SocialLawModel).filter(SocialLawModel.period == period).all()

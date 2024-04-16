@@ -22,3 +22,9 @@ def store(period:str, session_user: UserLogin = Depends(get_current_active_user)
     data = SocialLawClass(db).get_totals(period)
 
     return {"message": data}
+
+@social_laws.get("/movements/{period}")
+def store(period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SocialLawClass(db).movements(period)
+
+    return {"message": data}

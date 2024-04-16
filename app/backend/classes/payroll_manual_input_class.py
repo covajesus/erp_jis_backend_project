@@ -31,12 +31,22 @@ class PayrollManualInputClass:
         existence_status = PayrollItemValueClass(self.db).existence(numeric_rut, payroll_manual_inputs.payroll_item_id, payroll_manual_inputs.period)
 
         if existence_status > 0 and existence_status != None:
+            PayrollItemValueClass(self.db).delete_with_period(numeric_rut, payroll_manual_inputs.payroll_item_id, payroll_manual_inputs.period)
+
             payroll_item_value_data = {}
             payroll_item_value_data['item_id'] = payroll_manual_inputs.payroll_item_id
             payroll_item_value_data['rut'] = numeric_rut
             payroll_item_value_data['period'] = payroll_manual_inputs.period
             payroll_item_value_data['amount'] = payroll_manual_inputs.amount
 
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        else:
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = payroll_manual_inputs.payroll_item_id
+            payroll_item_value_data['rut'] = numeric_rut
+            payroll_item_value_data['period'] = payroll_manual_inputs.period
+            payroll_item_value_data['amount'] = payroll_manual_inputs.amount
 
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+            
         return 1

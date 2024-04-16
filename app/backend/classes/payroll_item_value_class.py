@@ -30,6 +30,13 @@ class PayrollItemValueClass:
 
         return data
     
+    def delete_with_period(self, rut, item_id, period):
+        data = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == item_id, PayrollItemValueModel.period == period).first()
+
+        self.db.delete(data)
+        self.db.commit()
+        return 1
+    
     def store(self, data):
         quantity = self.existence(data['rut'], data['item_id'], data['period'])
 
