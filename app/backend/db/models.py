@@ -666,6 +666,20 @@ class PayrollEmployeeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class DteBackgroundModel(Base):
+    __tablename__ = 'dte_backgrounds'
+
+    id = Column(Integer, primary_key=True)
+    branch_office_id = Column(Integer)
+    cashier_id = Column(Integer)
+    status_assigned_id = Column(Integer)
+    status_used_id = Column(Integer)
+    status_sii_id = Column(Integer)
+    track_id = Column(Integer)
+    folio = Column(Integer)
+    sii_date = Column(DateTime())
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
 
 class SocialLawModel(Base):
     __tablename__ = 'social_laws'

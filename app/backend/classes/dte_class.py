@@ -1,6 +1,10 @@
 import requests
+from app.backend.db.models import DteBackgroundModel
 
 class DteClass:
+    def __init__(self, db):
+        self.db = db
+
     def get_total_quantity(user_inputs):
 
         if user_inputs['rol_id'] == 4 or user_inputs['rol_id'] == 5:
@@ -34,3 +38,9 @@ class DteClass:
         response = requests.request("POST", url, headers=headers, data=payload)
 
         return response.text
+
+    def send_to_sii(self):
+        data = self.db.query(DteBackgroundModel).all()
+
+        for item in data:
+            print(item.id)

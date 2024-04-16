@@ -21,3 +21,9 @@ def total_amount(user: GetDte, session_user: UserLogin = Depends(get_current_act
     data = DteClass.get_total_amount(user_inputs)
 
     return {"message": data}
+
+@dtes.get("/send_to_sii")
+def total_amount(session_user: UserLogin = Depends(get_current_active_user)):
+    DteClass.send_to_sii()
+
+    return {"message": '1'}
