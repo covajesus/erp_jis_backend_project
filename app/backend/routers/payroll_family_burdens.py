@@ -24,7 +24,7 @@ async def upload(form_data: UploadFamilyBurden = Depends(UploadFamilyBurden.as_f
     try:
         file_content = await file.read()
         file_bytesio = io.BytesIO(file_content)
-        df = pd.read_excel(file_bytesio, engine='openpyxl', usecols=['Rut', 'Monto'])
+        df = pd.read_excel(file_bytesio, engine='openpyxl', usecols=['Rut', 'Tramo', 'N° Cargas', 'Monto Familiar', 'Monto Retroactivo'])
         payroll_manual_input_data = df.to_dict(orient='records')
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error al leer el archivo: {str(e)}")
