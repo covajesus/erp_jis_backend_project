@@ -8,6 +8,7 @@ from app.backend.classes.payroll_afp_quote_indicator_class import PayrollAfpQuot
 from app.backend.classes.payroll_umployment_insurance_indicator_class import PayrollUmploymentInsuranceIndicatorClass
 from app.backend.classes.payroll_second_category_tax_class import PayrollSecondCategoryTaxClass
 from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
+from app.backend.classes.medical_license_class import MedicalLicenseClass
 from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
 
 class PayrollCalculationClass:
@@ -355,8 +356,14 @@ class PayrollCalculationClass:
     def worker_unemployment_insurance(self, rut, period, regime_id, contract_type_id):
         payroll_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(self.db).get(period)
 
-        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
-        taxable_assets = payroll_item_value.amount
+        medical_license_days = MedicalLicenseClass(self.db).how_many_medical_license_days(rut, period)
+
+        if medical_license_days > 0:
+            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 57, period)
+            taxable_assets = payroll_item_value.amount
+        else:
+            payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 38, period)
+            taxable_assets = payroll_item_value.amount
 
         if regime_id == 2 or regime_id == 3:
             amount = 0
