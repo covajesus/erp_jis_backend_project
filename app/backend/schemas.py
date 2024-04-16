@@ -910,6 +910,17 @@ class PayrollEmployeeInput(BaseModel):
 class PayrollDataInput(BaseModel):
     payroll_employees: List[PayrollEmployeeInput]
 
+class UploadFamilyBurden(BaseModel):
+    rut: str
+    period: str
+
+    @classmethod
+    def as_form(cls, 
+                rut: str = Form(),
+                period: str = Form(),
+                ):
+        return cls(rut=rut, period=period)
+
 class UploadPayrollManualInput(BaseModel):
     rut: str
     payroll_item_id: int
@@ -924,7 +935,7 @@ class UploadPayrollManualInput(BaseModel):
                 amount: int = Form()
                 ):
         return cls(rut=rut, payroll_item_id=payroll_item_id, period=period, amount=amount)
-
+    
 class SearchEmployee(BaseModel):
     rut: Union[str, None]
     names: Union[str, None]

@@ -48,5 +48,5 @@ class PayrollManualInputClass:
             payroll_item_value_data['amount'] = payroll_manual_inputs.amount
 
             PayrollItemValueClass(self.db).store(payroll_item_value_data)
-            
+
         return 1
