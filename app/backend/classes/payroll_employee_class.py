@@ -11,7 +11,7 @@ class PayrollEmployeeClass:
             if period == None:
                 data = self.db.query(PayrollEmployeeModel).order_by('rut').all()
             else:
-                data = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).order_by('rut').all()
+                data = self.db.query(PayrollEmployeeModel).filter(PayrollEmployeeModel.period == period).filter(PayrollEmployeeModel.rut == 8488685).order_by('rut').all()
                 
             if not data:
                 return "No data found"
@@ -62,6 +62,8 @@ class PayrollEmployeeClass:
                     data_query = data_query.filter(PayrollEmployeeModel.father_lastname.like(f"%{search_father_lastname}%"))
 
             data = data_query.all()
+
+            Pay
 
             if not data:
                 return "No data found"

@@ -52,13 +52,13 @@ class PayrollCalculationClass:
 
         for taxable_item in taxable_items:
             payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, taxable_item.id, period)
-
+            
             if payroll_item_value is not None:
                 if taxable_item.classification_id == 1:
                     taxable_total += payroll_item_value.amount
                 elif  taxable_item.classification_id == 2:
                     taxable_total -= payroll_item_value.amount
-
+    
         payroll_item_value_data = {}
         payroll_item_value_data['item_id'] = 38
         payroll_item_value_data['rut'] = rut
@@ -237,7 +237,6 @@ class PayrollCalculationClass:
 
             PayrollItemValueClass(self.db).store(payroll_item_value_data)
         else:
-            print(3)
             if taxable_assets > payroll_taxable_income_cap_indicator.afp:
                 amount = payroll_taxable_income_cap_indicator.afp * 0.07
             else:
@@ -366,10 +365,10 @@ class PayrollCalculationClass:
 
             payroll_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(self.db).get(contract_type_id, period)
 
-            if payroll_item_value_days.amount > 0:
-                if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
+            if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
                     taxable_assets = payroll_taxable_income_cap_indicator.unemployment
 
+            if payroll_item_value_days.amount > 0:
                 if contract_type_id == 1:
                     amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
                 elif contract_type_id == 2:
@@ -377,11 +376,6 @@ class PayrollCalculationClass:
                 else:
                     amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
             else:
-                if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
-                    taxable_assets = payroll_taxable_income_cap_indicator.unemployment
-                else:
-                    taxable_assets = payroll_item_value_taxable_assets.amount
-
                 if contract_type_id == 1:
                     amount = (payroll_umployment_insurance_indicator.employer/100) * taxable_assets
                 elif contract_type_id == 2:
