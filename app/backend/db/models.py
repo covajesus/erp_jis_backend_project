@@ -681,6 +681,16 @@ class DteBackgroundModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class CurrentDteBackgroundModel(Base):
+    __tablename__ = 'current_dte_backgrounds'
+
+    id = Column(Integer, primary_key=True)
+    branch_office_id = Column(Integer)
+    cashier_id = Column(Integer)
+    folio = Column(Integer)
+    amount = Column(Integer)
+    caf = Column(Text)
+
 class SocialLawModel(Base):
     __tablename__ = 'social_laws'
 
