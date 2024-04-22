@@ -666,6 +666,16 @@ class PayrollEmployeeModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class DteSettingModel(Base):
+    __tablename__ = 'dte_settings'
+
+    id = Column(Integer, primary_key=True)
+    folio_quantity_to_send = Column(Integer)
+    folio_quantity_sent = Column(Integer)
+    folio_quantity_limit = Column(Integer)
+    status = Column(Integer)
+    last_folio_sent_date = Column(DateTime())
+
 class DteBackgroundModel(Base):
     __tablename__ = 'dte_backgrounds'
 
@@ -690,6 +700,7 @@ class CurrentDteBackgroundModel(Base):
     folio = Column(Integer)
     amount = Column(Integer)
     caf = Column(Text)
+    added_date = Column(DateTime())
 
 class SocialLawModel(Base):
     __tablename__ = 'social_laws'

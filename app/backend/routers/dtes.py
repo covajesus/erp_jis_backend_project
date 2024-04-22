@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 from app.backend.schemas import UserLogin, GetDte
 from app.backend.classes.dte_class import DteClass
 from app.backend.auth.auth_user import get_current_active_user
+from app.backend.db.database import get_db
+from sqlalchemy.orm import Session
 
 dtes = APIRouter(
     prefix="/dtes",
@@ -23,7 +25,7 @@ def total_amount(user: GetDte, session_user: UserLogin = Depends(get_current_act
     return {"message": data}
 
 @dtes.get("/send_to_sii")
-def total_amount(session_user: UserLogin = Depends(get_current_active_user)):
-    DteClass.send_to_sii()
+def send_to_sii(db: Session = Depends(get_db)):
+    DteClass(db).send_to_sii()
 
     return {"message": '1'}
