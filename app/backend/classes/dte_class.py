@@ -183,7 +183,7 @@ class DteClass:
                     inputs['sii_date'] = sii_date
 
                     DteBackgroundClass(self.db).update(item.folio, inputs)
-                    print(status)
+       
                     if status == 'REC':
                         CurrentDteBackgroundClass(self.db).delete(item.folio)
                 else:
