@@ -46,32 +46,34 @@ class DteClass:
         return response.text
 
     def send_to_sii(self, machine_id):
+
         if machine_id == 1:
-            branch_office_ids = range(1, 11)
+            branch_office_ids = (1, 11)
         elif machine_id == 2:
-            branch_office_ids = range(11, 22)
+            branch_office_ids = (11, 23)
         elif machine_id == 3:
-            branch_office_ids = range(23, 34)
+            branch_office_ids = (23, 35)
         elif machine_id == 4:
-            branch_office_ids = range(35, 46)
+            branch_office_ids = (35, 46)
         elif machine_id == 5:
-            branch_office_ids = range(47, 58)
+            branch_office_ids = (46, 58)
         elif machine_id == 6:
-            branch_office_ids = range(59, 70)
+            branch_office_ids = (58, 70)
         elif machine_id == 7:
-            branch_office_ids = range(71, 82)
+            branch_office_ids = (70, 82)
         elif machine_id == 8:
-            branch_office_ids = range(83, 94)
+            branch_office_ids = (82, 94)
         elif machine_id == 9:
-            branch_office_ids = range(95, 106)
+            branch_office_ids = (94, 106)
         elif machine_id == 10:
-            branch_office_ids = range(107, 118)
+            branch_office_ids = (106, 118)
         elif machine_id == 11:
-            branch_office_ids = range(119, 130)
+            branch_office_ids = (118, 130)
 
         data = self.db.query(CurrentDteBackgroundModel).filter(
-            CurrentDteBackgroundModel.branch_office_id.in_(branch_office_ids)
-        ).all()
+                CurrentDteBackgroundModel.branch_office_id >= branch_office_ids[0],
+                CurrentDteBackgroundModel.branch_office_id < branch_office_ids[1]
+            ).all()
 
         dte_settings = DteSettingClass(self.db).get()
 
@@ -194,6 +196,6 @@ class DteClass:
 
                     DteSettingClass(self.db).status(0)
         else:
-            exit();
+            exit()
 
         return 1
