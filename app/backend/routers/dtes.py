@@ -24,8 +24,8 @@ def total_amount(user: GetDte, session_user: UserLogin = Depends(get_current_act
 
     return {"message": data}
 
-@dtes.get("/send_to_sii")
-def send_to_sii(db: Session = Depends(get_db)):
-    DteClass(db).send_to_sii()
+@dtes.get("/send_to_sii/{machine_id}")
+def send_to_sii(machine_id:int, db: Session = Depends(get_db)):
+    DteClass(db).send_to_sii(machine_id)
 
     return {"message": '1'}

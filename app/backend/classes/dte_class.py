@@ -45,8 +45,33 @@ class DteClass:
 
         return response.text
 
-    def send_to_sii(self):
-        data = self.db.query(CurrentDteBackgroundModel).all()
+    def send_to_sii(self, machine_id):
+        if machine_id == 1:
+            branch_office_ids = range(1, 11)
+        elif machine_id == 2:
+            branch_office_ids = range(11, 22)
+        elif machine_id == 3:
+            branch_office_ids = range(23, 34)
+        elif machine_id == 4:
+            branch_office_ids = range(35, 46)
+        elif machine_id == 5:
+            branch_office_ids = range(47, 58)
+        elif machine_id == 6:
+            branch_office_ids = range(59, 60)
+        elif machine_id == 7:
+            branch_office_ids = range(61, 72)
+        elif machine_id == 8:
+            branch_office_ids = range(73, 84)
+        elif machine_id == 9:
+            branch_office_ids = range(85, 96)
+        elif machine_id == 10:
+            branch_office_ids = range(97, 108)
+        elif machine_id == 11:
+            branch_office_ids = range(109, 120)
+
+        data = self.db.query(CurrentDteBackgroundModel).filter(
+            CurrentDteBackgroundModel.branch_office_id.in_(branch_office_ids)
+        ).all()
 
         dte_settings = DteSettingClass(self.db).get()
 
