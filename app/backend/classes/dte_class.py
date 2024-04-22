@@ -57,17 +57,17 @@ class DteClass:
         elif machine_id == 5:
             branch_office_ids = range(47, 58)
         elif machine_id == 6:
-            branch_office_ids = range(59, 60)
+            branch_office_ids = range(59, 70)
         elif machine_id == 7:
-            branch_office_ids = range(61, 72)
+            branch_office_ids = range(71, 82)
         elif machine_id == 8:
-            branch_office_ids = range(73, 84)
+            branch_office_ids = range(83, 94)
         elif machine_id == 9:
-            branch_office_ids = range(85, 96)
+            branch_office_ids = range(95, 106)
         elif machine_id == 10:
-            branch_office_ids = range(97, 108)
+            branch_office_ids = range(107, 118)
         elif machine_id == 11:
-            branch_office_ids = range(109, 120)
+            branch_office_ids = range(119, 130)
 
         data = self.db.query(CurrentDteBackgroundModel).filter(
             CurrentDteBackgroundModel.branch_office_id.in_(branch_office_ids)
@@ -194,6 +194,6 @@ class DteClass:
 
                     DteSettingClass(self.db).status(0)
         else:
-            dte_settings = DteSettingClass(self.db).verify()
+            exit();
 
         return 1
