@@ -29,3 +29,9 @@ def send_to_sii(machine_id:int, db: Session = Depends(get_db)):
     DteClass(db).send_to_sii(machine_id)
 
     return {"message": '1'}
+
+@dtes.get("/very_sent_to_sii")
+def very_sent_to_sii(db: Session = Depends(get_db)):
+    DteClass(db).very_sent_to_sii()
+
+    return {"message": '1'}
