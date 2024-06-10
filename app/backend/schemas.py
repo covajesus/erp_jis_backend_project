@@ -947,6 +947,12 @@ class SearchEmployee(BaseModel):
     rol_id: int
     page: int
 
+class SearchDeposit(BaseModel):
+    branch_office_id: Union[int, None]
+    status_id: Union[int, None]
+    since: Union[str, None]
+    until: Union[str, None]
+
 class SearchPayrollEmployee(BaseModel):
     rut: Union[str, None]
     father_lastname: Union[str, None]

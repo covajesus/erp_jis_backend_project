@@ -691,16 +691,22 @@ class DteBackgroundModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
-class CurrentDteBackgroundModel(Base):
-    __tablename__ = 'current_dte_backgrounds'
+class DepositModel(Base):
+    __tablename__ = 'deposits'
 
     id = Column(Integer, primary_key=True)
     branch_office_id = Column(Integer)
-    cashier_id = Column(Integer)
-    folio = Column(Integer)
-    amount = Column(Integer)
-    caf = Column(Text)
+    deposit_type_id = Column(Integer)
+    collection_id = Column(Integer)
+    status_id = Column(Integer)
+    deposit_amount = Column(Integer)
+    deposit_number = Column(Integer)
+    collection_amount = Column(Integer)
+    card_collection_amount = Column(Integer)
+    collection_date = Column(Text)
+    support = Column(Text)
     added_date = Column(DateTime())
+    updated_date = Column(DateTime())
 
 class SocialLawModel(Base):
     __tablename__ = 'social_laws'
