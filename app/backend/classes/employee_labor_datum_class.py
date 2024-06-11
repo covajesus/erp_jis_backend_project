@@ -320,11 +320,11 @@ class EmployeeLaborDatumClass:
     
     def distribution_totals(self):
         full_time_total = self.db.query(EmployeeLaborDatumModel, EmployeeModel). \
-                outerjoin(EmployeeModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut). \
+                join(EmployeeModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut). \
                 filter(EmployeeLaborDatumModel.employee_type_id == 1).count()
         
         part_time_total = self.db.query(EmployeeLaborDatumModel, EmployeeModel). \
-                outerjoin(EmployeeModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut). \
+                join(EmployeeModel, EmployeeModel.rut == EmployeeLaborDatumModel.rut). \
                 filter(EmployeeLaborDatumModel.employee_type_id == 2).count()
 
         totals = [
