@@ -31,7 +31,7 @@ async def upload(form_data: UploadFamilyBurden = Depends(UploadFamilyBurden.as_f
     
     for payroll_manual_input in payroll_manual_input_data:
         family_burdens = {}
-        
+
         for key, value in payroll_manual_input.items():
             if key == 'Rut':
                 family_burdens['rut'] = value
@@ -44,6 +44,6 @@ async def upload(form_data: UploadFamilyBurden = Depends(UploadFamilyBurden.as_f
             elif key == 'Monto Retroactivo':
                 family_burdens['retroactive_amount'] = value
 
-        PayrollFamilyBurdenClass(db).multiple_store(family_burdens)
+        PayrollFamilyBurdenClass(db).multiple_store(form_data, family_burdens)
 
     return 1
