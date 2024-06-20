@@ -28,21 +28,22 @@ async def upload(form_data: UploadFamilyBurden = Depends(UploadFamilyBurden.as_f
         payroll_manual_input_data = df.to_dict(orient='records')
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error al leer el archivo: {str(e)}")
-
+    
     for payroll_manual_input in payroll_manual_input_data:
+        family_burdens = {}
         
         for key, value in payroll_manual_input.items():
             if key == 'Rut':
-                form_data.rut = value
-            if key == 'Tramo':
-                form_data.section = value
-            if key == 'N° Cargas':
-                form_data.burden = value
-            if key == 'Monto Familiar':
-                form_data.family_amount = value
-            if key == 'Monto Retroactivo':
-                form_data.retroactive_amount = value
+                family_burdens['rut'] = value
+            elif key == 'Tramo':
+                family_burdens['section'] = value
+            elif key == 'N° Cargas':
+                family_burdens['burden'] = value
+            elif key == 'Monto Familiar':
+                family_burdens['family_amount'] = value
+            elif key == 'Monto Retroactivo':
+                family_burdens['retroactive_amount'] = value
 
-        PayrollFamilyBurdenClass(db).multiple_store(form_data)
+        PayrollFamilyBurdenClass(db).multiple_store(family_burdens)
 
     return 1

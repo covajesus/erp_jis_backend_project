@@ -14,30 +14,31 @@ class PayrollFamilyBurdenClass:
         return data.amount
     
     def multiple_store(self, family_burdens):
-        numeric_rut = HelperClass().numeric_rut(str(family_burdens.rut))
+        helper = HelperClass()
+        numeric_rut = helper.numeric_rut(str(family_burdens['rut']))
 
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 33
-        payroll_item_value_data['rut'] = numeric_rut
-        payroll_item_value_data['period'] = family_burdens.period
-        payroll_item_value_data['amount'] = family_burdens.section
-
+        payroll_item_value_data = {
+            'item_id': 33,
+            'rut': numeric_rut,
+            'period': family_burdens['period'],
+            'amount': family_burdens['section']
+        }
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 18
-        payroll_item_value_data['rut'] = numeric_rut
-        payroll_item_value_data['period'] = family_burdens.period
-        payroll_item_value_data['amount'] = family_burdens.family_amount
-
+        payroll_item_value_data = {
+            'item_id': 18,
+            'rut': numeric_rut,
+            'period': family_burdens['period'],
+            'amount': family_burdens['family_amount']
+        }
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 90
-        payroll_item_value_data['rut'] = numeric_rut
-        payroll_item_value_data['period'] = family_burdens.period
-        payroll_item_value_data['amount'] = family_burdens.retroactive_amount
-
+        payroll_item_value_data = {
+            'item_id': 90,
+            'rut': numeric_rut,
+            'period': family_burdens['period'],
+            'amount': family_burdens['retroactive_amount']
+        }
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1
