@@ -32,10 +32,12 @@ class PayrollItemValueClass:
     
     def delete_with_period(self, rut, item_id, period):
         data = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == item_id, PayrollItemValueModel.period == period).first()
+        quantity = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == item_id, PayrollItemValueModel.period == period).count()
 
-        self.db.delete(data)
-        self.db.commit()
-        return 1
+        if quantity > 0:
+            self.db.delete(data)
+            self.db.commit()
+            return 1
     
     def store(self, data):
         payroll_item_value = PayrollItemValueModel()
