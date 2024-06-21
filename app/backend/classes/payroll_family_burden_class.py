@@ -18,14 +18,6 @@ class PayrollFamilyBurdenClass:
         numeric_rut = helper.numeric_rut(str(family_burdens['rut']))
 
         payroll_item_value_data = {
-            'item_id': 33,
-            'rut': numeric_rut,
-            'period': form_data.period,
-            'amount': family_burdens['section']
-        }
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
-
-        payroll_item_value_data = {
             'item_id': 18,
             'rut': numeric_rut,
             'period': form_data.period,
@@ -34,10 +26,26 @@ class PayrollFamilyBurdenClass:
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         payroll_item_value_data = {
+            'item_id': 33,
+            'rut': numeric_rut,
+            'period': form_data.period,
+            'amount': family_burdens['section']
+        }
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+        payroll_item_value_data = {
             'item_id': 90,
             'rut': numeric_rut,
             'period': form_data.period,
             'amount': family_burdens['retroactive_amount']
+        }
+        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+        payroll_item_value_data = {
+            'item_id': 101,
+            'rut': numeric_rut,
+            'period': form_data.period,
+            'amount': family_burdens['burden']
         }
         PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
