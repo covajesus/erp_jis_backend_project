@@ -23,7 +23,14 @@ class PayrollFamilyBurdenClass:
             'period': form_data.period,
             'amount': family_burdens['family_amount']
         }
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        
+        existence_status = PayrollItemValueClass(self.db).existence(numeric_rut, 18, form_data.period)
+
+        if existence_status > 0 and existence_status != None: 
+            PayrollItemValueClass(self.db).delete_with_period(numeric_rut, 18, form_data.period)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        else:
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         payroll_item_value_data = {
             'item_id': 33,
@@ -31,7 +38,12 @@ class PayrollFamilyBurdenClass:
             'period': form_data.period,
             'amount': family_burdens['section']
         }
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+        if existence_status > 0 and existence_status != None: 
+            PayrollItemValueClass(self.db).delete_with_period(numeric_rut, 33, form_data.period)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        else:
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         payroll_item_value_data = {
             'item_id': 90,
@@ -39,7 +51,12 @@ class PayrollFamilyBurdenClass:
             'period': form_data.period,
             'amount': family_burdens['retroactive_amount']
         }
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        
+        if existence_status > 0 and existence_status != None: 
+            PayrollItemValueClass(self.db).delete_with_period(numeric_rut, 90, form_data.period)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        else:
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         payroll_item_value_data = {
             'item_id': 101,
@@ -47,6 +64,11 @@ class PayrollFamilyBurdenClass:
             'period': form_data.period,
             'amount': family_burdens['burden']
         }
-        PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        
+        if existence_status > 0 and existence_status != None: 
+            PayrollItemValueClass(self.db).delete_with_period(numeric_rut, 101, form_data.period)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+        else:
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1
