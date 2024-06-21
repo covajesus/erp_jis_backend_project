@@ -21,7 +21,7 @@ class PayrollManualInputClass:
             payroll_item_value_data['period'] = period
             payroll_item_value_data['amount'] = amount
 
-            existence_status = PayrollItemValueClass(self.db).delete_with_period(rut, payroll_item_id, period)
+            existence_status = PayrollItemValueClass(self.db).existence(rut, payroll_item_id, period)
 
             if existence_status > 0 and existence_status != None:
                 payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, payroll_item_id, period)

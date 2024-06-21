@@ -904,7 +904,7 @@ class UploadDocumentEmployee(BaseModel):
 class PayrollEmployeeInput(BaseModel):
     rut: int
     payroll_item_id: int
-    amount: int
+    amount: str
     period: str
 
 class PayrollDataInput(BaseModel):
