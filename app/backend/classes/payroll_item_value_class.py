@@ -38,20 +38,16 @@ class PayrollItemValueClass:
         return 1
     
     def store(self, data):
-        quantity = self.existence(data['rut'], data['item_id'], data['period'])
+        payroll_item_value = PayrollItemValueModel()
+        payroll_item_value.rut = data['rut']
+        payroll_item_value.item_id = data['item_id']
+        payroll_item_value.period = data['period']
+        payroll_item_value.amount = data['amount']
+        payroll_item_value.added_date = datetime.now()
+        payroll_item_value.updated_date = datetime.now()
+        self.db.add(payroll_item_value)
+        self.db.commit()
 
-        if quantity == 0:
-            payroll_item_value = PayrollItemValueModel()
-            payroll_item_value.rut = data['rut']
-            payroll_item_value.item_id = data['item_id']
-            payroll_item_value.period = data['period']
-            payroll_item_value.amount = data['amount']
-            payroll_item_value.added_date = datetime.now()
-            payroll_item_value.updated_date = datetime.now()
-            self.db.add(payroll_item_value)
-            self.db.commit()
-        else:
-            self.update(data)
 
     def update(self, data):
         payroll_item_value = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == data['rut'], PayrollItemValueModel.item_id == data['item_id'], PayrollItemValueModel.period == data['period']).first()
