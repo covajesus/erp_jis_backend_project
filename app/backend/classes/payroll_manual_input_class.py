@@ -32,7 +32,7 @@ class PayrollManualInputClass:
                     else:
                         PayrollItemValueClass(self.db).update(payroll_item_value_data)
             else:
-                if amount != 0 and amount != None and amount != '0':
+                if amount != 0 and amount != None and amount != '0' and amount != '':
                     PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1
