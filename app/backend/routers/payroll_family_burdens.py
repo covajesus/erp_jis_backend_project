@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import UserLogin, UploadFamilyBurden
-from app.backend.classes.payroll_manual_input_class import PayrollManualInputClass
+from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.payroll_family_burden_class import PayrollFamilyBurdenClass
 from app.backend.auth.auth_user import get_current_active_user
 from fastapi import UploadFile, File, HTTPException
@@ -22,7 +22,7 @@ def index(section_id:int, period:str, session_user: UserLogin = Depends(get_curr
 
 @payroll_family_burdens.get("/edit/{rut}/{item_id}/{period}")
 def edit(rut:int, item_id:int, period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = PayrollManualInputClass(db).get(rut, item_id, period)
+    data = PayrollItemValueClass(db).get_with_period(rut, item_id, period)
 
     return {"message": data}
 

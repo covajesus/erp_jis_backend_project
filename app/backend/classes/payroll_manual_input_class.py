@@ -25,20 +25,6 @@ class PayrollManualInputClass:
 
         return 1
     
-    def get(self, rut, item_id, period):
-        data = self.db.query(PayrollManualInputModel). \
-                        filter(PayrollManualInputModel.rut == rut, PayrollManualInputModel.period == period, PayrollManualInputModel.item_id == item_id).first()
-
-        if data:
-            return {
-                'rut': data.rut,
-                'item_id': data.item_id,
-                'period': data.period,
-                'amount': data.amount
-            }
-        else:
-            return None
-    
     def multiple_store(self, payroll_manual_inputs):
         numeric_rut = HelperClass().numeric_rut(str(payroll_manual_inputs.rut))
 
