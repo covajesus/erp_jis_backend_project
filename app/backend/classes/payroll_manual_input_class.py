@@ -27,12 +27,13 @@ class PayrollManualInputClass:
                 payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, payroll_item_id, period)
 
                 if payroll_item_value.amount != amount:
-                    if amount == 0:
+                    if amount == 0 or amount == None:
                         PayrollItemValueClass(self.db).delete_with_period(rut, payroll_item_id, period)
                     else:
                         PayrollItemValueClass(self.db).update(payroll_item_value_data)
             else:
-                PayrollItemValueClass(self.db).store(payroll_item_value_data)
+                if amount != 0 and amount != None and amount != '0':
+                    PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
         return 1
     
