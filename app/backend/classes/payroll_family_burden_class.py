@@ -1,4 +1,4 @@
-from app.backend.db.models import PayrollFamilyAsignationIndicatorModel, PayrollIndicatorModel
+from app.backend.db.models import PayrollFamilyAsignationIndicatorModel, PayrollIndicatorModel, PayrollManualInputModel
 from app.backend.classes.payroll_item_value_class import PayrollItemValueClass
 from app.backend.classes.helper_class import HelperClass
 

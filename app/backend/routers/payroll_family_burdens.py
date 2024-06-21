@@ -19,6 +19,12 @@ def index(section_id:int, period:str, session_user: UserLogin = Depends(get_curr
 
     return {"message": data}
 
+@payroll_family_burdens.get("/edit/{rut}/{item_id}/{period}")
+def edit(rut:int, item_id:int, period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = PayrollFamilyBurdenClass(db).get_details(rut, item_id, period)
+
+    return {"message": data}
+
 @payroll_family_burdens.post("/upload")
 async def upload(form_data: UploadFamilyBurden = Depends(UploadFamilyBurden.as_form), file: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     try:
