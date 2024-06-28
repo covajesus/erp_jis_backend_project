@@ -5,6 +5,11 @@ from datetime import datetime
 class PayrollAgreedDepositIndicatorClass:
     def __init__(self, db):
         self.db = db
+
+    def get(self, period):
+        data = self.db.query(PayrollAgreedDepositIndicatorModel).filter(PayrollAgreedDepositIndicatorModel.period == period).first()
+
+        return data
     
     def store(self, payroll_indicator_inputs):
         try:

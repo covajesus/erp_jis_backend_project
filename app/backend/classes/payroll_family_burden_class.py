@@ -32,11 +32,20 @@ class PayrollFamilyBurdenClass:
         else:
             PayrollItemValueClass(self.db).store(payroll_item_value_data)
 
+        if family_burdens['section'] == 'A':
+            amount = 1
+        elif family_burdens['section'] == 'B':
+            amount = 2
+        elif family_burdens['section'] == 'C':
+            amount = 3
+        elif family_burdens['section'] == 'D':
+            amount = 4
+
         payroll_item_value_data = {
             'item_id': 33,
             'rut': numeric_rut,
             'period': form_data.period,
-            'amount': family_burdens['section']
+            'amount': amount
         }
 
         if existence_status > 0 and existence_status != None: 

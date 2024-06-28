@@ -5,6 +5,11 @@ from datetime import datetime
 class PayrollUtmUtaIndicatorClass:
     def __init__(self, db):
         self.db = db
+
+    def get_all(self, period):
+        data = self.db.query(PayrollUtmUtaIndicatorModel).filter(PayrollUtmUtaIndicatorModel.period == period).first()
+
+        return data
     
     def store(self, payroll_indicator_inputs):
         try:
