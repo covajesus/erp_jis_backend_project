@@ -157,20 +157,24 @@ class HelperClass:
     def gratification(salary): 
         return math.ceil(salary*0.25)
     
-    # Función para calcular la cantidad de años 
     def get_end_document_total_years(self, start_year, end_year):
-        date1 = datetime.strptime(str(start_year), "%Y-%m-%d")
-        date2 = datetime.strptime(str(end_year), "%Y-%m-%d")
-        start_year_date = datetime.now().year
-        date3 = datetime.strptime(str(start_year_date) + "-01-01", "%Y-%m-%d")
+        date1 = datetime.strptime(start_year, "%Y-%m-%d")
+        date2 = datetime.strptime(end_year, "%Y-%m-%d")
+        
+        # Calcular la diferencia en días entre las dos fechas
         delta = date2 - date1
-        current_delta =  date2 - date3 
-        years = delta.days // 365 
-        current_remaining_months = (int(current_delta.days) // 30)
-        if current_remaining_months >= 6:
-            years += 1   
+        # Calcular la diferencia en años
+        years = delta.days // 365
+        # Calcular los meses restantes después de los años completos
+        remaining_days = delta.days % 365
+        remaining_months = remaining_days // 30
 
+        # Si los meses restantes son mayores o iguales a 6, se agrega un año más
+        if remaining_months >= 6:
+            years += 1
+        
         return years
+    
     def months_to_years(self, months):
         years = int(months/12)
 

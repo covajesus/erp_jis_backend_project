@@ -691,6 +691,13 @@ class DteBackgroundModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class PayrollCalculatedEmployeeModel(Base):
+    __tablename__ = 'payroll_calculated_employees'
+
+    id = Column(Integer, primary_key=True)
+    employee_quantity = Column(Integer)
+    period = Column(String(255))
+
 class DepositModel(Base):
     __tablename__ = 'deposits'
 

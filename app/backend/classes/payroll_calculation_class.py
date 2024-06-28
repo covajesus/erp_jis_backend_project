@@ -10,6 +10,7 @@ from app.backend.classes.payroll_second_category_tax_class import PayrollSecondC
 from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
 from app.backend.classes.medical_license_class import MedicalLicenseClass
 from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
+from app.backend.classes.payroll_calculated_employee_class import PayrollCalculatedEmployeeClass
 
 class PayrollCalculationClass:
     def __init__(self, db):
@@ -18,11 +19,17 @@ class PayrollCalculationClass:
     def calculate(self, period=None, batch_size=20):
         employees = PayrollEmployeeClass(self.db).get_all(period)
 
+        count = 1
+
         for i in range(0, len(employees), batch_size):
             batch = employees[i:i + batch_size]
 
             for employee in batch:
                 self.process_employee(employee, period)
+
+            PayrollCalculatedEmployeeClass(self.db).store(count, period)
+
+            count += 1
 
     def process_employee(self, employee, period):
         self.proportional(employee['rut'], 35, period, 0, 1)
@@ -74,7 +81,10 @@ class PayrollCalculationClass:
             payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, item_id, period)
             days = PayrollItemValueClass(self.db).get_with_period(rut, 55, period)
 
-            total = (payroll_item_value.amount / 30) * days.amount
+            if payroll_item_value != None and days != None:
+                total = (payroll_item_value.amount / 30) * days.amount
+            else:
+                total = 0
 
             if item_id == 35:
                 item_id = 52
