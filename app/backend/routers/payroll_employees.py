@@ -11,7 +11,8 @@ payroll_employees = APIRouter(
 )
 
 @payroll_employees.get("/{period}")
-def index(period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db), items_per_page: int = 10):
+def index(period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    print(period)
     data = PayrollEmployeeClass(db).get_all(period)
 
     return {"message": data}

@@ -910,6 +910,15 @@ class PayrollEmployeeInput(BaseModel):
 class PayrollDataInput(BaseModel):
     payroll_employees: List[PayrollEmployeeInput]
 
+class UpdatePayrollItemValue(BaseModel):
+    rut: int
+    item_id: int
+    amount: int
+    period: str
+
+class UpdatePayrollItemDataValue(BaseModel):
+    payroll_item_values: List[UpdatePayrollItemValue]
+
 class UploadFamilyBurden(BaseModel):
     rut: str
     period: str

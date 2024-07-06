@@ -5,6 +5,15 @@ from app.backend.classes.helper_class import HelperClass
 class PayrollFamilyAsignationIndicatorClass:
     def __init__(self, db):
         self.db = db
+
+    def get(self, section_id, period):
+        try:
+            data = self.db.query(PayrollFamilyAsignationIndicatorModel).filter(PayrollFamilyAsignationIndicatorModel.section_id == section_id, PayrollFamilyAsignationIndicatorModel.period == period).first()
+
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
     
     def store(self, section_id, payroll_indicator_inputs):
         try:

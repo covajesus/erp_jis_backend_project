@@ -11,7 +11,7 @@ class PayrollCalculatedEmployeeClass:
 
     def store(self, i, period):
         quantity = self.db.query(PayrollCalculatedEmployeeModel).filter(PayrollCalculatedEmployeeModel.period == period).count()
-
+        
         if quantity > 0:
             payroll_calculated_employee = self.db.query(PayrollCalculatedEmployeeModel).filter(PayrollCalculatedEmployeeModel.period == period).one_or_none()
             payroll_calculated_employee.employee_quantity = i

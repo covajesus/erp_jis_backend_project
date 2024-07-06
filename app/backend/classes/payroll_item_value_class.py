@@ -1,4 +1,4 @@
-from app.backend.db.models import PayrollItemValueModel
+from app.backend.db.models import PayrollItemValueModel, PayrollItemModel
 from datetime import datetime
 
 class PayrollItemValueClass:
@@ -14,9 +14,33 @@ class PayrollItemValueClass:
         data = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == item_id, PayrollItemValueModel.period == period).first()
 
         return data
+    
+    def get_with_rut_period(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
           
-    def get(self, rut, taxable_id):
-        data = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == taxable_id).first()
+    def get(self, rut, item_id):
+        data = self.db.query(PayrollItemValueModel).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.item_id == item_id).first()
 
         return data
     
@@ -39,15 +63,20 @@ class PayrollItemValueClass:
             return 1
     
     def store(self, data):
-        payroll_item_value = PayrollItemValueModel()
-        payroll_item_value.rut = data['rut']
-        payroll_item_value.item_id = data['item_id']
-        payroll_item_value.period = data['period']
-        payroll_item_value.amount = data['amount']
-        payroll_item_value.added_date = datetime.now()
-        payroll_item_value.updated_date = datetime.now()
-        self.db.add(payroll_item_value)
-        self.db.commit()
+        existence_status = self.existence(data['rut'], data['item_id'], data['period'])
+
+        if existence_status == 0 or existence_status == None:
+            payroll_item_value = PayrollItemValueModel()
+            payroll_item_value.rut = data['rut']
+            payroll_item_value.item_id = data['item_id']
+            payroll_item_value.period = data['period']
+            payroll_item_value.amount = data['amount']
+            payroll_item_value.added_date = datetime.now()
+            payroll_item_value.updated_date = datetime.now()
+            self.db.add(payroll_item_value)
+            self.db.commit()
+        else:
+            self.update(data)
 
 
     def update(self, data):
@@ -60,3 +89,32 @@ class PayrollItemValueClass:
             return 1
         else:
             return "No data found"
+        
+    def update_bulk(self, payroll_item_values):
+        for payroll_item_value in payroll_item_values.payroll_item_values:
+            rut = payroll_item_value.rut
+            item_id = payroll_item_value.item_id
+            amount = payroll_item_value.amount
+            period = payroll_item_value.period
+
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = item_id
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = amount
+
+            existence_status = PayrollItemValueClass(self.db).existence(rut, item_id, period)
+
+            if existence_status > 0 and existence_status != None:
+                payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, item_id, period)
+
+                if payroll_item_value.amount != amount:
+                    if amount == 0 or amount == None:
+                        PayrollItemValueClass(self.db).delete_with_period(rut, item_id, period)
+                    else:
+                        PayrollItemValueClass(self.db).update(payroll_item_value_data)
+            else:
+                if amount != 0 and amount != None and amount != '0' and amount != '':
+                    PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+        return 1

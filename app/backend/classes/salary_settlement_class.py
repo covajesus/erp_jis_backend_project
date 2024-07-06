@@ -1,6 +1,6 @@
 from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel
 from datetime import datetime
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from app.backend.classes.dropbox_class import DropboxClass
 import json
 
@@ -27,12 +27,14 @@ class SalarySettlementClass:
                         DocumentEmployeeModel.document_type_id,
                         DocumentEmployeeModel.support,
                         DocumentEmployeeModel.status_id,
+                        DocumentEmployeeModel.old_document_status_id,
                         DocumentEmployeeModel.id,
                         EmployeeModel.names,
                         EmployeeModel.father_lastname,
                         EmployeeModel.mother_lastname,
-                        EmployeeModel.visual_rut
-                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
+                        EmployeeModel.visual_rut,
+                        EmployeeModel.rut
+                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.rut == 6152617).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
 
             total_items = data_query.count()
             total_pages = (total_items + items_per_page - 1) // items_per_page
@@ -55,13 +57,15 @@ class SalarySettlementClass:
                             {
                                 "added_date": item.added_date.strftime('%Y-%m-%d %H:%M:%S') if item.added_date else None,
                                 "document_type_id": item.document_type_id,
+                                "old_document_status_id": item.old_document_status_id,
                                 "support": item.support,
                                 "status_id": item.status_id,
                                 "id": item.id,
                                 "names": item.names,
                                 "visual_rut": item.visual_rut,
                                 "father_lastname": item.father_lastname,
-                                "mother_lastname": item.mother_lastname
+                                "mother_lastname": item.mother_lastname,
+                                "rut": item.rut
                             }
                             for item in data
                         ]
@@ -163,7 +167,40 @@ class SalarySettlementClass:
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"
+        
+    def existence (self, rut, period):
+        quantity = (
+            self.db.query(DocumentEmployeeModel)
+            .filter(
+                DocumentEmployeeModel.rut == rut,
+                func.date_format(DocumentEmployeeModel.added_date, '%Y-%m') == period
+            )
+            .count()
+        )
 
+        return quantity
+
+    def new_store(self, rut, period):
+        existence_status = self.existence(rut, period)
+
+        if existence_status == 0 or existence_status == None:
+            try:
+                salary_settlement = DocumentEmployeeModel()
+                salary_settlement.status_id = 4
+                salary_settlement.rut = rut
+                salary_settlement.document_type_id = 5
+                salary_settlement.old_document_status_id = 0
+                salary_settlement.support = ''
+                salary_settlement.added_date = datetime.now()
+                salary_settlement.updated_date = datetime.now()
+
+                self.db.add(salary_settlement)
+                self.db.commit()
+                return 1
+            except Exception as e:
+                error_message = str(e)
+                return f"Error: {error_message}"
+            
     # Almacena multiples registros de liquidaciones de sueldo   
     def store_multiple(self, salary_settlement_inputs, support):
         try:

@@ -11,6 +11,7 @@ from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicato
 from app.backend.classes.medical_license_class import MedicalLicenseClass
 from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
 from app.backend.classes.payroll_calculated_employee_class import PayrollCalculatedEmployeeClass
+from app.backend.classes.salary_settlement_class import SalarySettlementClass
 
 class PayrollCalculationClass:
     def __init__(self, db):
@@ -29,7 +30,7 @@ class PayrollCalculationClass:
 
             PayrollCalculatedEmployeeClass(self.db).store(count, period)
 
-            count += 1
+            count = count + 1
 
     def process_employee(self, employee, period):
         self.proportional(employee['rut'], 35, period, 0, 1)
@@ -52,6 +53,8 @@ class PayrollCalculationClass:
         self.total_discounts(employee['rut'], period)
         self.disability_survival_insurance(employee['rut'], period, employee['pention_id'])
         self.total_to_pay(employee['rut'], period)
+
+        SalarySettlementClass(self.db).new_store(employee['rut'], period)
     
     def taxable_salary(self, rut, period):
         taxable_items = PayrollItemClass(self.db).get_taxable_items()

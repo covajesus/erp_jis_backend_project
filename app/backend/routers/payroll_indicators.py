@@ -308,6 +308,48 @@ async def scrape(period:str, session_user: UserLogin = Depends(get_current_activ
             data[64] = payroll_afp_quote_indicators.dependent_sis
             data[65] = payroll_afp_quote_indicators.independent_rate_afp
 
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(2, period)
+
+            data[67] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[68] = payroll_afp_quote_indicators.dependent_sis
+            data[69] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(3, period)
+
+            data[71] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[72] = payroll_afp_quote_indicators.dependent_sis
+            data[73] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(4, period)
+
+            data[75] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[76] = payroll_afp_quote_indicators.dependent_sis
+            data[77] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(5, period)
+
+            data[79] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[80] = payroll_afp_quote_indicators.dependent_sis
+            data[81] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(6, period)
+
+            data[83] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[84] = payroll_afp_quote_indicators.dependent_sis
+            data[85] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_afp_quote_indicators = PayrollAfpQuoteIndicatorClass(db).get(7, period)
+
+            data[87] = payroll_afp_quote_indicators.dependent_rate_afp
+            data[88] = payroll_afp_quote_indicators.dependent_sis
+            data[89] = payroll_afp_quote_indicators.independent_rate_afp
+
+            payroll_family_asignation_indicators = PayrollFamilyAsignationIndicatorClass(db).get(1, period)
+
+            data[95] = payroll_family_asignation_indicators.amount
+            data[96] = payroll_family_asignation_indicators.minimum_value_rate
+            data[97] = payroll_family_asignation_indicators.top_value_rate
+
             return data
         
     except Exception as e:
