@@ -1,4 +1,4 @@
-from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel
+from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel, PayrollItemValueModel, PayrollItemModel
 from datetime import datetime
 from sqlalchemy import desc, func
 from app.backend.classes.dropbox_class import DropboxClass
@@ -18,6 +18,149 @@ class SalarySettlementClass:
             error_message = str(e)
             return f"Error: {error_message}"
     
+    def get_taxable_assets(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 1).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+
+    def get_no_taxable_assets(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 2).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_legal_discounts(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 3).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+
+    def get_other_legal_discounts(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 4).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_total_pay(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 5).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_working_days(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemValueModel.item_id == 55).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+        
     # Obtiene todos los registros de licencias medicas con paginacion
     def get_all_with_pagination(self, page = 1, items_per_page = 10):
         try:
@@ -175,6 +318,9 @@ class SalarySettlementClass:
                 DocumentEmployeeModel.rut == rut,
                 func.date_format(DocumentEmployeeModel.added_date, '%Y-%m') == period
             )
+            .filter(
+                DocumentEmployeeModel.old_document_status_id == 0
+            )
             .count()
         )
 
@@ -201,7 +347,6 @@ class SalarySettlementClass:
                 error_message = str(e)
                 return f"Error: {error_message}"
             
-    # Almacena multiples registros de liquidaciones de sueldo   
     def store_multiple(self, salary_settlement_inputs, support):
         try:
             salary_settlement = DocumentEmployeeModel()
@@ -219,7 +364,6 @@ class SalarySettlementClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
-
     def delete_salary_settlement(self, id):
         try:
             data = self.db.query(DocumentEmployeeModel).filter(DocumentEmployeeModel.id == id).first()

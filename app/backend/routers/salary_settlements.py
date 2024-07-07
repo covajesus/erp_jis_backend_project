@@ -39,6 +39,42 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
 
     return {"message": data}
 
+@salary_settlements.get("/taxable_assets/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_taxable_assets(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/no_taxable_assets/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_no_taxable_assets(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/legal_discounts/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_legal_discounts(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/other_legal_discounts/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_other_legal_discounts(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/total_pay/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_total_pay(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/working_days/{rut}/{period}")
+def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_working_days(rut, period)
+
+    return {"message": data}
+
 @salary_settlements.post("/store")
 def store(form_data: SalarySettlement = Depends(SalarySettlement.as_form), support: UploadFile = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     dropbox_client = DropboxClass(db)

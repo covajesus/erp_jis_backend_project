@@ -1,4 +1,4 @@
-from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
+from app.backend.db.models import EmployeeLaborDatumModel, HealthModel, ContractTypeModel, PentionModel, EmployeeModel, CommuneModel, RegionModel, CivilStateModel, JobPositionModel, BranchOfficeModel
 from datetime import datetime
 from app.backend.classes.helper_class import HelperClass
 import json
@@ -113,7 +113,6 @@ class EmployeeLaborDatumClass:
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
                 }
-
                 entrance_pention = employee_labor_data.entrance_pention
 
                 entrance_company = employee_labor_data.entrance_company
