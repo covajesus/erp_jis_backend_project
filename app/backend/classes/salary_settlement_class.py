@@ -177,7 +177,7 @@ class SalarySettlementClass:
                         EmployeeModel.mother_lastname,
                         EmployeeModel.visual_rut,
                         EmployeeModel.rut
-                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.rut == 6152617).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
+                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
 
             total_items = data_query.count()
             total_pages = (total_items + items_per_page - 1) // items_per_page
