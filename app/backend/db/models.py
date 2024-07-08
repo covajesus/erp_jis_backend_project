@@ -1065,6 +1065,16 @@ class PayrollItemValueModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class PayrollMonthIndicatorModel(Base):
+    __tablename__ = 'payroll_month_indicators'
+
+    id = Column(Integer, primary_key=True)
+    month_id = Column(Integer)
+    month_value = Column(String(255))
+    period = Column(String(255))
+    added_date = Column(DateTime())
+    updated_date = Column(DateTime())
+
 class PayrollItemModel(Base):
     __tablename__ = 'payroll_items'
 

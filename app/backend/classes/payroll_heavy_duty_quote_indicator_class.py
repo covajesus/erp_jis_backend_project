@@ -5,6 +5,15 @@ from datetime import datetime
 class PayrollHeavyDutyQuoteIndicatorClass:
     def __init__(self, db):
         self.db = db
+
+    def get(self, duty_type_id, period):
+        try:
+            data = self.db.query(PayrollHeavyDutyQuoteIndicatorModel).filter(PayrollHeavyDutyQuoteIndicatorModel.duty_type_id == duty_type_id, PayrollHeavyDutyQuoteIndicatorModel.period == period).first()
+
+            return data
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
     
     def store(self, duty_type_id, payroll_indicator_inputs):
         try:

@@ -601,6 +601,9 @@ class DteAtmMachine(BaseModel):
 
 class ProvisionalIndicator(BaseModel):
     period: str
+    month_value_1: str
+    month_value_2: str
+    month_value_3: str
     uf_value_current_month: str
     uf_value_last_month: str
     utm_value_current_month: str

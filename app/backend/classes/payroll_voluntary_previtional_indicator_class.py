@@ -21,7 +21,7 @@ class PayrollVoluntaryPrevitionalIndicatorClass:
             payroll_voluntary_previtional_indicator = PayrollVoluntaryPrevitionalIndicatorModel()
             payroll_voluntary_previtional_indicator.voluntary_pension_savings_monthly = voluntary_pension_savings_monthly
             payroll_voluntary_previtional_indicator.voluntary_pension_savings_annual = voluntary_pension_savings_annual
-            payroll_voluntary_previtional_indicator.pention = payroll_indicator_inputs['period']
+            payroll_voluntary_previtional_indicator.period = payroll_indicator_inputs['period']
             payroll_voluntary_previtional_indicator.added_date = datetime.now()
             self.db.add(payroll_voluntary_previtional_indicator)
             self.db.commit()

@@ -27,6 +27,7 @@ class PayrollMiniumTaxableIncomeIndicatorClass:
             payroll_minium_taxable_income_indicator.under_18_over_65 = minimun_income_tax_under_18_over_65
             payroll_minium_taxable_income_indicator.particular_home = minimun_income_tax_domestic_worker
             payroll_minium_taxable_income_indicator.no_remunerations = minimun_income_tax_non_remunerational
+            payroll_minium_taxable_income_indicator.period = payroll_indicator_inputs['period']
             payroll_minium_taxable_income_indicator.added_date = datetime.now()
             self.db.add(payroll_minium_taxable_income_indicator)
             self.db.commit()

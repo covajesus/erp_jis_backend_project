@@ -18,6 +18,7 @@ from app.backend.classes.payroll_family_asignation_indicator_class import Payrol
 from app.backend.classes.payroll_heavy_duty_quote_indicator_class import PayrollHeavyDutyQuoteIndicatorClass
 from app.backend.classes.payroll_ccaf_indicator_class import PayrollCcafIndicatorClass
 from app.backend.classes.payroll_other_indicator_class import PayrollOtherIndicatorClass
+from app.backend.classes.payroll_month_indicator_class import PayrollMonthIndicatorClass
 from app.backend.classes.helper_class import HelperClass
 from app.backend.auth.auth_user import get_current_active_user
 
@@ -29,6 +30,24 @@ payroll_indicators = APIRouter(
 @payroll_indicators.post("/store")
 def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     provisional_indicator_inputs = provisional_indicator.dict()
+
+    month_id = 1
+    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+    provisional_indicator_inputs['indicator_type_id'] = 16
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    month_id = 2
+    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+    provisional_indicator_inputs['indicator_type_id'] = 16
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+    month_id = 3
+    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+    provisional_indicator_inputs['indicator_type_id'] = 16
+    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
     data_payroll_uf_indicator = PayrollUfIndicatorClass(db).store(provisional_indicator_inputs)
     provisional_indicator_inputs['indicator_id'] = data_payroll_uf_indicator
@@ -228,7 +247,19 @@ async def scrape(period:str, session_user: UserLogin = Depends(get_current_activ
         else:
             payroll_uf_indicators = PayrollUfIndicatorClass(db).get_all(period)
             
-            data = [None] * 125  # Inicializa la lista con seis elementos None
+            data = [None] * 128  # Inicializa la lista con seis elementos None
+
+            payroll_month_indicators = PayrollMonthIndicatorClass(db).get(1, period)
+
+            data[3] = payroll_month_indicators.month_value
+
+            payroll_month_indicators = PayrollMonthIndicatorClass(db).get(2, period)
+
+            data[5] = payroll_month_indicators.month_value
+
+            payroll_month_indicators = PayrollMonthIndicatorClass(db).get(3, period)
+
+            data[10] = payroll_month_indicators.month_value
             
             uf_value_current_month = payroll_uf_indicators.uf_value_current_month
             data[4] = uf_value_current_month
@@ -349,6 +380,53 @@ async def scrape(period:str, session_user: UserLogin = Depends(get_current_activ
             data[95] = payroll_family_asignation_indicators.amount
             data[96] = payroll_family_asignation_indicators.minimum_value_rate
             data[97] = payroll_family_asignation_indicators.top_value_rate
+
+            payroll_family_asignation_indicators = PayrollFamilyAsignationIndicatorClass(db).get(2, period)
+
+            data[98] = payroll_family_asignation_indicators.amount
+            data[99] = payroll_family_asignation_indicators.minimum_value_rate
+            data[100] = payroll_family_asignation_indicators.top_value_rate
+
+            payroll_family_asignation_indicators = PayrollFamilyAsignationIndicatorClass(db).get(3, period)
+
+            data[101] = payroll_family_asignation_indicators.amount
+            data[102] = payroll_family_asignation_indicators.minimum_value_rate
+            data[103] = payroll_family_asignation_indicators.top_value_rate
+
+            payroll_family_asignation_indicators = PayrollFamilyAsignationIndicatorClass(db).get(4, period)
+
+            data[104] = payroll_family_asignation_indicators.amount
+            data[105] = payroll_family_asignation_indicators.minimum_value_rate
+            data[106] = payroll_family_asignation_indicators.top_value_rate
+
+            payroll_heavy_duty_quote_indicators = PayrollHeavyDutyQuoteIndicatorClass(db).get(1, period)
+
+            data[113] = payroll_heavy_duty_quote_indicators.job_position
+            data[114] = payroll_heavy_duty_quote_indicators.employer
+            data[115] = payroll_heavy_duty_quote_indicators.worker
+
+            payroll_heavy_duty_quote_indicators = PayrollHeavyDutyQuoteIndicatorClass(db).get(2, period)
+
+            data[117] = payroll_heavy_duty_quote_indicators.job_position
+            data[118] = payroll_heavy_duty_quote_indicators.employer
+            data[119] = payroll_heavy_duty_quote_indicators.worker
+
+            payroll_ccaf_indicators = PayrollCcafIndicatorClass(db).get(period)
+
+            data[122] = payroll_ccaf_indicators.ccaf
+            data[124] = payroll_ccaf_indicators.fonasa
+
+            payroll_other_indicators = PayrollOtherIndicatorClass(db).get(period, 1)
+
+            data[125] = payroll_other_indicators.other_value
+
+            payroll_other_indicators = PayrollOtherIndicatorClass(db).get(period, 2)
+
+            data[126] = payroll_other_indicators.other_value
+
+            payroll_other_indicators = PayrollOtherIndicatorClass(db).get(period, 3)
+
+            data[127] = payroll_other_indicators.other_value
 
             return data
         
