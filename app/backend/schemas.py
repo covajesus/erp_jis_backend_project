@@ -275,7 +275,7 @@ class UpdateEmployeeLaborDatum(BaseModel):
     collation: int = None
     locomotion: int = None
     extra_health_payment_type_id: Union[int, None]
-    extra_health_amount: float = None
+    extra_health_amount: str = None
     apv_payment_type_id: Union[int, None]
     apv_amount: Union[int, None]
 
