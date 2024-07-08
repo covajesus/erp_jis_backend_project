@@ -31,183 +31,186 @@ payroll_indicators = APIRouter(
 def store(provisional_indicator:ProvisionalIndicator, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     provisional_indicator_inputs = provisional_indicator.dict()
 
-    month_id = 1
-    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 16
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+    period_indicator_existence = PayrollIndicatorClass(db).count(provisional_indicator_inputs['period'])
 
-    month_id = 2
-    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 16
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+    if period_indicator_existence == 0:
+        month_id = 1
+        data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 16
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    month_id = 3
-    data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 16
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        month_id = 2
+        data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 16
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_payroll_uf_indicator = PayrollUfIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_payroll_uf_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 1
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        month_id = 3
+        data_payroll_month_indicator = PayrollMonthIndicatorClass(db).store(month_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_payroll_month_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 16
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_payroll_utm_uta_indicator = PayrollUtmUtaIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_payroll_utm_uta_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 2
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_payroll_uf_indicator = PayrollUfIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_payroll_uf_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 1
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_taxable_income_cap_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 3
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_payroll_utm_uta_indicator = PayrollUtmUtaIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_payroll_utm_uta_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 2
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_minium_taxable_income_indicator = PayrollMiniumTaxableIncomeIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_minium_taxable_income_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 4
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_taxable_income_cap_indicator = PayrollTaxableIncomeCapIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_taxable_income_cap_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 3
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_voluntary_previtional_indicator = PayrollVoluntaryPrevitionalIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_voluntary_previtional_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 5
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_minium_taxable_income_indicator = PayrollMiniumTaxableIncomeIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_minium_taxable_income_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 4
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    data_agreed_deposit_indicator = PayrollAgreedDepositIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_agreed_deposit_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 6
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_voluntary_previtional_indicator = PayrollVoluntaryPrevitionalIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_voluntary_previtional_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 5
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    contract_type_id = 1
-    data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 7
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        data_agreed_deposit_indicator = PayrollAgreedDepositIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_agreed_deposit_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 6
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    contract_type_id = 2
-    data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 7
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        contract_type_id = 1
+        data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 7
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    contract_type_id = 3
-    data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 7
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        contract_type_id = 2
+        data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 7
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    contract_type_id = 4
-    data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 7
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        contract_type_id = 3
+        data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 7
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 1
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        contract_type_id = 4
+        data_umployment_insurance_indicator = PayrollUmploymentInsuranceIndicatorClass(db).store(contract_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_umployment_insurance_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 7
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 2
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 1
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 3
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 2
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 4
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 3
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 5
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 4
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 6
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 5
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    pention_id = 7
-    data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 8
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 6
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    section_id = 1
-    data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 9
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        pention_id = 7
+        data_afp_quote_indicator = PayrollAfpQuoteIndicatorClass(db).store(pention_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_afp_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 8
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    section_id = 2
-    data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 9
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        section_id = 1
+        data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 9
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    section_id = 3
-    data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 9
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        section_id = 2
+        data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 9
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    section_id = 4
-    data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 9
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        section_id = 3
+        data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 9
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    duty_type_id = 1
-    data_heavy_duty_quote_indicator = PayrollHeavyDutyQuoteIndicatorClass(db).store(duty_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_heavy_duty_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 10
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        section_id = 4
+        data_family_asignation_indicator = PayrollFamilyAsignationIndicatorClass(db).store(section_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_family_asignation_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 9
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    duty_type_id = 2
-    data_heavy_duty_quote_indicator = PayrollHeavyDutyQuoteIndicatorClass(db).store(duty_type_id, provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = data_heavy_duty_quote_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 10
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        duty_type_id = 1
+        data_heavy_duty_quote_indicator = PayrollHeavyDutyQuoteIndicatorClass(db).store(duty_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_heavy_duty_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 10
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    distribution_7_percent_health_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = distribution_7_percent_health_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 11
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        duty_type_id = 2
+        data_heavy_duty_quote_indicator = PayrollHeavyDutyQuoteIndicatorClass(db).store(duty_type_id, provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = data_heavy_duty_quote_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 10
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    ccaf_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
-    provisional_indicator_inputs['indicator_id'] = ccaf_indicator
-    provisional_indicator_inputs['indicator_type_id'] = 12
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
- 
-    other_type_id = 1
-    other_indicator_mutual = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
-    provisional_indicator_inputs['indicator_id'] = other_indicator_mutual
-    provisional_indicator_inputs['indicator_type_id'] = 13
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        distribution_7_percent_health_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = distribution_7_percent_health_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 11
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    other_type_id = 2
-    other_indicator_honorary = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
-    provisional_indicator_inputs['indicator_id'] = other_indicator_honorary
-    provisional_indicator_inputs['indicator_type_id'] = 14
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        ccaf_indicator = PayrollCcafIndicatorClass(db).store(provisional_indicator_inputs)
+        provisional_indicator_inputs['indicator_id'] = ccaf_indicator
+        provisional_indicator_inputs['indicator_type_id'] = 12
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+    
+        other_type_id = 1
+        other_indicator_mutual = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+        provisional_indicator_inputs['indicator_id'] = other_indicator_mutual
+        provisional_indicator_inputs['indicator_type_id'] = 13
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
-    other_type_id = 3
-    other_indicator_gratification = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
-    provisional_indicator_inputs['indicator_id'] = other_indicator_gratification
-    provisional_indicator_inputs['indicator_type_id'] = 15
-    PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+        other_type_id = 2
+        other_indicator_honorary = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+        provisional_indicator_inputs['indicator_id'] = other_indicator_honorary
+        provisional_indicator_inputs['indicator_type_id'] = 14
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
+
+        other_type_id = 3
+        other_indicator_gratification = PayrollOtherIndicatorClass(db).store(provisional_indicator_inputs, other_type_id)
+        provisional_indicator_inputs['indicator_id'] = other_indicator_gratification
+        provisional_indicator_inputs['indicator_type_id'] = 15
+        PayrollIndicatorClass(db).store(provisional_indicator_inputs)
 
     return {"message": 1}
 
