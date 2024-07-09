@@ -149,6 +149,7 @@ class SalarySettlementClass:
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
         result = []
+        print(data)
         for item_value in data:
             result.append({
                 "id": item_value.id,
@@ -167,6 +168,7 @@ class SalarySettlementClass:
 
             data_query = self.db.query(
                         DocumentEmployeeModel.added_date,
+                        DocumentEmployeeModel.period,
                         DocumentEmployeeModel.document_type_id,
                         DocumentEmployeeModel.support,
                         DocumentEmployeeModel.status_id,
@@ -204,6 +206,7 @@ class SalarySettlementClass:
                                 "support": item.support,
                                 "status_id": item.status_id,
                                 "id": item.id,
+                                "period": item.period,
                                 "names": item.names,
                                 "visual_rut": item.visual_rut,
                                 "father_lastname": item.father_lastname,
