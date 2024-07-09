@@ -22,36 +22,21 @@ class PayrollOtherIndicatorClass:
 
     def store(self, payroll_indicator_inputs, other_type_id):
         try:
-            if other_type_id == 1:
-                payroll_other_indicator = PayrollOtherIndicatorModel()
-                payroll_other_indicator.other_type_id = payroll_indicator_inputs['other_type_id']
-                payroll_other_indicator.other_value = payroll_indicator_inputs['mutual_value']
-                payroll_other_indicator.period = payroll_indicator_inputs['period']
-                payroll_other_indicator.added_date = datetime.now()
-                self.db.add(payroll_other_indicator)
-                self.db.commit()
+            # Crear una instancia del modelo y asignar valores
+            payroll_other_indicator = PayrollOtherIndicatorModel()
+            payroll_other_indicator.other_type_id = payroll_indicator_inputs['other_type_id']
+            payroll_other_indicator.other_value = payroll_indicator_inputs['other_value']
+            payroll_other_indicator.period = payroll_indicator_inputs['period']
+            payroll_other_indicator.added_date = datetime.now()
+            payroll_other_indicator.updated_date = datetime.now()
 
-            if other_type_id == 2:
-                payroll_other_indicator = PayrollOtherIndicatorModel()
-                payroll_other_indicator.other_type_id = payroll_indicator_inputs['other_type_id']
-                payroll_other_indicator.other_value = payroll_indicator_inputs['honorary_value']
-                payroll_other_indicator.period = payroll_indicator_inputs['period']
-                payroll_other_indicator.added_date = datetime.now()
-                self.db.add(payroll_other_indicator)
-                self.db.commit()
-
-            if other_type_id == 3:
-                payroll_other_indicator = PayrollOtherIndicatorModel()
-                payroll_other_indicator.other_type_id = payroll_indicator_inputs['other_type_id']
-                payroll_other_indicator.other_value = payroll_indicator_inputs['gratification_value']
-                payroll_other_indicator.period = payroll_indicator_inputs['period']
-                payroll_other_indicator.added_date = datetime.now()
-                self.db.add(payroll_other_indicator)
-                self.db.commit()
+            # Agregar al contexto de sesión y confirmar cambios
+            self.db.add(payroll_other_indicator)
+            self.db.commit()
 
             inserted_id = payroll_other_indicator.id
-
             return inserted_id
+
         except Exception as e:
             error_message = str(e)
             return f"Error: {error_message}"

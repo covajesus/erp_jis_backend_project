@@ -53,8 +53,6 @@ class PayrollCalculationClass:
         self.total_discounts(employee['rut'], period)
         self.disability_survival_insurance(employee['rut'], period, employee['pention_id'])
         self.total_to_pay(employee['rut'], period)
-
-        SalarySettlementClass(self.db).new_store(employee['rut'], period)
     
     def taxable_salary(self, rut, period):
         taxable_items = PayrollItemClass(self.db).get_taxable_items()

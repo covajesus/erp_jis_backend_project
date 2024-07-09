@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.backend.schemas import UserLogin, SalarySettlement
 from app.backend.classes.salary_settlement_class import SalarySettlementClass
 from app.backend.classes.document_employee_class import DocumentEmployeeClass
+from app.backend.classes.payroll_employee_class import PayrollEmployeeClass
 from app.backend.auth.auth_user import get_current_active_user
 from fastapi import UploadFile, File
 import os
@@ -85,6 +86,19 @@ def store(form_data: SalarySettlement = Depends(SalarySettlement.as_form), suppo
     data = SalarySettlementClass(db).store(form_data, filename)
 
     return {"message": data}
+
+@salary_settlements.get("/generate/{period}")
+def store(period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    employees = PayrollEmployeeClass(db).get_all(period)
+
+    for employee in employees:
+        existence_status = SalarySettlementClass(db).existence(employee['rut'], period)
+
+        if existence_status == 0 or existence_status == None:
+            SalarySettlementClass(db).new_store(employee['rut'], period)
+
+
+    return {"message": 'creeated'}
 
 @salary_settlements.post("/multiple_store")
 def multiple_store(files: List[UploadFile] = File(...), session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):

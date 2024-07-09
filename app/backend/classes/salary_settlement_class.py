@@ -149,7 +149,7 @@ class SalarySettlementClass:
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
         result = []
-        print(data)
+
         for item_value in data:
             result.append({
                 "id": item_value.id,

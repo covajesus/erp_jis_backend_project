@@ -1,5 +1,6 @@
 from app.backend.db.database import Base
 from sqlalchemy import Column, Integer, String, DateTime, Date, ForeignKey, Float, Boolean, Text, Numeric
+from datetime import datetime
 
 class BranchOfficeModel(Base):
     __tablename__ = 'branch_offices'
@@ -341,9 +342,11 @@ class PayrollOtherIndicatorModel(Base):
     __tablename__ = 'payroll_other_indicators'
 
     id = Column(Integer, primary_key=True)
-    other_type_id = Column(String(255))
+    other_type_id = Column(Integer)
     other_value = Column(String(255))
     period = Column(String(255))
+    added_date = Column(DateTime, default=datetime.now)
+    updated_date = Column(DateTime, onupdate=datetime.now)
 
 class EmployeeLaborDatumModel(Base):
     __tablename__ = 'employee_labor_data'
