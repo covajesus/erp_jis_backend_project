@@ -336,6 +336,7 @@ class SalarySettlementClass:
                 salary_settlement.rut = rut
                 salary_settlement.document_type_id = 5
                 salary_settlement.old_document_status_id = 0
+                salary_settlement.period = period
                 salary_settlement.support = ''
                 salary_settlement.added_date = datetime.now()
                 salary_settlement.updated_date = datetime.now()

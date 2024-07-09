@@ -1176,6 +1176,7 @@ class DocumentEmployeeModel(Base):
     document_type_id = Column(Integer, ForeignKey('document_types.id'))
     old_document_status_id = Column(Integer)
     rut = Column(Integer)
+    period = Column(String(255))
     support = Column(String(255))
     added_date =  Column(DateTime())
     updated_date = Column(DateTime())
