@@ -41,14 +41,7 @@ class PayrollClass:
                             outerjoin(EmployeeExtraModel, EmployeeExtraModel.rut == EmployeeModel.rut).all()
                 
                 for employee in employees:
-                    gender = self.db.query(GenderModel).filter(GenderModel.id == employee.gender_id).first()
-                    nationality = self.db.query(NationalityModel).filter(NationalityModel.id == employee.gender_id).first()
-                    regime = self.db.query(RegimeModel).filter(RegimeModel.id == employee.regime_id).first()
-                    pention_code = self.db.query(PentionModel).filter(PentionModel.id == employee.pention_id).first()
-                    young_job_status = HelperClass.get_social_law_young_status(employee.young_job_status_id)
-                    
-                    period_since = HelperClass.social_law_period(1, open_period_payroll_inputs['period'], 0)
-                        
+                    print(employee.rut)
                     payroll_employee = PayrollEmployeeModel()
                     payroll_employee.rut = employee.rut
                     payroll_employee.visual_rut = employee.visual_rut
@@ -76,25 +69,6 @@ class PayrollClass:
                     payroll_employee.added_date = datetime.now()
                     payroll_employee.updated_date = datetime.now()
                     self.db.add(payroll_employee)
-                    self.db.commit()
-                        
-                    rut_data = HelperClass().split(employee.visual_rut, '-')
-                    social_laws = SocialLawModel()
-                    social_laws.rut = rut_data[0]
-                    social_laws.dv = rut_data[1]
-                    social_laws.father_lastname = employee.father_lastname
-                    social_laws.mother_lastname = employee.mother_lastname
-                    social_laws.names = employee.names
-                    social_laws.gender = gender.social_law_code
-                    social_laws.nationality = nationality.social_law_code
-                    social_laws.nationality = nationality.social_law_code
-                    social_laws.payment_type = 1
-                    social_laws.period_since = period_since
-                    social_laws.period_until = 0
-                    social_laws.regime = regime.regime
-                    social_laws.young_job_status = young_job_status
-                    social_laws.pention_code = pention_code.social_law_code
-                    self.db.add(social_laws)
                     self.db.commit()
                         
                     payroll_item_value_data = {}
