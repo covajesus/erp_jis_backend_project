@@ -41,14 +41,26 @@ def download(id:int, session_user: UserLogin = Depends(get_current_active_user),
     return {"message": data}
 
 @salary_settlements.get("/taxable_assets/{rut}/{period}")
-def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def taxable_assets(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = SalarySettlementClass(db).get_taxable_assets(rut, period)
 
     return {"message": data}
 
+@salary_settlements.get("/total_taxable_assets/{rut}/{period}")
+def total_taxable_assets(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_total_taxable_assets(rut, period)
+
+    return {"message": data}
+
 @salary_settlements.get("/no_taxable_assets/{rut}/{period}")
-def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def no_taxable_assets(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = SalarySettlementClass(db).get_no_taxable_assets(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/total_no_taxable_assets/{rut}/{period}")
+def total_no_taxable_assets(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_total_no_taxable_assets(rut, period)
 
     return {"message": data}
 
@@ -58,9 +70,21 @@ def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_ac
 
     return {"message": data}
 
+@salary_settlements.get("/total_legal_discounts/{rut}/{period}")
+def total_legal_discounts(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_total_legal_discounts(rut, period)
+
+    return {"message": data}
+
 @salary_settlements.get("/other_legal_discounts/{rut}/{period}")
-def asset(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+def other_legal_discounts(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = SalarySettlementClass(db).get_other_legal_discounts(rut, period)
+
+    return {"message": data}
+
+@salary_settlements.get("/total_other_legal_discounts/{rut}/{period}")
+def total_other_legal_discounts(rut:int, period: str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_total_other_legal_discounts(rut, period)
 
     return {"message": data}
 

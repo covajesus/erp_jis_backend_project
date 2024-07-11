@@ -41,8 +41,8 @@ class SalarySettlementClass:
             })
 
         return result
-
-    def get_no_taxable_assets(self, rut, period):
+    
+    def get_total_taxable_assets(self, rut, period):
         data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 2).add_columns(
                 PayrollItemValueModel.id,
                 PayrollItemValueModel.item_id,
@@ -65,8 +65,8 @@ class SalarySettlementClass:
             })
 
         return result
-    
-    def get_legal_discounts(self, rut, period):
+
+    def get_no_taxable_assets(self, rut, period):
         data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 3).add_columns(
                 PayrollItemValueModel.id,
                 PayrollItemValueModel.item_id,
@@ -89,8 +89,8 @@ class SalarySettlementClass:
             })
 
         return result
-
-    def get_other_legal_discounts(self, rut, period):
+    
+    def get_total_no_taxable_assets(self, rut, period):
         data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 4).add_columns(
                 PayrollItemValueModel.id,
                 PayrollItemValueModel.item_id,
@@ -114,8 +114,104 @@ class SalarySettlementClass:
 
         return result
     
-    def get_total_pay(self, rut, period):
+    def get_legal_discounts(self, rut, period):
         data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 5).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_total_legal_discounts(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 6).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+
+    def get_other_legal_discounts(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 7).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_total_other_legal_discounts(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 8).add_columns(
+                PayrollItemValueModel.id,
+                PayrollItemValueModel.item_id,
+                PayrollItemValueModel.rut,
+                PayrollItemValueModel.amount,
+                PayrollItemValueModel.period,
+                PayrollItemModel.item
+            ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
+
+
+        result = []
+        for item_value in data:
+            result.append({
+                "id": item_value.id,
+                "item_id": item_value.item_id,
+                "rut": item_value.rut,
+                "amount": item_value.amount,
+                "period": item_value.period,
+                "item": item_value.item
+            })
+
+        return result
+    
+    def get_total_pay(self, rut, period):
+        data = self.db.query(PayrollItemValueModel).join(PayrollItemModel, PayrollItemModel.id == PayrollItemValueModel.item_id).filter(PayrollItemModel.salary_settlement_location_id == 10).add_columns(
                 PayrollItemValueModel.id,
                 PayrollItemValueModel.item_id,
                 PayrollItemValueModel.rut,
