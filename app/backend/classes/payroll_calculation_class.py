@@ -379,7 +379,14 @@ class PayrollCalculationClass:
             if taxable_assets > payroll_taxable_income_cap_indicator.unemployment:
                     taxable_assets = payroll_taxable_income_cap_indicator.unemployment
 
+            if rut == 28254751:
+                print(rut)
+                print(taxable_assets)
+                print(payroll_umployment_insurance_indicator.worker)
+                print(contract_type_id)
+                print(payroll_item_value_days.amount)
             if payroll_item_value_days.amount > 0:
+                
                 if contract_type_id == 1:
                     amount = (payroll_umployment_insurance_indicator.worker/100) * taxable_assets
                 elif contract_type_id == 2:
@@ -436,7 +443,7 @@ class PayrollCalculationClass:
                 other_discount_total += other_discount_item_value.amount
 
         payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 64
+        payroll_item_value_data['item_id'] = 23
         payroll_item_value_data['rut'] = rut
         payroll_item_value_data['period'] = period
         payroll_item_value_data['amount'] = other_discount_total
@@ -520,7 +527,7 @@ class PayrollCalculationClass:
         payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 63, period)
         legal_discounts = payroll_item_value.amount
 
-        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 64, period)
+        payroll_item_value = PayrollItemValueClass(self.db).get_with_period(rut, 23, period)
         other_discounts = payroll_item_value.amount
 
         amount = legal_discounts + other_discounts
