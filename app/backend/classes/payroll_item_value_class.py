@@ -22,7 +22,8 @@ class PayrollItemValueClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
-                PayrollItemModel.item
+                PayrollItemModel.item,
+                PayrollItemModel.disabled_id
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
 
