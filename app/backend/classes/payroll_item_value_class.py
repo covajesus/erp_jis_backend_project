@@ -23,6 +23,7 @@ class PayrollItemValueClass:
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
                 PayrollItemModel.item,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.disabled_id
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
