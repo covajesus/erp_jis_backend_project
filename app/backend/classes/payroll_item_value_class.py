@@ -36,6 +36,8 @@ class PayrollItemValueClass:
                 "rut": item_value.rut,
                 "amount": item_value.amount,
                 "period": item_value.period,
+                "name": item_value.salary_settlement_name,
+                "disabled_id": item_value.disabled_id,
                 "item": item_value.item
             })
 
