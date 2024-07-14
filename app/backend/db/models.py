@@ -1085,6 +1085,7 @@ class PayrollItemModel(Base):
     item_type_id = Column(Integer)
     classification_id = Column(Integer)
     order_id = Column(Integer)
+    disabled_id = Column(Integer)
     item = Column(String(255))
     salary_settlement_name = Column(String(255))
     salary_settlement_location_id = Column(Integer)
