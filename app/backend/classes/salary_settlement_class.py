@@ -25,6 +25,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -36,6 +37,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -49,6 +51,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -60,6 +63,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -73,6 +77,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -84,6 +89,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -97,6 +103,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -108,6 +115,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -121,6 +129,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -132,6 +141,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -145,6 +155,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
                 PayrollItemValueModel.period,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
 
@@ -156,6 +167,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -168,6 +180,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.item_id,
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemValueModel.period,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
@@ -180,6 +193,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -192,6 +206,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.item_id,
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemValueModel.period,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
@@ -204,6 +219,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
@@ -216,6 +232,7 @@ class SalarySettlementClass:
                 PayrollItemValueModel.item_id,
                 PayrollItemValueModel.rut,
                 PayrollItemValueModel.amount,
+                PayrollItemModel.salary_settlement_name,
                 PayrollItemValueModel.period,
                 PayrollItemModel.item
             ).filter(PayrollItemValueModel.rut == rut, PayrollItemValueModel.period == period).all()
@@ -228,6 +245,7 @@ class SalarySettlementClass:
                 "item_id": item_value.item_id,
                 "rut": item_value.rut,
                 "amount": item_value.amount,
+                "name": item_value.salary_settlement_name,
                 "period": item_value.period,
                 "item": item_value.item
             })
