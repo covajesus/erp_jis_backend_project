@@ -480,26 +480,32 @@ class PayrollCalculationClass:
         
         if factor != 0:
             amount = round((total * float(factor)) - float(discount))
+
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = 102
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = total
+
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = 103
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = factor
+
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
+            
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = 104
+            payroll_item_value_data['rut'] = rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = discount
+
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
         else:
             amount = 0
-
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 102
-        payroll_item_value_data['rut'] = rut
-        payroll_item_value_data['period'] = period
-        payroll_item_value_data['amount'] = total
-
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 103
-        payroll_item_value_data['rut'] = rut
-        payroll_item_value_data['period'] = period
-        payroll_item_value_data['amount'] = factor
-
-        payroll_item_value_data = {}
-        payroll_item_value_data['item_id'] = 104
-        payroll_item_value_data['rut'] = rut
-        payroll_item_value_data['period'] = period
-        payroll_item_value_data['amount'] = discount
 
         payroll_item_value_data = {}
         payroll_item_value_data['item_id'] = 65
