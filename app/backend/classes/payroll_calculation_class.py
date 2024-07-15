@@ -46,9 +46,9 @@ class PayrollCalculationClass:
         self.worker_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
         self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
         # self.ccaf_calculated_quote(employee['rut'], period, employee['health_payment_id'])
+        self.second_level_insurance(employee['rut'], period)
         self.legal_discount(employee['rut'], period)
         self.other_discount(employee['rut'], period)
-        self.second_level_insurance(employee['rut'], period)
         self.total_assets(employee['rut'], period)
         self.total_discounts(employee['rut'], period)
         self.disability_survival_insurance(employee['rut'], period, employee['pention_id'])
@@ -416,12 +416,16 @@ class PayrollCalculationClass:
 
         for legal_discount_item in legal_discount_items:
             legal_discount_item_value = PayrollItemValueClass(self.db).get_with_period(rut, legal_discount_item.id, period)
-
+            print(legal_discount_item.id)
+            
             if legal_discount_item_value is not None:
+                print(legal_discount_item_value.amount)
                 legal_discount_total += legal_discount_item_value.amount
             else:
-                legal_discount_total = 0
+                legal_discount_total += 0
 
+        print('final')
+        print(legal_discount_total)
         payroll_item_value_data = {}
         payroll_item_value_data['item_id'] = 63
         payroll_item_value_data['rut'] = rut
