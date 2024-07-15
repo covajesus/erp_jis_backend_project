@@ -7,9 +7,7 @@ class PayrollUmploymentInsuranceIndicatorClass:
         self.db = db
 
     def get(self, contract_type_id, period):
-        data = self.db.query(PayrollUmploymentInsuranceIndicatorModel.worker, PayrollUmploymentInsuranceIndicatorModel.employer). \
-                        outerjoin(PayrollIndicatorModel, PayrollIndicatorModel.indicator_id == PayrollUmploymentInsuranceIndicatorModel.id). \
-                        filter(PayrollUmploymentInsuranceIndicatorModel.contract_type_id == contract_type_id, PayrollUmploymentInsuranceIndicatorModel.period == period).first()
+        data = self.db.query(PayrollUmploymentInsuranceIndicatorModel).filter(PayrollUmploymentInsuranceIndicatorModel.contract_type_id == contract_type_id, PayrollUmploymentInsuranceIndicatorModel.period == period).first()
         
         return data
     

@@ -87,6 +87,8 @@ from app.backend.routers.payroll_second_category_tax import payroll_second_categ
 from app.backend.routers.social_laws import social_laws
 from app.backend.routers.secondary_category_taxes import secondary_category_taxes
 from app.backend.routers.payroll_indicators import payroll_indicators
+from app.backend.routers.payroll_afp_quotes import payroll_afp_quotes
+from app.backend.routers.payroll_umployment_insurances import payroll_umployment_insurances
 
 app = FastAPI()
 
@@ -193,6 +195,8 @@ app.include_router(payroll_second_category_taxes)
 app.include_router(social_laws)
 app.include_router(secondary_category_taxes)
 app.include_router(payroll_indicators)
+app.include_router(payroll_afp_quotes)
+app.include_router(payroll_umployment_insurances)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
