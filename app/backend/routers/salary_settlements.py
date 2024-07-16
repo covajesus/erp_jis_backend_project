@@ -28,6 +28,12 @@ def all(page:int = None, session_user: UserLogin = Depends(get_current_active_us
 
     return {"message": data}
 
+@salary_settlements.get("/new_all/{page}")
+def all(page:int = None, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = SalarySettlementClass(db).get_new_all_with_pagination(page, 10)
+
+    return {"message": data}
+
 @salary_settlements.get("/edit/{rut}/{page}")
 def edit(rut:int, page:int = None, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
     data = SalarySettlementClass(db).get("rut", rut, 2, page)

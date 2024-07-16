@@ -275,7 +275,70 @@ class SalarySettlementClass:
             })
 
         return result
-        
+
+    # Obtiene todos los registros de licencias medicas con paginacion
+    def get_new_all_with_pagination(self, page = 1, items_per_page = 10):
+        try:
+
+            data_query = self.db.query(
+                        DocumentEmployeeModel.added_date,
+                        DocumentEmployeeModel.period,
+                        DocumentEmployeeModel.document_type_id,
+                        DocumentEmployeeModel.support,
+                        DocumentEmployeeModel.status_id,
+                        DocumentEmployeeModel.old_document_status_id,
+                        DocumentEmployeeModel.id,
+                        EmployeeModel.names,
+                        EmployeeModel.father_lastname,
+                        EmployeeModel.mother_lastname,
+                        EmployeeModel.visual_rut,
+                        EmployeeModel.rut
+                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.old_document_status_id == 0).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
+
+            total_items = data_query.count()
+            total_pages = (total_items + items_per_page - 1) // items_per_page
+
+            if page < 1 or page > total_pages:
+                return "Invalid page number"
+
+            data = data_query.offset((page - 1) * items_per_page).limit(items_per_page).all()
+
+            if not data:
+                return "No data found"
+
+            # Serializar los datos en una estructura de diccionario
+            serialized_data = {
+                        "total_items": total_items,
+                        "total_pages": total_pages,
+                        "current_page": page,
+                        "items_per_page": items_per_page,
+                        "data": [
+                            {
+                                "added_date": item.added_date.strftime('%Y-%m-%d %H:%M:%S') if item.added_date else None,
+                                "document_type_id": item.document_type_id,
+                                "old_document_status_id": item.old_document_status_id,
+                                "support": item.support,
+                                "status_id": item.status_id,
+                                "id": item.id,
+                                "period": item.period,
+                                "names": item.names,
+                                "visual_rut": item.visual_rut,
+                                "father_lastname": item.father_lastname,
+                                "mother_lastname": item.mother_lastname,
+                                "rut": item.rut
+                            }
+                            for item in data
+                        ]
+                    }
+
+            # Convierte el resultado a una cadena JSON
+            serialized_result = json.dumps(serialized_data)
+
+            return serialized_result
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+         
     # Obtiene todos los registros de licencias medicas con paginacion
     def get_all_with_pagination(self, page = 1, items_per_page = 10):
         try:
@@ -293,7 +356,7 @@ class SalarySettlementClass:
                         EmployeeModel.mother_lastname,
                         EmployeeModel.visual_rut,
                         EmployeeModel.rut
-                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
+                    ).outerjoin(EmployeeModel, EmployeeModel.rut == DocumentEmployeeModel.rut).filter(DocumentEmployeeModel.old_document_status_id != 0).filter(DocumentEmployeeModel.document_type_id == 5).order_by(desc(DocumentEmployeeModel.added_date))
 
             total_items = data_query.count()
             total_pages = (total_items + items_per_page - 1) // items_per_page
