@@ -93,9 +93,6 @@ class SocialLawClass:
                 medical_license_total = (medical_license_total - last_day_month) + 1
             elif last_day_month == 31:
                 medical_license_total = (medical_license_total - last_day_month) - 1
-            
-            if payroll_employee.rut == '27141399':
-                print(medical_license_total)
 
             # Calcular total de días de entrada para este empleado
             entrance_total = HelperClass.how_many_entrance_days(payroll_employee.entrance_company)
@@ -117,22 +114,13 @@ class SocialLawClass:
             if total_days < 0:
                 total_days = 0
 
-            if total_days > 0:
-                payroll_item_value_data = {}
-                payroll_item_value_data['item_id'] = 55
-                payroll_item_value_data['rut'] = payroll_employee.rut
-                payroll_item_value_data['period'] = period
-                payroll_item_value_data['amount'] = total_days
+            payroll_item_value_data = {}
+            payroll_item_value_data['item_id'] = 55
+            payroll_item_value_data['rut'] = payroll_employee.rut
+            payroll_item_value_data['period'] = period
+            payroll_item_value_data['amount'] = total_days
 
-                PayrollItemValueClass(self.db).store(payroll_item_value_data)
-            else:
-                payroll_item_value_data = {}
-                payroll_item_value_data['item_id'] = 55
-                payroll_item_value_data['rut'] = payroll_employee.rut
-                payroll_item_value_data['period'] = period
-                payroll_item_value_data['amount'] = last_day_month
-
-                PayrollItemValueClass(self.db).store(payroll_item_value_data)
+            PayrollItemValueClass(self.db).store(payroll_item_value_data)
     
     def store(self, period):
         try:
