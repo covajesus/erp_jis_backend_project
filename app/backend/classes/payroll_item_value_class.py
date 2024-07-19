@@ -71,7 +71,7 @@ class PayrollItemValueClass:
         existence_status = self.existence(data['rut'], data['item_id'], data['period'])
 
         if existence_status == 0 or existence_status == None:
-            if HelperClass().is_numeric(data['amount']):
+            if HelperClass.is_numeric(data['amount']):
                 if data['amount'] < 0:
                     payroll_item_value = PayrollItemValueModel()
                     payroll_item_value.rut = data['rut']
