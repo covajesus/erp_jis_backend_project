@@ -39,7 +39,7 @@ class EmployeeLaborDatumClass:
 
     def get(self, field, value):
         try:
-            data = self.db.query(EmployeeLaborDatumModel, RegionModel, HealthModel, CommuneModel, CivilStateModel, JobPositionModel, BranchOfficeModel, PentionModel). \
+            data = self.db.query(EmployeeLaborDatumModel, RegionModel, HealthModel, CommuneModel, CivilStateModel, JobPositionModel, BranchOfficeModel, PentionModel, ContractTypeModel). \
                 outerjoin(RegionModel, RegionModel.id == EmployeeLaborDatumModel.region_id). \
                 outerjoin(CommuneModel, CommuneModel.id == EmployeeLaborDatumModel.commune_id). \
                 outerjoin(CivilStateModel, CivilStateModel.id == EmployeeLaborDatumModel.civil_state_id). \
