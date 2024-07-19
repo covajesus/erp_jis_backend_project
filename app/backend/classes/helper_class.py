@@ -281,6 +281,13 @@ class HelperClass:
 
         return string
     
+    def is_numeric(value):
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
+    
     def add_zero(self, number):
         if number < 10:
             result = "0" + str(number)

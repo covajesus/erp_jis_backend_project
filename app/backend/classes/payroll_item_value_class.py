@@ -1,4 +1,5 @@
 from app.backend.db.models import PayrollItemValueModel, PayrollItemModel
+from app.backend.classes.helper_class import HelperClass
 from datetime import datetime
 
 class PayrollItemValueClass:
@@ -70,7 +71,7 @@ class PayrollItemValueClass:
         existence_status = self.existence(data['rut'], data['item_id'], data['period'])
 
         if existence_status == 0 or existence_status == None:
-            if int(data['amount']):
+            if HelperClass().is_numeric(data['amount']):
                 if data['amount'] < 0:
                     payroll_item_value = PayrollItemValueModel()
                     payroll_item_value.rut = data['rut']
