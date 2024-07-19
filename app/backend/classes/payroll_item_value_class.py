@@ -70,15 +70,26 @@ class PayrollItemValueClass:
         existence_status = self.existence(data['rut'], data['item_id'], data['period'])
 
         if existence_status == 0 or existence_status == None:
-            payroll_item_value = PayrollItemValueModel()
-            payroll_item_value.rut = data['rut']
-            payroll_item_value.item_id = data['item_id']
-            payroll_item_value.period = data['period']
-            payroll_item_value.amount = data['amount']
-            payroll_item_value.added_date = datetime.now()
-            payroll_item_value.updated_date = datetime.now()
-            self.db.add(payroll_item_value)
-            self.db.commit()
+            if data['amount'] < 0:
+                payroll_item_value = PayrollItemValueModel()
+                payroll_item_value.rut = data['rut']
+                payroll_item_value.item_id = data['item_id']
+                payroll_item_value.period = data['period']
+                payroll_item_value.amount = 0
+                payroll_item_value.added_date = datetime.now()
+                payroll_item_value.updated_date = datetime.now()
+                self.db.add(payroll_item_value)
+                self.db.commit()
+            else:
+                payroll_item_value = PayrollItemValueModel()
+                payroll_item_value.rut = data['rut']
+                payroll_item_value.item_id = data['item_id']
+                payroll_item_value.period = data['period']
+                payroll_item_value.amount = data['amount']
+                payroll_item_value.added_date = datetime.now()
+                payroll_item_value.updated_date = datetime.now()
+                self.db.add(payroll_item_value)
+                self.db.commit()
         else:
             self.update(data)
 
