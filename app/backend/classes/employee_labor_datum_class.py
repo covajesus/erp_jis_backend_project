@@ -47,6 +47,7 @@ class EmployeeLaborDatumClass:
                 outerjoin(BranchOfficeModel, BranchOfficeModel.id == EmployeeLaborDatumModel.branch_office_id). \
                 outerjoin(PentionModel, PentionModel.id == EmployeeLaborDatumModel.pention_id). \
                 outerjoin(HealthModel, HealthModel.id == EmployeeLaborDatumModel.health_id). \
+                outerjoin(ContractTypeModel, ContractTypeModel.id == EmployeeLaborDatumModel.contract_type_id). \
                 filter(getattr(EmployeeLaborDatumModel, field) == value).first()
 
             if data:
@@ -58,6 +59,7 @@ class EmployeeLaborDatumClass:
                 job_position = data[5]
                 branch_office = data[6]
                 pention = data[7]
+                contract_type = data[8]
 
                 serialized_region = {
                     "id": region.id,
@@ -113,6 +115,12 @@ class EmployeeLaborDatumClass:
                     "amount": pention.amount,
                     "previred_code": pention.previred_code,
                 }
+
+                serialized_contract_type = {
+                    "id": contract_type.id,
+                    "contract_type": contract_type.contract_type
+                }
+
                 entrance_pention = employee_labor_data.entrance_pention
 
                 entrance_company = employee_labor_data.entrance_company
@@ -184,7 +192,8 @@ class EmployeeLaborDatumClass:
                     "CivilStateModel": serialized_civil_state,
                     "JobPositionModel": serialized_job_position,
                     "BranchOfficeModel": serialized_branch_office,
-                    "PentionModel": serialized_pention
+                    "PentionModel": serialized_pention,
+                    "ContractTypeModel": serialized_contract_type
                 })
 
                 return serialized_result
