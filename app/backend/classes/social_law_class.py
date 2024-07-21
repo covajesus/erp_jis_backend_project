@@ -92,7 +92,7 @@ class SocialLawClass:
             elif last_day_month == 29:
                 medical_license_total = (medical_license_total - last_day_month) + 1
             elif last_day_month == 31:
-                medical_license_total = (medical_license_total - last_day_month) - 1
+                medical_license_total = (medical_license_total - last_day_month)
 
             # Calcular total de días de entrada para este empleado
             entrance_total = HelperClass.how_many_entrance_days(payroll_employee.entrance_company)
