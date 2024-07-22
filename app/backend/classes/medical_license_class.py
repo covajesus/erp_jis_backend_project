@@ -84,16 +84,15 @@ class MedicalLicenseClass:
         until = str(period) + '-' + str(last_day_month)
 
         try:
+            # Realizar una consulta para sumar los días de vacaciones dentro del rango especificado
             total_days = self.db.query(func.sum(MedicalLicenseModel.days)).\
                 filter(MedicalLicenseModel.rut == rut).\
                 filter(MedicalLicenseModel.since >= since).\
                 filter(MedicalLicenseModel.since <= until).scalar()
 
-            if last_day_month == 31:
-                total_days = total_days + 1
-
             # Si no hay licencias en el rango, total_days puede ser None, en ese caso, convertirlo a 0
-            total_days = total_days or 0
+            if total_days == None:
+                total_days = 0
             return total_days
         
         except Exception as e:

@@ -435,6 +435,27 @@ class HelperClass:
 
         return end_day
     
+    def full_last_day_month(year, month):
+        month = int(month)
+        year = int(year)
+        # Obtener el último día del mes y si es un año bisiesto
+        end_day = calendar.monthrange(year, month)[1]
+        is_leap_year = calendar.isleap(year)
+
+        # Si el mes es febrero y es un año bisiesto, el último día es 29, de lo contrario es 28
+        if month == 2 and is_leap_year:
+            end_day = 29
+        else:
+            end_day = 28
+
+        if month == 4 or month == 6 or month == 9 or month == 11:
+            end_day = 30
+
+        if month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12:
+            end_day = 31
+
+        return end_day
+    
     def final_day_month(self, month):
         if month == '1':
             return { "end_day": 31, "adjustment_day": -1 },
