@@ -2,14 +2,12 @@ import calendar
 import math
 import random
 from datetime import datetime, timedelta
-from app.backend.classes.hr_final_day_month_class import HrFinalDayMonthClass
+from app.backend.db.models import MedicalLicenseModel
 import calendar
 import pandas 
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
 
 class HelperClass:
 
@@ -144,7 +142,6 @@ class HelperClass:
             if current_date.weekday() >= 5:  # Si es sábado o domingo
                 weekend_count += 1
             current_date += delta
-        print(weekend_count)
         return weekend_count
     
     # Función para calcular el valor de los días de vacaciones
@@ -254,7 +251,6 @@ class HelperClass:
             since_date = datetime.strptime(str(since), "%Y-%m-%d")
             until_date = datetime.strptime(str(until), "%Y-%m-%d")
             delta = until_date - since_date
-            print(delta.days)
             return delta.days
         else:
             return 0
@@ -357,11 +353,9 @@ class HelperClass:
             if entrance_year == current_year and entrance_month == current_month:
                 # Obtener el primer día del mes actual
                 first_date = datetime(current_year, current_month, 1)
-                print("first_date:", first_date)
 
                 # Calcular la diferencia de días entre la entrada y el primer día del mes
                 days = (entrance_company - first_date).days
-                print("days:", days)
                     
                 return max(0, days)  # Retornar la diferencia de días, mínimo 0
                 
@@ -445,14 +439,10 @@ class HelperClass:
         # Si el mes es febrero y es un año bisiesto, el último día es 29, de lo contrario es 28
         if month == 2 and is_leap_year:
             end_day = 29
-        else:
+        elif month == 2 and is_leap_year == False:
             end_day = 28
-
-        if month == 4 or month == 6 or month == 9 or month == 11:
+        else:
             end_day = 30
-
-        if month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12:
-            end_day = 31
 
         return end_day
     

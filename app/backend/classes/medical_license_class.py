@@ -1,7 +1,7 @@
 from app.backend.db.models import MedicalLicenseModel, DocumentEmployeeModel, EmployeeModel, EmployeeLaborDatumModel, BranchOfficeModel
 from datetime import datetime
 from sqlalchemy import desc
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, extract
 from app.backend.classes.dropbox_class import DropboxClass
 from app.backend.classes.helper_class import HelperClass
 import json
@@ -77,6 +77,35 @@ class MedicalLicenseClass:
             error_message = str(e)
             return f"Error: {error_message}"
         
+    def verifyLastMonthDayExistenceInLicense(self, rut, period):
+        try:
+            # Reversión del formato del periodo
+            period_parts = period.split('-')
+            period = period_parts[1] + '-' + period_parts[0]
+
+            # Consulta a la base de datos
+            days = self.db.query(extract('day', MedicalLicenseModel.until)).filter(
+                MedicalLicenseModel.rut == rut,
+                MedicalLicenseModel.period == period
+            ).all()
+            
+            status = 0
+            
+            for day in days:
+                if period_parts[1] == 1 or period_parts[1] == 3 or period_parts[1] == 5 or period_parts[1] == 7 or period_parts[1] == 8 or period_parts[1] == 10 or period_parts[1] == 12:
+                    if day[0] == 31:
+                        status = 1
+
+                if period_parts[1] == 2:
+                    if day[0] == 28 or day[0] == 29:
+                        status = 1
+                    
+            return status
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+
+        
     def how_many_medical_license_days(self, rut, period):
         since = str(period) + '-01'
 
@@ -89,10 +118,20 @@ class MedicalLicenseClass:
                 filter(MedicalLicenseModel.rut == rut).\
                 filter(MedicalLicenseModel.since >= since).\
                 filter(MedicalLicenseModel.since <= until).scalar()
+            
+            verification_status = self.verifyLastMonthDayExistenceInLicense(rut, period)
 
             # Si no hay licencias en el rango, total_days puede ser None, en ese caso, convertirlo a 0
             if total_days == None:
                 total_days = 0
+            else:
+                if verification_status == 1 and last_day_month == 31:
+                    total_days = int(total_days) - 1
+                elif verification_status == 1 and last_day_month == 28:
+                    total_days = int(total_days) + 2
+                elif verification_status == 1 and last_day_month == 29:
+                    total_days = int(total_days) + 1
+                
             return total_days
         
         except Exception as e:

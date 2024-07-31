@@ -17,42 +17,33 @@ class PayrollCalculationClass:
     def __init__(self, db):
         self.db = db
 
-    def calculate(self, period=None, batch_size=20):
-        employees = PayrollEmployeeClass(self.db).get_all(period)
+    def calculate(self, rut, period=None, batch_size=20):
+        employee = PayrollEmployeeClass(self.db).get(rut, period)
+        self.process_employee(employee, period)
 
-        count = 1
-
-        for i in range(0, len(employees), batch_size):
-            batch = employees[i:i + batch_size]
-
-            for employee in batch:
-                self.process_employee(employee, period)
-
-            PayrollCalculatedEmployeeClass(self.db).store(count, period)
-
-            count = count + 1
+        return 1
 
     def process_employee(self, employee, period):
-        self.proportional(employee['rut'], 35, period, 0, 1)
-        self.proportional(employee['rut'], 36, period, 0, 1)
-        self.proportional(employee['rut'], 37, period, 0, 1)
-        self.taxable_salary(employee['rut'], period)
-        self.no_taxable_salary(employee['rut'], period)
-        self.gratification(employee['rut'], period)
-        self.taxable_assets(employee['rut'], period)
-        self.no_taxable_assets(employee['rut'], period)
-        self.health(employee['rut'], period, employee['extra_health_payment_type_id'], employee['extra_health_amount'])
-        self.pention(employee['rut'], period, employee['pention_id'], employee['regime_id'])
-        self.worker_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
-        self.employer_unemployment_insurance(employee['rut'], period, employee['regime_id'], employee['contract_type_id'])
-        # self.ccaf_calculated_quote(employee['rut'], period, employee['health_payment_id'])
-        self.second_level_insurance(employee['rut'], period)
-        self.legal_discount(employee['rut'], period)
-        self.other_discount(employee['rut'], period)
-        self.total_assets(employee['rut'], period)
-        self.total_discounts(employee['rut'], period)
-        self.disability_survival_insurance(employee['rut'], period, employee['pention_id'])
-        self.total_to_pay(employee['rut'], period)
+        self.proportional(employee[0]['rut'], 35, period, 0, 1)
+        self.proportional(employee[0]['rut'], 36, period, 0, 1)
+        self.proportional(employee[0]['rut'], 37, period, 0, 1)
+        self.taxable_salary(employee[0]['rut'], period)
+        self.no_taxable_salary(employee[0]['rut'], period)
+        self.gratification(employee[0]['rut'], period)
+        self.taxable_assets(employee[0]['rut'], period)
+        self.no_taxable_assets(employee[0]['rut'], period)
+        self.health(employee[0]['rut'], period, employee[0]['extra_health_payment_type_id'], employee[0]['extra_health_amount'])
+        self.pention(employee[0]['rut'], period, employee[0]['pention_id'], employee[0]['regime_id'])
+        self.worker_unemployment_insurance(employee[0]['rut'], period, employee[0]['regime_id'], employee[0]['contract_type_id'])
+        self.employer_unemployment_insurance(employee[0]['rut'], period, employee[0]['regime_id'], employee[0]['contract_type_id'])
+        # self.ccaf_calculated_quote(employee[0]['rut'], period, employee[0]['health_payment_id'])
+        self.second_level_insurance(employee[0]['rut'], period)
+        self.legal_discount(employee[0]['rut'], period)
+        self.other_discount(employee[0]['rut'], period)
+        self.total_assets(employee[0]['rut'], period)
+        self.total_discounts(employee[0]['rut'], period)
+        self.disability_survival_insurance(employee[0]['rut'], period, employee[0]['pention_id'])
+        self.total_to_pay(employee[0]['rut'], period)
     
     def taxable_salary(self, rut, period):
         taxable_items = PayrollItemClass(self.db).get_taxable_items()

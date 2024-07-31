@@ -35,8 +35,6 @@ class SocialLawClass:
 
             last_day_month = HelperClass.full_last_day_month(date[0], date[1])
 
-            print(last_day_month)
-
             payroll_item_value = PayrollItemValueClass(self.db).get_with_period(payroll_employee.rut, 13, period)
 
             if payroll_item_value is not None:

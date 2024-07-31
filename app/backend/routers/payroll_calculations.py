@@ -11,9 +11,9 @@ payroll_calculations = APIRouter(
     tags=["PayrollCalculations"]
 )
 
-@payroll_calculations.get("/{period}")
-def calculate(period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    data = PayrollCalculationClass(db).calculate(period)
+@payroll_calculations.get("/{rut}/{period}")
+def calculate(rut:int, period:str, session_user: UserLogin = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    data = PayrollCalculationClass(db).calculate(rut, period)
 
     return {"message": data}
 
