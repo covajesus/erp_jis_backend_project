@@ -910,6 +910,18 @@ class PayrollEmployeeInput(BaseModel):
     amount: Union[str, None]
     period: str
 
+class Complaint(BaseModel):
+    anonymous: int = None
+    incident_date: str = None
+    incident_place: str = None
+    knowledge: int = None
+    identify: int = None
+    description: str = None
+    password: str = None
+    password_confirm: str = None
+    email: str = None
+    no_email: int = None
+
 class PayrollDataInput(BaseModel):
     payroll_employees: List[PayrollEmployeeInput]
 

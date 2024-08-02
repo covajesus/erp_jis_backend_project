@@ -1092,6 +1092,22 @@ class PayrollItemModel(Base):
     added_date = Column(DateTime())
     updated_date = Column(DateTime())
 
+class ComplaintModel(Base):
+    __tablename__ = 'complaints'
+
+    id = Column(Integer, primary_key=True)
+    anonymous = Column(Integer)
+    incident_date = Column(String(255))
+    incident_place = Column(String(255))
+    knowledge = Column(Integer)
+    identify = Column(Integer)
+    description = Column(String(255))
+    password = Column(String(255))
+    password_confirm = Column(String(255))
+    email = Column(String(255))
+    no_email = Column(String(255))
+    added_date = Column(DateTime())
+
 class MedicalLicenseModel(Base):
     __tablename__ = 'medical_licenses'
 
