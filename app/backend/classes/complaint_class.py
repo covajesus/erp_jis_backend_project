@@ -7,17 +7,35 @@ class ComplaintClass:
     
     def store(self, complaint_inputs):
         complaint = ComplaintModel()
+        complaint.relationship = complaint_inputs['relationship']
+        complaint.incident_place = complaint_inputs['incident_place']
+        complaint.complaint_type = complaint_inputs['complaint_type']
         complaint.anonymous = complaint_inputs['anonymous']
         complaint.incident_date = complaint_inputs['incident_date']
-        complaint.incident_place = complaint_inputs['incident_place']
+        complaint.incident_place_detail = complaint_inputs['incident_place_detail']
         complaint.knowledge = complaint_inputs['knowledge']
         complaint.identify = complaint_inputs['identify']
         complaint.description = complaint_inputs['description']
+        complaint.support = ''
         complaint.password = complaint_inputs['password']
-        complaint.password_confirm = complaint_inputs['password_confirm']
         complaint.email = complaint_inputs['email']
-        complaint.no_email = complaint_inputs['no_email']
         complaint.added_date = datetime.now()
+
+        self.db.add(complaint)
+
+        try:
+            self.db.commit()
+
+            return complaint.id
+        except Exception as e:
+            error_message = str(e)
+            return f"Error: {error_message}"
+        
+    
+    def update(self, id, support):
+        complaint =  self.db.query(ComplaintModel).filter(ComplaintModel.id == id).one_or_none()
+        
+        complaint.support = support
 
         self.db.add(complaint)
 
@@ -26,6 +44,5 @@ class ComplaintClass:
 
             return 1
         except Exception as e:
-            error_message = str(e)
-            return f"Error: {error_message}"
+            return 0
     

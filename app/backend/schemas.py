@@ -911,16 +911,35 @@ class PayrollEmployeeInput(BaseModel):
     period: str
 
 class Complaint(BaseModel):
+    relationship: int = None
+    incident_place: str = None
+    complaint_type: int = None
     anonymous: int = None
     incident_date: str = None
-    incident_place: str = None
+    incident_place_detail: str = None
     knowledge: int = None
     identify: int = None
     description: str = None
     password: str = None
-    password_confirm: str = None
     email: str = None
-    no_email: int = None
+
+    
+    @classmethod
+    def as_form(cls, 
+                relationship: int = Form(),
+                incident_place: str = Form(),
+                complaint_type: int = Form(),
+                anonymous: str = Form(),
+                incident_date: str = Form(),
+                incident_place_detail: str = Form(),
+                knowledge: int = Form(),
+                identify: int = Form(),
+                description: str = Form(),
+                password: str = Form(),
+                email: str = Form()
+                ):
+        return cls(relationship=relationship, incident_place=incident_place, complaint_type=complaint_type, anonymous=anonymous, incident_date=incident_date, incident_place_detail=incident_place_detail, knowledge=knowledge, identify=identify, description=description, password=password, email=email)
+   
 
 class PayrollDataInput(BaseModel):
     payroll_employees: List[PayrollEmployeeInput]
