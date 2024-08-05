@@ -19,6 +19,7 @@ class ComplaintClass:
         complaint.support = ''
         complaint.password = complaint_inputs['password']
         complaint.email = complaint_inputs['email']
+        complaint.status = 0
         complaint.added_date = datetime.now()
 
         self.db.add(complaint)
@@ -45,4 +46,15 @@ class ComplaintClass:
             return 1
         except Exception as e:
             return 0
+        
+
+    def verify(self, data):
+        complaint =  self.db.query(ComplaintModel).filter(ComplaintModel.id == data['id']).filter(ComplaintModel.password == data['password']).count()
+
+        if complaint > 0:
+            complaint =  self.db.query(ComplaintModel).filter(ComplaintModel.id == data['id']).one_or_none()
+
+            return complaint.status
+        else:
+            return None
     

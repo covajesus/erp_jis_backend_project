@@ -1108,6 +1108,7 @@ class ComplaintModel(Base):
     description = Column(String(255))
     password = Column(String(255))
     email = Column(String(255))
+    status = Column(Integer)
     added_date = Column(DateTime())
 
 class MedicalLicenseModel(Base):

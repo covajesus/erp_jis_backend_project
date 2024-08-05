@@ -910,6 +910,10 @@ class PayrollEmployeeInput(BaseModel):
     amount: Union[str, None]
     period: str
 
+class VerifyComplaint(BaseModel):
+    id: str = None
+    password: str = None
+
 class Complaint(BaseModel):
     relationship: int = None
     incident_place: str = None
@@ -923,23 +927,20 @@ class Complaint(BaseModel):
     password: str = None
     email: str = None
 
-    
     @classmethod
-    def as_form(cls, 
-                relationship: int = Form(),
-                incident_place: str = Form(),
-                complaint_type: int = Form(),
-                anonymous: str = Form(),
-                incident_date: str = Form(),
-                incident_place_detail: str = Form(),
-                knowledge: int = Form(),
-                identify: int = Form(),
-                description: str = Form(),
-                password: str = Form(),
-                email: str = Form()
-                ):
+    def as_form(cls,
+                relationship: int = Form(None),
+                incident_place: str = Form(None),
+                complaint_type: int = Form(None),
+                anonymous: str = Form(None),
+                incident_date: str = Form(None),
+                incident_place_detail: str = Form(None),
+                knowledge: int = Form(None),
+                identify: int = Form(None),
+                description: str = Form(None),
+                password: str = Form(None),
+                email: str = Form(None)):
         return cls(relationship=relationship, incident_place=incident_place, complaint_type=complaint_type, anonymous=anonymous, incident_date=incident_date, incident_place_detail=incident_place_detail, knowledge=knowledge, identify=identify, description=description, password=password, email=email)
-   
 
 class PayrollDataInput(BaseModel):
     payroll_employees: List[PayrollEmployeeInput]
