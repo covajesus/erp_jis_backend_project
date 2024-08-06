@@ -915,28 +915,28 @@ class VerifyComplaint(BaseModel):
     password: str = None
 
 class Complaint(BaseModel):
-    relationship: int = None
+    relationship: str = None
     incident_place: str = None
-    complaint_type: int = None
+    complaint_type: str = None
     anonymous: int = None
     incident_date: str = None
     incident_place_detail: str = None
-    knowledge: int = None
-    identify: int = None
+    knowledge: str = None
+    identify: str = None
     description: str = None
     password: str = None
     email: str = None
 
     @classmethod
     def as_form(cls,
-                relationship: int = Form(None),
+                relationship: str = Form(None),
                 incident_place: str = Form(None),
-                complaint_type: int = Form(None),
+                complaint_type: str = Form(None),
                 anonymous: str = Form(None),
                 incident_date: str = Form(None),
                 incident_place_detail: str = Form(None),
-                knowledge: int = Form(None),
-                identify: int = Form(None),
+                knowledge: str = Form(None),
+                identify: str = Form(None),
                 description: str = Form(None),
                 password: str = Form(None),
                 email: str = Form(None)):
