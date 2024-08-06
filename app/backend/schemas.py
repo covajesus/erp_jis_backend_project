@@ -918,7 +918,7 @@ class Complaint(BaseModel):
     relationship: str = None
     incident_place: str = None
     complaint_type: str = None
-    anonymous: int = None
+    anonymous: str = None
     incident_date: str = None
     incident_place_detail: str = None
     knowledge: str = None
