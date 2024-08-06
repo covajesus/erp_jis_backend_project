@@ -111,6 +111,7 @@ def send_email(id, complaint_data: dict, recipient: str):
 
     # Substitute the placeholders with actual values
     html_content = html_template.substitute(
+        id=id,
         relationship=complaint_data.get('relationship', 'N/A'),
         incident_place=complaint_data.get('incident_place', 'N/A'),
         complaint_type=complaint_data.get('complaint_type', 'N/A'),
