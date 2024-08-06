@@ -1,50 +1,42 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from app.backend.db.database import get_db
 from sqlalchemy.orm import Session
 from app.backend.schemas import Complaint, VerifyComplaint
 from app.backend.classes.complaint_class import ComplaintClass
-from fastapi import UploadFile, File, Form
 from app.backend.classes.dropbox_class import DropboxClass
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 from string import Template
+from typing import Optional
 
 complaints = APIRouter(
     prefix="/complaints",
     tags=["Complaints"]
 )
 
-from typing import Optional
-from fastapi import APIRouter, Depends, File, UploadFile
-from sqlalchemy.orm import Session
-import os
-
 @complaints.post("/store")
 def store(complaints: Complaint = Depends(Complaint.as_form), support: Optional[UploadFile] = File(None), db: Session = Depends(get_db)):
-    complaints = complaints.dict()
-
-    id = ComplaintClass(db).store(complaints)
+    complaints_dict = complaints.dict()
+    id = ComplaintClass(db).store(complaints_dict)
+    attachment_path = None
 
     if support:
         dropbox_client = DropboxClass(db)
         filename = dropbox_client.upload(name=id, description='complaint', data=support,
                                          dropbox_path='/complaints/', computer_path=os.path.join(os.path.dirname(__file__)))
         data = ComplaintClass(db).update(id, filename)
+        attachment_path = filename  # Ruta del archivo para adjuntar
 
+    send_email(id, complaints_dict, "contacto@jisparking.com", attachment_path)
+    send_email(id, complaints_dict, "patriciogomez@jisparking.com", attachment_path)
 
-        send_email(id, complaints, "contacto@jisparking.com")
-        send_email(id, complaints, "patriciogomez@jisparking.com")
-    else:
-        send_email(id, complaints, "contacto@jisparking.com")
-        send_email(id, complaints, "patriciogomez@jisparking.com")
+    return {"message": data if support else ""}
 
-        data = ''
-
-    return {"message": data}
-
-def send_email(id, complaint_data: dict, recipient: str):
+def send_email(id, complaint_data: dict, recipient: str, attachment_path: Optional[str] = None):
     sender_email = "no-reply@jisparking.com"
     sender_password = "Noreply2024!"
     subject = "Canal de Denuncias - Detalles de la Denuncia"
@@ -121,7 +113,6 @@ def send_email(id, complaint_data: dict, recipient: str):
         knowledge=complaint_data.get('knowledge', 'N/A'),
         identify=complaint_data.get('identify', 'N/A'),
         description=complaint_data.get('description', 'N/A'),
-        password=complaint_data.get('password', 'N/A'),
         email=complaint_data.get('email', 'N/A')
     )
 
@@ -134,6 +125,18 @@ def send_email(id, complaint_data: dict, recipient: str):
     # Attach the HTML content
     msg.attach(MIMEText(html_content, 'html'))
 
+    # Attach the file if provided
+    if attachment_path:
+        with open(attachment_path, 'rb') as attachment:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(attachment.read())
+            encoders.encode_base64(part)
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {os.path.basename(attachment_path)}",
+            )
+            msg.attach(part)
+
     # Send the email
     try:
         server = smtplib.SMTP_SSL('mail.jisparking.com', 465)
@@ -145,8 +148,6 @@ def send_email(id, complaint_data: dict, recipient: str):
         print(f"Failed to send email: {e}")
 
 @complaints.post("/verify")
-def store(id: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-
+def verify(id: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     data = ComplaintClass(db).verify({"id": id, "password": password})
-
     return {"message": data}
